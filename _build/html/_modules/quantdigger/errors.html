@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.errors &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../index.html" />
+    <link rel="up" title="模块代码" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.errors 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+
+<div class="viewcode-block" id="QuantDiggerError"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.QuantDiggerError">[文档]</a><span class="k">class</span> <span class="nc">QuantDiggerError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="n">__unicode__</span> <span class="o">=</span> <span class="n">__str__</span>
+    <span class="n">__repr__</span> <span class="o">=</span> <span class="n">__str__</span>
+
+</div>
+<div class="viewcode-block" id="DataFormatError"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.DataFormatError">[文档]</a><span class="k">class</span> <span class="nc">DataFormatError</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;错误的数据格式！&quot;</span> 
+
+</div>
+<div class="viewcode-block" id="FileDoesNotExist"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.FileDoesNotExist">[文档]</a><span class="k">class</span> <span class="nc">FileDoesNotExist</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    当本地文件不存在的时候触发。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;不存在文件:{file}&quot;</span> 
+
+</div>
+<div class="viewcode-block" id="PeriodTypeError"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.PeriodTypeError">[文档]</a><span class="k">class</span> <span class="nc">PeriodTypeError</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;不存在该周期！&quot;</span> 
+
+</div>
+<div class="viewcode-block" id="DataAlignError"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.DataAlignError">[文档]</a><span class="k">class</span> <span class="nc">DataAlignError</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;数据没有对齐！&quot;</span> 
+</div>
+<div class="viewcode-block" id="SeriesIndexError"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.SeriesIndexError">[文档]</a><span class="k">class</span> <span class="nc">SeriesIndexError</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;序列变量索引越界！&quot;</span> 
+</div>
+<div class="viewcode-block" id="BreakConstError"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.BreakConstError">[文档]</a><span class="k">class</span> <span class="nc">BreakConstError</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;不能对常量赋值！&quot;</span> 
+    
+
+</div>
+<div class="viewcode-block" id="WrongDataForTransform"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.WrongDataForTransform">[文档]</a><span class="k">class</span> <span class="nc">WrongDataForTransform</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised whenever a rolling transform is called on an event that</span>
+<span class="sd">    does not have the necessary properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;{transform} requires {fields}. Event cannot be processed.&quot;</span>
+
+</div>
+<div class="viewcode-block" id="UnsupportedSlippageModel"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.UnsupportedSlippageModel">[文档]</a><span class="k">class</span> <span class="nc">UnsupportedSlippageModel</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a user script calls the override_slippage magic</span>
+<span class="sd">    with a slipage object that isn&#39;t a VolumeShareSlippage or</span>
+<span class="sd">    FixedSlipapge</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">You attempted to override slippage with an unsupported class. </span><span class="se">\</span>
+<span class="s">Please use VolumeShareSlippage or FixedSlippage.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="OverrideSlippagePostInit"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.OverrideSlippagePostInit">[文档]</a><span class="k">class</span> <span class="nc">OverrideSlippagePostInit</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="c"># Raised if a users script calls override_slippage magic</span>
+    <span class="c"># after the initialize method has returned.</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">You attempted to override slippage outside of `initialize`. </span><span class="se">\</span>
+<span class="s">You may only call override_slippage in your initialize method.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="RegisterTradingControlPostInit"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.RegisterTradingControlPostInit">[文档]</a><span class="k">class</span> <span class="nc">RegisterTradingControlPostInit</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="c"># Raised if a user&#39;s script register&#39;s a trading control after initialize</span>
+    <span class="c"># has been run.</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">You attempted to set a trading control outside of `initialize`. </span><span class="se">\</span>
+<span class="s">Trading controls may only be set in your initialize method.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="UnsupportedCommissionModel"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.UnsupportedCommissionModel">[文档]</a><span class="k">class</span> <span class="nc">UnsupportedCommissionModel</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a user script calls the override_commission magic</span>
+<span class="sd">    with a commission object that isn&#39;t a PerShare, PerTrade or</span>
+<span class="sd">    PerDollar commission</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">You attempted to override commission with an unsupported class. </span><span class="se">\</span>
+<span class="s">Please use PerShare or PerTrade.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="OverrideCommissionPostInit"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.OverrideCommissionPostInit">[文档]</a><span class="k">class</span> <span class="nc">OverrideCommissionPostInit</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a users script calls override_commission magic</span>
+<span class="sd">    after the initialize method has returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">You attempted to override commission outside of `initialize`. </span><span class="se">\</span>
+<span class="s">You may only call override_commission in your initialize method.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TransactionWithNoVolume"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.TransactionWithNoVolume">[文档]</a><span class="k">class</span> <span class="nc">TransactionWithNoVolume</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a transact call returns a transaction with zero volume.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Transaction {txn} has a volume of zero.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TransactionWithWrongDirection"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.TransactionWithWrongDirection">[文档]</a><span class="k">class</span> <span class="nc">TransactionWithWrongDirection</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a transact call returns a transaction with a direction that</span>
+<span class="sd">    does not match the order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Transaction {txn} not in same direction as corresponding order {order}.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TransactionWithNoAmount"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.TransactionWithNoAmount">[文档]</a><span class="k">class</span> <span class="nc">TransactionWithNoAmount</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a transact call returns a transaction with zero amount.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Transaction {txn} has an amount of zero.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TransactionVolumeExceedsOrder"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.TransactionVolumeExceedsOrder">[文档]</a><span class="k">class</span> <span class="nc">TransactionVolumeExceedsOrder</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a transact call returns a transaction with a volume greater than</span>
+<span class="sd">the corresponding order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Transaction volume of {txn} exceeds the order volume of {order}.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="UnsupportedOrderParameters"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.UnsupportedOrderParameters">[文档]</a><span class="k">class</span> <span class="nc">UnsupportedOrderParameters</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if a set of mutually exclusive parameters are passed to an order</span>
+<span class="sd">    call.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;{msg}&quot;</span>
+
+</div>
+<div class="viewcode-block" id="BadOrderParameters"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.BadOrderParameters">[文档]</a><span class="k">class</span> <span class="nc">BadOrderParameters</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if any impossible parameters (nan, negative limit/stop)</span>
+<span class="sd">    are passed to an order call.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;{msg}&quot;</span>
+
+</div>
+<div class="viewcode-block" id="OrderDuringInitialize"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.OrderDuringInitialize">[文档]</a><span class="k">class</span> <span class="nc">OrderDuringInitialize</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if order is called during initialize()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;{msg}&quot;</span>
+
+</div>
+<div class="viewcode-block" id="TradingControlViolation"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.TradingControlViolation">[文档]</a><span class="k">class</span> <span class="nc">TradingControlViolation</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if an order would violate a constraint set by a TradingControl.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Order for {amount} shares of {sid} violates trading constraint {constraint}.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="IncompatibleHistoryFrequency"><a class="viewcode-back" href="../../quantdigger.html#quantdigger.errors.IncompatibleHistoryFrequency">[文档]</a><span class="k">class</span> <span class="nc">IncompatibleHistoryFrequency</span><span class="p">(</span><span class="n">QuantDiggerError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a frequency is given to history which is not supported.</span>
+<span class="sd">    At least, not yet.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">Requested history at frequency &#39;{frequency}&#39; cannot be created with data</span>
+<span class="s">at frequency &#39;{data_frequency}&#39;.</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

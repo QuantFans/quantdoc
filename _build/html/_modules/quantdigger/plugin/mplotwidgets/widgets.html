@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.plugin.mplotwidgets.widgets &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.plugin.mplotwidgets.widgets 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+<span class="kn">from</span> <span class="nn">matplotlib.widgets</span> <span class="kn">import</span> <span class="n">AxesWidget</span>
+
+
+<div class="viewcode-block" id="RangeWidget"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.RangeWidget">[文档]</a><span class="k">class</span> <span class="nc">RangeWidget</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RangeWidget.update"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.RangeWidget.update">[文档]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span> 
+        <span class="c">#self.zorder = 1000</span>
+        <span class="c">#self.ax.visible = True</span>
+        <span class="c">#self.ax.figure.canvas.draw()</span>
+        <span class="k">print</span> <span class="s">&quot;8888&quot;</span> 
+    
+
+</div></div>
+<div class="viewcode-block" id="Slider"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.Slider">[文档]</a><span class="k">class</span> <span class="nc">Slider</span><span class="p">(</span><span class="n">AxesWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A slider representing a floating point range</span>
+
+<span class="sd">    The following attributes are defined</span>
+<span class="sd">      *ax*        : the slider :class:`matplotlib.axes.Axes` instance</span>
+
+<span class="sd">      *val*       : the current slider value</span>
+
+<span class="sd">      *vline*     : a :class:`matplotlib.lines.Line2D` instance</span>
+<span class="sd">                     representing the initial value of the slider</span>
+
+<span class="sd">      *poly*      : A :class:`matplotlib.patches.Polygon` instance</span>
+<span class="sd">                     which is the slider knob</span>
+
+<span class="sd">      *valfmt*    : the format string for formatting the slider text</span>
+
+<span class="sd">      *label*     : a :class:`matplotlib.text.Text` instance</span>
+<span class="sd">                     for the slider label</span>
+
+<span class="sd">      *closedmin* : whether the slider is closed on the minimum</span>
+
+<span class="sd">      *closedmax* : whether the slider is closed on the maximum</span>
+
+<span class="sd">      *slidermin* : another slider - if not *None*, this slider must be</span>
+<span class="sd">                     greater than *slidermin*</span>
+
+<span class="sd">      *slidermax* : another slider - if not *None*, this slider must be</span>
+<span class="sd">                     less than *slidermax*</span>
+
+<span class="sd">      *drag_enabled*  : allow for mouse dragging on slider</span>
+
+<span class="sd">    Call :meth:`add_observer` to connect to the slider event</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">valmin</span><span class="p">,</span> <span class="n">valmax</span><span class="p">,</span> <span class="n">valinit</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">valfmt</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%1.2f</span><span class="s">&#39;</span><span class="p">,</span> 
+                 <span class="n">closedmin</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">closedmax</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">slidermin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">slidermax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">drag_enabled</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a slider from *valmin* to *valmax* in axes *ax*</span>
+
+<span class="sd">        *valinit*</span>
+<span class="sd">            The slider initial position</span>
+
+<span class="sd">        *label*</span>
+<span class="sd">            The slider label</span>
+
+<span class="sd">        *valfmt*</span>
+<span class="sd">            Used to format the slider value</span>
+
+<span class="sd">        *closedmin* and *closedmax*</span>
+<span class="sd">            Indicate whether the slider interval is closed</span>
+
+<span class="sd">        *slidermin* and *slidermax*</span>
+<span class="sd">            Used to constrain the value of this slider to the values</span>
+<span class="sd">            of other sliders.</span>
+
+<span class="sd">        additional kwargs are passed on to ``self.poly`` which is the</span>
+<span class="sd">        :class:`matplotlib.patches.Rectangle` which draws the slider</span>
+<span class="sd">        knob.  See the :class:`matplotlib.patches.Rectangle` documentation</span>
+<span class="sd">        valid property names (e.g., *facecolor*, *edgecolor*, *alpha*, ...)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">AxesWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valmin</span> <span class="o">=</span> <span class="n">valmin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valmax</span> <span class="o">=</span> <span class="n">valmax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">valinit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valinit</span> <span class="o">=</span> <span class="n">valinit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="c"># 滑动条</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poly</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">valmax</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">valmax</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="c">#axhspan</span>
+        <span class="c">#self.vline = ax.axvline(valinit, 0, 1, color=&#39;r&#39;, lw=1)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valfmt</span> <span class="o">=</span> <span class="n">valfmt</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="n">valmin</span><span class="p">,</span> <span class="n">valmax</span><span class="p">))</span>
+        <span class="c">#ax.set_xticks([]) # disable ticks</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_navigate</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                             <span class="n">verticalalignment</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span>
+                             <span class="n">horizontalalignment</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valtext</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.02</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">valfmt</span> <span class="o">%</span> <span class="n">valinit</span><span class="p">,</span>
+                               <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                               <span class="n">verticalalignment</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span>
+                               <span class="n">horizontalalignment</span><span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closedmin</span> <span class="o">=</span> <span class="n">closedmin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closedmax</span> <span class="o">=</span> <span class="n">closedmax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slidermin</span> <span class="o">=</span> <span class="n">slidermin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slidermax</span> <span class="o">=</span> <span class="n">slidermax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drag_active</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drag_enabled</span> <span class="o">=</span> <span class="n">drag_enabled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Slider.add_observer"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.Slider.add_observer">[文档]</a>    <span class="k">def</span> <span class="nf">add_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        When the slider value is changed, call *func* with the new</span>
+<span class="sd">        slider position</span>
+
+<span class="sd">        A connection id is returned which can be used to disconnect</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observers</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+
+</div>
+<div class="viewcode-block" id="Slider.remove_observer"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.Slider.remove_observer">[文档]</a>    <span class="k">def</span> <span class="nf">remove_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;remove the observer with connection id *cid*&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">observers</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="Slider.reset"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.Slider.reset">[文档]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;reset the slider to the initial value if needed&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valinit</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_val</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valinit</span><span class="p">)</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for con&quot;&quot;&quot;</span> 
+        <span class="c"># 信号连接。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect_event</span><span class="p">(</span><span class="s">&#39;button_press_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_mouse</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect_event</span><span class="p">(</span><span class="s">&#39;button_release_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_mouse</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drag_enabled</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect_event</span><span class="p">(</span><span class="s">&#39;motion_notify_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_mouse</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Slider.on_mouse"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.Slider.on_mouse">[文档]</a>    <span class="k">def</span> <span class="nf">on_mouse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;update the slider position&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignore</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;button_press_event&#39;</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">inaxes</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drag_active</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">grab_mouse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">drag_active</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;button_press_event&#39;</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">inaxes</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drag_active</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">release_mouse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;button_release_event&#39;</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">inaxes</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drag_active</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">release_mouse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_observer</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">xdata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_observer</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="c"># 重绘</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valmin</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closedmin</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valmin</span>
+        <span class="k">elif</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valmax</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closedmax</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valmax</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slidermin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slidermin</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closedmin</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slidermin</span><span class="o">.</span><span class="n">val</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slidermax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slidermax</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closedmax</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slidermax</span><span class="o">.</span><span class="n">val</span>
+        <span class="k">if</span> <span class="n">width</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_val</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_set_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">poly</span><span class="o">.</span><span class="n">xy</span>
+        <span class="n">xy</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="n">xy</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poly</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">val</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">val</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c">#self.poly.xy = xy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valtext</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valfmt</span> <span class="o">%</span> <span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventson</span><span class="p">:</span>
+            <span class="k">return</span>
+
+
+    <span class="k">def</span> <span class="nf">_update_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 通知相关窗口更新数据 &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observers</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">on_slider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+
+</div>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.indicators.common</span> <span class="kn">import</span> <span class="n">Candles</span>
+<div class="viewcode-block" id="CandleWindow"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.CandleWindow">[文档]</a><span class="k">class</span> <span class="nc">CandleWindow</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    画蜡烛线。</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">wdlength</span><span class="p">,</span> <span class="n">min_wdlength</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a slider from *valmin* to *valmax* in axes *ax*</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#AxesWidget.__init__(self, ax)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wdlength</span> <span class="o">=</span> <span class="n">wdlength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_wdlength</span> <span class="o">=</span> <span class="n">min_wdlength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voffset</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c"># 当前显示的范围。 </span>
+        <span class="c">#self.xmax = len(data)</span>
+        <span class="c">#self.xmin = max(0, self.xmax-self.wdlength) </span>
+        <span class="c">#self.ymax = np.max(data.high[self.xmin : self.xmax].values) + self.voffset</span>
+        <span class="c">#self.ymin = np.min(data.low[self.xmin : self.xmax].values) - self.voffset</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_indicator</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="CandleWindow.set_parent"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.CandleWindow.set_parent">[文档]</a>    <span class="k">def</span> <span class="nf">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">ith_axes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for init_widget&quot;&quot;&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">ith_axes</span><span class="p">]</span>
+        <span class="c">#ax.set_xlim((self.xmin, self.xmax))</span>
+        <span class="c">#ax.set_ylim((self.ymin, self.ymax))</span>
+        <span class="k">print</span> <span class="s">&quot;--------------------&quot;</span> 
+        <span class="n">candles</span> <span class="o">=</span> <span class="n">Candles</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="s">&#39;g&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&quot;--------------------&quot;</span> 
+        <span class="n">parent</span><span class="o">.</span><span class="n">register_indicator</span><span class="p">(</span><span class="n">ith_axes</span><span class="p">,</span> <span class="n">candles</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rects</span> <span class="o">=</span> <span class="n">candles</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_indicator</span> <span class="o">=</span> <span class="n">candles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="CandleWindow.on_slider"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.CandleWindow.on_slider">[文档]</a>    <span class="k">def</span> <span class="nf">on_slider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c">#&#39;&#39;&#39;docstring for update(val)&#39;&#39;&#39; </span>
+        <span class="k">pass</span>
+        <span class="c">#val = int(val)</span>
+        <span class="c">#self.xmax = val</span>
+        <span class="c">#self.xmin = max(0, self.xmax-self.wdlength)</span>
+        <span class="c">#self.ymax = np.max(self.data.high[val-self.wdlength : val].values) + self.voffset</span>
+        <span class="c">#self.ymin = np.min(self.data.low[val-self.wdlength : val].values) - self.voffset</span>
+
+        <span class="c">#self.ax.set_xlim((val-self.wdlength, val))</span>
+        <span class="c">#self.ax.set_ylim((self.ymin, self.ymax))</span>
+
+</div>
+<div class="viewcode-block" id="CandleWindow.connect"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.CandleWindow.connect">[文档]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#self.ax.figure.canvas.mpl_connect(&#39;key_release_event&#39;, self.enter_axes)</span>
+        <span class="k">pass</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;update the slider position&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">xdata</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CandleWindow.add_observer"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.CandleWindow.add_observer">[文档]</a>    <span class="k">def</span> <span class="nf">add_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        When the slider value is changed, call *func* with the new</span>
+<span class="sd">        slider position</span>
+
+<span class="sd">        A connection id is returned which can be used to disconnect</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observers</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+
+</div>
+<div class="viewcode-block" id="CandleWindow.disconnect"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.widgets.CandleWindow.disconnect">[文档]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;remove the observer with connection id *cid*&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">observers</span><span class="p">[</span><span class="n">cid</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_update_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obname</span><span class="p">):</span>
+        <span class="c">#&quot;通知进度条改变宽度&quot; </span>
+        <span class="c">#for name, obj in self.observers.iteritems():</span>
+            <span class="c">#if name == obname and obname == &quot;slider&quot;:</span>
+                <span class="c">#obj.update(obj.val, self.wdlength)</span>
+                <span class="c">#break</span>
+        <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.engine.data &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.engine.data 源代码</h1><div class="highlight"><pre>
+<span class="c"># data.py</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">from</span> <span class="nn">event</span> <span class="kn">import</span> <span class="n">MarketEvent</span>
+
+<span class="c"># data.py</span>
+
+<div class="viewcode-block" id="DataHandler"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.data.DataHandler">[文档]</a><span class="k">class</span> <span class="nc">DataHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataHandler is an abstract base class providing an interface for</span>
+<span class="sd">    all subsequent (inherited) data handlers (both live and historic).</span>
+
+<span class="sd">    The goal of a (derived) DataHandler object is to output a generated</span>
+<span class="sd">    set of bars (OLHCVI) for each symbol requested. </span>
+
+<span class="sd">    This will replicate how a live strategy would function as current</span>
+<span class="sd">    market data would be sent &quot;down the pipe&quot;. Thus a historic and live</span>
+<span class="sd">    system will be treated identically by the rest of the backtesting suite.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="DataHandler.get_latest_bars"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.data.DataHandler.get_latest_bars">[文档]</a>    <span class="k">def</span> <span class="nf">get_latest_bars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the last N bars from the latest_symbol list,</span>
+<span class="sd">        or fewer if less bars are available.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;Should implement get_latest_bars()&quot;</span><span class="p">)</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="DataHandler.update_bars"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.data.DataHandler.update_bars">[文档]</a>    <span class="k">def</span> <span class="nf">update_bars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pushes the latest bar to the latest symbol structure</span>
+<span class="sd">        for all symbols in the symbol list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;Should implement update_bars()&quot;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="HistoricCSVDataHandler"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.data.HistoricCSVDataHandler">[文档]</a><span class="k">class</span> <span class="nc">HistoricCSVDataHandler</span><span class="p">(</span><span class="n">DataHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    HistoricCSVDataHandler is designed to read CSV files for</span>
+<span class="sd">    each requested symbol from disk and provide an interface</span>
+<span class="sd">    to obtain the &quot;latest&quot; bar in a manner identical to a live</span>
+<span class="sd">    trading interface. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">csv_dir</span><span class="p">,</span> <span class="n">symbol_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialises the historic data handler by requesting</span>
+<span class="sd">        the location of the CSV files and a list of symbols.</span>
+
+<span class="sd">        It will be assumed that all files are of the form</span>
+<span class="sd">        &#39;symbol.csv&#39;, where symbol is a string in the list.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        events - The Event Queue.</span>
+<span class="sd">        csv_dir - Absolute directory path to the CSV files.</span>
+<span class="sd">        symbol_list - A list of symbol strings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">events</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csv_dir</span> <span class="o">=</span> <span class="n">csv_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbol_list</span> <span class="o">=</span> <span class="n">symbol_list</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbol_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_symbol_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continue_backtest</span> <span class="o">=</span> <span class="bp">True</span>       
+
+
+    <span class="k">def</span> <span class="nf">_open_convert_csv_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Opens the CSV files from the data directory, converting</span>
+<span class="sd">            them into pandas DataFrames within a symbol dictionary.</span>
+
+<span class="sd">            For this handler it will be assumed that the data is</span>
+<span class="sd">            taken from DTN IQFeed. Thus its format will be respected.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">comb_index</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_list</span><span class="p">:</span>
+                <span class="c"># Load the CSV file with no header information, indexed on date</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">symbol_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">parsers</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+                                          <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csv_dir</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.csv&#39;</span> <span class="o">%</span> <span class="n">s</span><span class="p">),</span>
+                                          <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                          <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;datetime&#39;</span><span class="p">,</span><span class="s">&#39;open&#39;</span><span class="p">,</span><span class="s">&#39;low&#39;</span><span class="p">,</span><span class="s">&#39;high&#39;</span><span class="p">,</span><span class="s">&#39;close&#39;</span><span class="p">,</span><span class="s">&#39;volume&#39;</span><span class="p">,</span><span class="s">&#39;oi&#39;</span><span class="p">]</span>
+                                      <span class="p">)</span>
+
+                <span class="c"># Combine the index to pad forward values</span>
+                <span class="k">if</span> <span class="n">comb_index</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">comb_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">comb_index</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+                <span class="c"># Set the latest symbol_data to None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latest_symbol_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c"># Reindex the dataframes</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_list</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">symbol_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">comb_index</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;pad&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_new_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the latest bar from the data feed as a tuple of </span>
+<span class="sd">            (sybmbol, datetime, open, low, high, close, volume).</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_data</span><span class="p">[</span><span class="n">symbol</span><span class="p">]:</span>
+                <span class="k">yield</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">symbol</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&#39;</span><span class="p">),</span> 
+                            <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">]])</span>
+
+<div class="viewcode-block" id="HistoricCSVDataHandler.get_latest_bars"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.data.HistoricCSVDataHandler.get_latest_bars">[文档]</a>    <span class="k">def</span> <span class="nf">get_latest_bars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns the last N bars from the latest_symbol list,</span>
+<span class="sd">            or N-k if less available.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">bars_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_symbol_data</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;That symbol is not available in the historical data set.&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">bars_list</span><span class="p">[</span><span class="o">-</span><span class="n">N</span><span class="p">:]</span>  
+</div>
+<div class="viewcode-block" id="HistoricCSVDataHandler.update_bars"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.data.HistoricCSVDataHandler.update_bars">[文档]</a>    <span class="k">def</span> <span class="nf">update_bars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Pushes the latest bar to the latest_symbol_data structure</span>
+<span class="sd">            for all symbols in the symbol list.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol_list</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_new_bar</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">continue_backtest</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">bar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">latest_symbol_data</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">MarketEvent</span><span class="p">())</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

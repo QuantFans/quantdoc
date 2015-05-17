@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.engine.strategy &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.engine.strategy 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.datastruct</span> <span class="kn">import</span> <span class="n">Order</span><span class="p">,</span> <span class="n">Bar</span><span class="p">,</span> <span class="n">TradeSide</span><span class="p">,</span> <span class="n">Direction</span><span class="p">,</span> <span class="n">Contract</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.exchange</span> <span class="kn">import</span> <span class="n">Exchange</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.event</span> <span class="kn">import</span> <span class="n">SignalEvent</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.series</span> <span class="kn">import</span> <span class="n">NumberSeries</span><span class="p">,</span> <span class="n">DateTimeSeries</span>
+<span class="kn">from</span> <span class="nn">quantdigger.util</span> <span class="kn">import</span> <span class="n">engine_logger</span> <span class="k">as</span> <span class="n">logger</span>
+
+<span class="kn">from</span> <span class="nn">blotter</span> <span class="kn">import</span> <span class="n">SimpleBlotter</span>
+<span class="kn">from</span> <span class="nn">event</span> <span class="kn">import</span> <span class="n">EventsPool</span>
+
+<div class="viewcode-block" id="Simulator"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.Simulator">[文档]</a><span class="k">class</span> <span class="nc">Simulator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for Simulator&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events_pool</span> <span class="o">=</span> <span class="n">EventsPool</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blotter</span> <span class="o">=</span> <span class="n">SimpleBlotter</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">events_pool</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events_pool</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CrossTrackerMixin"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin">[文档]</a><span class="k">class</span> <span class="nc">CrossTrackerMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 跨跟踪器数据引用 &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CrossTrackerMixin.open_"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin.open_">[文档]</a>    <span class="k">def</span> <span class="nf">open_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excution</span><span class="o">.</span><span class="n">trackers</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">open</span>
+</div>
+<div class="viewcode-block" id="CrossTrackerMixin.close_"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin.close_">[文档]</a>    <span class="k">def</span> <span class="nf">close_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excution</span><span class="o">.</span><span class="n">trackers</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">close</span>
+</div>
+<div class="viewcode-block" id="CrossTrackerMixin.high_"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin.high_">[文档]</a>    <span class="k">def</span> <span class="nf">high_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">high</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excution</span><span class="o">.</span><span class="n">trackers</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">high</span>
+</div>
+<div class="viewcode-block" id="CrossTrackerMixin.low_"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin.low_">[文档]</a>    <span class="k">def</span> <span class="nf">low_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">low</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excution</span><span class="o">.</span><span class="n">trackers</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">low</span>
+</div>
+<div class="viewcode-block" id="CrossTrackerMixin.volume_"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin.volume_">[文档]</a>    <span class="k">def</span> <span class="nf">volume_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excution</span><span class="o">.</span><span class="n">trackers</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span>
+</div>
+<div class="viewcode-block" id="CrossTrackerMixin.datetime_"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin.datetime_">[文档]</a>    <span class="k">def</span> <span class="nf">datetime_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_excution</span><span class="o">.</span><span class="n">trackers</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">datetime</span>
+    
+</div></div>
+<div class="viewcode-block" id="BarTracker"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker">[文档]</a><span class="k">class</span> <span class="nc">BarTracker</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 跟踪器，可能是策略，策略用到的非主合约数据，独立指标。 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exe_unit</span><span class="p">,</span> <span class="n">pcontract</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 初始化数据列表</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            pcontract (PContract): 周期合约, 非空表示跟踪器，非策略。</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BarTracker</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_excution</span> <span class="o">=</span> <span class="n">exe_unit</span>
+        <span class="c"># tracker中用到的时间序列</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_series</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pcontract</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_main_pcontract</span> <span class="o">=</span> <span class="n">pcontract</span> 
+                <span class="n">exe_unit</span><span class="o">.</span><span class="n">add_tracker</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_main_pcontract</span> <span class="o">=</span> <span class="n">exe_unit</span><span class="o">.</span><span class="n">pcontracts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">exe_unit</span><span class="o">.</span><span class="n">add_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_main_contract</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main_pcontract</span><span class="o">.</span><span class="n">contract</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">exe_unit</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_main_pcontract</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_container_day</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length_day</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_main_pcontract</span><span class="p">),</span> <span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_main_data</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c">## @todo 提醒用户用法。</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span>
+
+<div class="viewcode-block" id="BarTracker.length_day"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker.length_day">[文档]</a>    <span class="k">def</span> <span class="nf">length_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pcontract</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 计算当天的数据量 &quot;&quot;&quot;</span> 
+        <span class="c">## @todo local_data</span>
+        <span class="k">return</span> <span class="mi">4</span>
+
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="BarTracker.container_day"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker.container_day">[文档]</a>    <span class="k">def</span> <span class="nf">container_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 为当天数据预留的空间  &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container_day</span>
+</div>
+    <span class="k">def</span> <span class="nf">_init_main_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># 预留了历史和当天的数据空间。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">NumberSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span> <span class="o">=</span> <span class="n">NumberSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high</span> <span class="o">=</span> <span class="n">NumberSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low</span> <span class="o">=</span> <span class="n">NumberSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">NumberSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">DateTimeSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curbar</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="BarTracker.on_tick"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker.on_tick">[文档]</a>    <span class="k">def</span> <span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span> 
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="BarTracker.execute_strategy"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker.execute_strategy">[文档]</a>    <span class="k">def</span> <span class="nf">execute_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_tick</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="BarTracker.add_series"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker.add_series">[文档]</a>    <span class="k">def</span> <span class="nf">add_series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">series</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_series</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pcon</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for open&quot;&quot;&quot;</span> 
+        <span class="c">#self.open = NumberSeries(self, _data.open, True)</span>
+        <span class="c">#self.close = NumberSeries(self, _data.close, True)</span>
+        <span class="c">#self.high = NumberSeries(self, _data.high, True)</span>
+        <span class="c">#self.low = NumberSeries(self, _data.low, True)</span>
+        <span class="c">#self.volume = NumberSeries(self, _data.volume, True)</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="BarTracker.update_curbar"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker.update_curbar">[文档]</a>    <span class="k">def</span> <span class="nf">update_curbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 更新当前bar索引。</span>
+
+<span class="sd">        更新注册过的serie变量的索引，</span>
+<span class="sd">        计算系列指标中的最新值。</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): 当前bar索引。</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            SeriesIndexError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curbar</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">serie</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_series</span><span class="p">:</span>
+            <span class="n">serie</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">serie</span><span class="o">.</span><span class="n">duplicate_last_element</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">Bar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">high</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</div></div>
+<span class="n">direction_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;long&#39;</span><span class="p">:</span> <span class="n">Direction</span><span class="o">.</span><span class="n">LONG</span><span class="p">,</span>
+        <span class="s">&#39;short&#39;</span><span class="p">:</span> <span class="n">Direction</span><span class="o">.</span><span class="n">SHORT</span> <span class="p">}</span>
+
+<div class="viewcode-block" id="TradingStrategy"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy">[文档]</a><span class="k">class</span> <span class="nc">TradingStrategy</span><span class="p">(</span><span class="n">BarTracker</span><span class="p">,</span> <span class="n">CrossTrackerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 策略的基类 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exe</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TradingStrategy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">exe</span><span class="p">,</span> <span class="n">pcontract</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="TradingStrategy.add_indicator"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.add_indicator">[文档]</a>    <span class="k">def</span> <span class="nf">add_indicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indic</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indic</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.execute_strategy"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.execute_strategy">[文档]</a>    <span class="k">def</span> <span class="nf">execute_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_tick</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events_pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">SignalEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span> <span class="o">=</span> <span class="p">[]</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.buy"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.buy">[文档]</a>    <span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">deal_type</span><span class="o">=</span><span class="s">&#39;limit&#39;</span><span class="p">,</span> <span class="n">contract</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 开仓</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            direction (str): 多头(&#39;long&#39;), 或者空头(&#39;short&#39;)</span>
+<span class="sd">            quantity (int): 数量</span>
+<span class="sd">            price (float): 价格</span>
+<span class="sd">            deal_type (str): 下单方式，限价单(&#39;limit&#39;), 市价单(&#39;market&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">contract</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">con</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="n">contract</span><span class="p">)</span> <span class="k">if</span> <span class="n">contract</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main_contract</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+                <span class="n">con</span><span class="p">,</span>
+                <span class="n">deal_type</span><span class="p">,</span>
+                <span class="n">TradeSide</span><span class="o">.</span><span class="n">KAI</span><span class="p">,</span>
+                <span class="n">direction_map</span><span class="p">[</span><span class="n">direction</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">price</span><span class="p">),</span>
+                <span class="n">quantity</span>
+        <span class="p">))</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.sell"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.sell">[文档]</a>    <span class="k">def</span> <span class="nf">sell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">deal_type</span><span class="o">=</span><span class="s">&#39;limit&#39;</span><span class="p">,</span> <span class="n">contract</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 平仓</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            direction (str): 多头(&#39;d&#39;), 或者空头(&#39;k&#39;)</span>
+<span class="sd">            quantity (int): 数量</span>
+<span class="sd">            price (float): 价格</span>
+<span class="sd">            deal_type (str): 下单方式，限价单(&#39;limit&#39;), 市价单(&#39;market&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">con</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="n">contract</span><span class="p">)</span> <span class="k">if</span> <span class="n">contract</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main_contract</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span>
+                <span class="n">con</span><span class="p">,</span>
+                <span class="n">deal_type</span><span class="p">,</span>
+                <span class="n">TradeSide</span><span class="o">.</span><span class="n">PING</span><span class="p">,</span>
+                <span class="n">direction_map</span><span class="p">[</span><span class="n">direction</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">price</span><span class="p">),</span>
+                <span class="n">quantity</span>
+        <span class="p">))</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.position"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.position">[文档]</a>    <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 当前仓位。 &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contract</span><span class="p">:</span>
+                <span class="n">contract</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main_contract</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">current_positions</span><span class="p">[</span><span class="n">contract</span><span class="p">]</span><span class="o">.</span><span class="n">total</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.cash"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.cash">[文档]</a>    <span class="k">def</span> <span class="nf">cash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 现金。 &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;cash&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.equity"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.equity">[文档]</a>    <span class="k">def</span> <span class="nf">equity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 当前权益 &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;equity&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.profit"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.profit">[文档]</a>    <span class="k">def</span> <span class="nf">profit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 当前持仓的历史盈亏 &quot;&quot;&quot;</span> 
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="TradingStrategy.day_profit"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.day_profit">[文档]</a>    <span class="k">def</span> <span class="nf">day_profit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 当前持仓的浮动盈亏 &quot;&quot;&quot;</span> 
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="TradingStrategy.update_curbar"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.TradingStrategy.update_curbar">[文档]</a>    <span class="k">def</span> <span class="nf">update_curbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 更新当前bar索引。</span>
+
+<span class="sd">        更新注册过的serie变量的索引，</span>
+<span class="sd">        计算系列指标中的最新值。</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            index (int): 当前bar索引。</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            SeriesIndexError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bar</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">TradingStrategy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">:</span>
+            <span class="n">indicator</span><span class="o">.</span><span class="n">calculate_latest_element</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">bar</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

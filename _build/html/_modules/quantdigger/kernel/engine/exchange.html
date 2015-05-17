@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.engine.exchange &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.engine.exchange 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.datastruct</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.event</span> <span class="kn">import</span> <span class="n">FillEvent</span>
+<div class="viewcode-block" id="Exchange"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.exchange.Exchange">[文档]</a><span class="k">class</span> <span class="nc">Exchange</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 交易所 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events_pool</span><span class="p">,</span> <span class="n">slippage</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">           events_pool (EventsPool): 策略内唯一的事件池。</span>
+<span class="sd">           slippage (Slippage): 滑点模型。</span>
+<span class="sd">           strict (Bool): 是否是严格的回测。</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int. The result</span>
+<span class="sd">        Raises:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slippage</span> <span class="o">=</span> <span class="n">slippage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">events_pool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_strict</span> <span class="o">=</span> <span class="n">strict</span>
+
+<div class="viewcode-block" id="Exchange.make_market"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.exchange.Exchange.make_market">[文档]</a>    <span class="k">def</span> <span class="nf">make_market</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bar</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 价格撮合&quot;&quot;&quot;</span> 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span><span class="p">:</span>
+            <span class="n">fill_orders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span><span class="p">:</span>
+                <span class="n">transact</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strict</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;limit&#39;</span><span class="p">:</span>
+                        <span class="c"># 限价单以最高和最低价格为成交的判断条件．</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">kpp</span> <span class="o">==</span> <span class="s">&#39;k&#39;</span> <span class="ow">and</span> \
+                                 <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;d&#39;</span> <span class="ow">and</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;=</span> <span class="n">bar</span><span class="o">.</span><span class="n">low</span> <span class="ow">or</span> \
+                                 <span class="n">order</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;k&#39;</span> <span class="ow">and</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span> <span class="o">&lt;=</span> <span class="n">bar</span><span class="o">.</span><span class="n">high</span><span class="p">))</span> <span class="ow">or</span> \
+                           <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">kpp</span> <span class="o">==</span> <span class="s">&#39;p&#39;</span> <span class="ow">and</span> \
+                                 <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;d&#39;</span> <span class="ow">and</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span> <span class="o">&lt;=</span> <span class="n">bar</span><span class="o">.</span><span class="n">high</span> <span class="ow">or</span> \
+                                 <span class="n">order</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;k&#39;</span> <span class="ow">and</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;=</span> <span class="n">bar</span><span class="o">.</span><span class="n">low</span><span class="p">)):</span>
+                                <span class="n">transact</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span>
+                                <span class="c"># Bar的结束时间做为交易成交时间.</span>
+                                <span class="n">transact</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">datetime</span>
+                                <span class="n">fill_orders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">FillEvent</span><span class="p">(</span><span class="n">transact</span><span class="p">))</span> 
+                    <span class="k">elif</span> <span class="n">order</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;market&#39;</span><span class="p">:</span>
+                        <span class="c"># 市价单以最高或最低价格为成交价格．</span>
+                        <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s">&#39;d&#39;</span><span class="p">:</span>
+                            <span class="n">transact</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">high</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">transact</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">low</span>
+                        <span class="n">transact</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">datetime</span>
+                        <span class="n">fill_orders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">FillEvent</span><span class="p">(</span><span class="n">transact</span><span class="p">))</span> 
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">transact</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">datetime</span>
+                    <span class="n">fill_orders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">FillEvent</span><span class="p">(</span><span class="n">transact</span><span class="p">))</span> 
+            <span class="k">if</span> <span class="n">fill_orders</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span> <span class="o">-=</span> <span class="n">fill_orders</span>
+
+</div>
+<div class="viewcode-block" id="Exchange.insert_order"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.exchange.Exchange.insert_order">[文档]</a>    <span class="k">def</span> <span class="nf">insert_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for place_order&quot;&quot;&quot;</span> 
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Exchange.cancel_order"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.exchange.Exchange.cancel_order">[文档]</a>    <span class="k">def</span> <span class="nf">cancel_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for cancel_order&quot;&quot;&quot;</span> 
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Exchange.update_order"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.exchange.Exchange.update_order">[文档]</a>    <span class="k">def</span> <span class="nf">update_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        模拟交易所收到订单。</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">print</span> <span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&#39;on_order_event&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span><span class="p">)</span> 
+</div>
+<div class="viewcode-block" id="Exchange.update_datetime"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.exchange.Exchange.update_datetime">[文档]</a>    <span class="k">def</span> <span class="nf">update_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datetime</span> <span class="o">=</span> <span class="n">dt</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

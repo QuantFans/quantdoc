@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.engine.performance &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.engine.performance 源代码</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<div class="viewcode-block" id="create_sharpe_ratio"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.performance.create_sharpe_ratio">[文档]</a><span class="k">def</span> <span class="nf">create_sharpe_ratio</span><span class="p">(</span><span class="n">returns</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">252</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create the Sharpe ratio for the strategy, based on a </span>
+<span class="sd">    benchmark of zero (i.e. no risk-free rate information).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    returns - A pandas Series representing period percentage returns.</span>
+<span class="sd">    periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">returns</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="create_drawdowns"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.performance.create_drawdowns">[文档]</a><span class="k">def</span> <span class="nf">create_drawdowns</span><span class="p">(</span><span class="n">equity_curve</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the largest peak-to-trough drawdown of the PnL curve</span>
+<span class="sd">    as well as the duration of the drawdown. Requires that the </span>
+<span class="sd">    pnl_returns is a pandas Series.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    pnl - A pandas Series representing period percentage returns.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    drawdown, duration - Highest peak-to-trough drawdown and duration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># Calculate the cumulative returns curve </span>
+    <span class="c"># and set up the High Water Mark</span>
+    <span class="c"># Then create the drawdown and duration series</span>
+    <span class="n">hwm</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">eq_idx</span> <span class="o">=</span> <span class="n">equity_curve</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">drawdown</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">eq_idx</span><span class="p">)</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">eq_idx</span><span class="p">)</span>
+
+    <span class="c"># Loop over the index range</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">eq_idx</span><span class="p">)):</span>
+        <span class="n">cur_hwm</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">hwm</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">equity_curve</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+        <span class="n">hwm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_hwm</span><span class="p">)</span>
+        <span class="n">drawdown</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">=</span> <span class="n">hwm</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">equity_curve</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+        <span class="n">duration</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">drawdown</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">duration</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">drawdown</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">duration</span><span class="o">.</span><span class="n">max</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

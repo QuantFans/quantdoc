@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.plugin.mplotwidgets.techmplot &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.plugin.mplotwidgets.techmplot 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+<span class="kn">from</span> <span class="nn">matplotlib.widgets</span> <span class="kn">import</span> <span class="n">MultiCursor</span>
+<span class="kn">import</span> <span class="nn">widgets</span>
+
+
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="kn">as</span> <span class="nn">mticker</span>
+<div class="viewcode-block" id="MyLocator"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.MyLocator">[文档]</a><span class="k">class</span> <span class="nc">MyLocator</span><span class="p">(</span><span class="n">mticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">mticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">mticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+
+<span class="c">#plt.rc(&#39;axes&#39;, grid=True)</span></div>
+<div class="viewcode-block" id="TechMPlot"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot">[文档]</a><span class="k">class</span> <span class="nc">TechMPlot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">w_width</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            fig (Figure): matplotlib绘图容器。</span>
+<span class="sd">            data (DataFrame): [open, close, high, low]数据表。</span>
+<span class="sd">            w_width (int): 窗口的初始宽度。</span>
+<span class="sd">            *args (tuple): 窗口布局。</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;TechMPlot&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_qt</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.85</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span> <span class="o">-</span> <span class="n">w_width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span> <span class="o">=</span> <span class="n">w_width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_width_min</span> <span class="o">=</span> <span class="mi">50</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bottom</span> <span class="o">=</span> <span class="mf">0.05</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider_height</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture_height</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_height</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_slider</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_widgets</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">format_coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_coord</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="n">MultiCursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span>
+                                    <span class="n">color</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">horizOn</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                    <span class="n">vertOn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 返回子窗口。 &quot;&quot;&quot;</span>
+        <span class="c"># or yield</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="TechMPlot.set_margin"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.set_margin">[文档]</a>    <span class="k">def</span> <span class="nf">set_margin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 设置边框。 &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_left</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bottom</span> <span class="o">=</span> <span class="n">bottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">top</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.draw_window"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.draw_window">[文档]</a>    <span class="k">def</span> <span class="nf">draw_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 根据最新的坐标，调整可是区域。&quot;&quot;&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_cur_ylim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.add_indicator"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.add_indicator">[文档]</a>    <span class="k">def</span> <span class="nf">add_indicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ith_axes</span><span class="p">,</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">twinx</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 在ith_axes上画指标indicator。</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            ith_axes (Axes): 第i个窗口。</span>
+<span class="sd">            indicator  (Indicator): 指标.</span>
+<span class="sd">            twinx  (Bool): 是否是独立坐标。</span>
+<span class="sd">            ymain  (Bool): 是否作为y轴计算的唯一参考。</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Indicator. 传进来的指标变量。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">indicator</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">ith_axes</span><span class="p">])</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_indicator</span><span class="p">(</span><span class="n">ith_axes</span><span class="p">,</span> <span class="n">indicator</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.register_indicator"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.register_indicator">[文档]</a>    <span class="k">def</span> <span class="nf">register_indicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ith_axes</span><span class="p">,</span> <span class="n">indicator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 注册指标。</span>
+<span class="sd">            axes到指标的映射。</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ax_indicators</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ith_axes</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="n">ax_indicators</span><span class="p">:</span>
+                <span class="n">ax_indicators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indicator</span><span class="p">)</span> 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">[</span><span class="n">ith_axes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">indicator</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">indicator</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+</div>
+<div class="viewcode-block" id="TechMPlot.replace_indicator"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.replace_indicator">[文档]</a>    <span class="k">def</span> <span class="nf">replace_indicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ith_axes</span><span class="p">,</span> <span class="n">indicator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 在ith_axes上画指标indicator, 删除其它指标。</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            ith_axes (Axes): 第i个窗口。</span>
+<span class="sd">            indicator  (Indicator): 指标.</span>
+<span class="sd">            if_twinx  (Bool): 是否是独立坐标。</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Indicator. 传进来的指标变量。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c">## @todo remove paint</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">[</span><span class="n">ith_axes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">indicator</span><span class="p">]</span>
+            <span class="n">indicator</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">ith_axes</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">indicator</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+</div>
+<div class="viewcode-block" id="TechMPlot.add_widget"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.add_widget">[文档]</a>    <span class="k">def</span> <span class="nf">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ith_axes</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">ymain</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">connect_slider</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 添加一个能接收消息事件的控件。</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            ith_axes (Axes): 第i个窗口。</span>
+<span class="sd">            widget (AxesWidget): 控件。</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            AxesWidget. widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ith_axes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">connect_slider</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">add_observer</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">widget</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        matplotlib信号连接。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cidpress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span> <span class="s">&quot;button_press_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_press</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cidrelease</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span> <span class="s">&quot;button_release_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_release</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cidmotion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span> <span class="s">&quot;motion_notify_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_motion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s">&#39;axes_enter_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_enter_axes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s">&#39;axes_leave_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_leave_axes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s">&#39;key_release_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_keyrelease</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TechMPlot.disconnect"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.disconnect">[文档]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cidmotion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cidrelease</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cidpress</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.on_slider"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.on_slider">[文档]</a>    <span class="k">def</span> <span class="nf">on_slider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 滑块事件处理。 &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&quot;button_press_event&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_slider_cursor</span> <span class="o">=</span> <span class="n">MultiCursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_slider_ax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">horizOn</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">vertOn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&quot;button_release_event&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_cursor</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&quot;motion_notify_event&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c"># 遍历axes中的每个indicator，计算显示区间。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_window</span><span class="p">()</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_set_cur_ylim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_left</span><span class="p">,</span> <span class="n">w_right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 设置当前显示窗口的y轴范围。</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): description</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int. The result</span>
+<span class="sd">        Raises:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voffset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)):</span>
+            <span class="n">all_ymax</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">all_ymin</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">ymax</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">.</span><span class="n">y_interval</span><span class="p">(</span><span class="n">w_left</span><span class="p">,</span> <span class="n">w_right</span><span class="p">)</span>
+                <span class="c">## @todo move ymax, ymin 计算到indicator中去。</span>
+                <span class="n">all_ymax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymax</span><span class="p">)</span>
+                <span class="n">all_ymin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymin</span><span class="p">)</span>
+            <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_ymax</span><span class="p">)</span>
+            <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">all_ymin</span><span class="p">)</span>
+            <span class="n">ymax</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">voffset</span>
+            <span class="n">ymin</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">voffset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">))</span>
+        <span class="c">#self.axes[i].autoscale_view()</span>
+
+
+<div class="viewcode-block" id="TechMPlot.on_press"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.on_press">[文档]</a>    <span class="k">def</span> <span class="nf">on_press</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.on_release"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.on_release">[文档]</a>    <span class="k">def</span> <span class="nf">on_release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.on_motion"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.on_motion">[文档]</a>    <span class="k">def</span> <span class="nf">on_motion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c">#self._fig.canvas.draw()</span>
+        <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.on_keyrelease"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.on_keyrelease">[文档]</a>    <span class="k">def</span> <span class="nf">on_keyrelease</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;docstring for keypress&#39;&#39;&#39;</span> 
+        <span class="k">print</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s">&quot;down&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="o">/</span><span class="mi">2</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s">&quot;up&quot;</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="o">/</span><span class="mi">2</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_width_min</span><span class="p">)</span>
+
+        <span class="n">middle</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span> <span class="o">=</span>  <span class="n">middle</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span> <span class="o">=</span> <span class="n">middle</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_width</span><span class="o">/</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_left</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w_right</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_window</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TechMPlot.on_enter_axes"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.on_enter_axes">[文档]</a>    <span class="k">def</span> <span class="nf">on_enter_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c">#event.inaxes.patch.set_facecolor(&#39;yellow&#39;)</span>
+        <span class="c"># 只有当前axes会闪烁。</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">inaxes</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_ax</span><span class="p">:</span> <span class="c">#or event.inaxes is self._bigger_picture:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+            <span class="k">return</span> 
+        <span class="c">#self.cross_cursor = Cursor(event.inaxes, useblit=True, color=&#39;red&#39;, linewidth=2, vertOn=True, horizOn=True)</span>
+</div>
+<div class="viewcode-block" id="TechMPlot.on_leave_axes"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.on_leave_axes">[文档]</a>    <span class="k">def</span> <span class="nf">on_leave_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">inaxes</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_ax</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="n">MultiCursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">canvas</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">horizOn</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">vertOn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">_init_slider</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider_ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_height</span><span class="p">],</span> <span class="n">axisbg</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_slider_height</span><span class="p">,</span> 
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture_height</span><span class="p">],</span>
+                                                <span class="n">zorder</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                                <span class="n">sharex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_slider_ax</span><span class="p">,</span>
+                                                <span class="n">axisbg</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="s">&#39;0.1&#39;</span> <span class="p">)</span>
+        <span class="c">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slider_ax</span><span class="p">,</span> <span class="s">&quot;slider&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span><span class="o">/</span><span class="mi">50</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s">&#39;close&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bigger_picture</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+        <span class="c">#self.rangew = widgets.RangeWidget(&#39;range&#39;, self._bigger_picture, self._data[&#39;close&#39;])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">add_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_init_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+        <span class="c"># 默认子窗口数量为1</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span>  <span class="mi">0</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> 
+        <span class="n">total_units</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_top</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_units</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_top</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ratio</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">,</span> <span class="n">unit</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_axes</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>  <span class="c">#axisbg=axescolor)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+            <span class="n">bottom</span> <span class="o">+=</span> <span class="n">unit</span> <span class="o">*</span> <span class="n">ratio</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_axes</span><span class="p">()</span>
+        <span class="n">temp</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+
+    <span class="k">def</span> <span class="nf">_user_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="TechMPlot.axes"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.axes">[文档]</a>    <span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span>
+</div>
+<div class="viewcode-block" id="TechMPlot.format_coord"><a class="viewcode-back" href="../../../../quantdigger.plugin.mplotwidgets.html#quantdigger.plugin.mplotwidgets.techmplot.TechMPlot.format_coord">[文档]</a>    <span class="k">def</span> <span class="nf">format_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 状态栏信息显示 &quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">1</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">x</span><span class="o">-</span><span class="n">f</span> <span class="k">if</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">f</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s">&#39;open&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c">#print len(self.kwindow.rects.get_array())</span>
+        <span class="k">return</span> <span class="s">&quot;[pos=</span><span class="si">%d</span><span class="s"> o=</span><span class="si">%.2f</span><span class="s"> c=</span><span class="si">%.2f</span><span class="s"> h=</span><span class="si">%.2f</span><span class="s"> l=</span><span class="si">%.2f</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s">&#39;open&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s">&#39;close&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s">&#39;high&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s">&#39;low&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">])</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

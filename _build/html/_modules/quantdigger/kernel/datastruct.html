@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.datastruct &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../index.html" />
+    <link rel="up" title="模块代码" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.datastruct 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+
+<span class="c">#from flufl.enum import Enum</span>
+<span class="kn">from</span> <span class="nn">quantdigger.errors</span> <span class="kn">import</span> <span class="n">PeriodTypeError</span>
+<span class="kn">from</span> <span class="nn">quantdigger</span> <span class="kn">import</span> <span class="n">util</span>
+
+<div class="viewcode-block" id="TradeSide"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.TradeSide">[文档]</a><span class="k">class</span> <span class="nc">TradeSide</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">BUY</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">SHORT</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">COVER</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">SELL</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">COVER_TODAY</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">SELL_TODAY</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">KAI</span> <span class="o">=</span> <span class="mi">7</span>  <span class="c"># buy or short</span>
+    <span class="n">PING</span> <span class="o">=</span> <span class="mi">8</span> <span class="c"># sell or cover</span>
+</div>
+<div class="viewcode-block" id="Direction"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Direction">[文档]</a><span class="k">class</span> <span class="nc">Direction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">LONG</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">SHORT</span> <span class="o">=</span> <span class="mi">2</span>
+</div>
+<div class="viewcode-block" id="Position"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Position">[文档]</a><span class="k">class</span> <span class="nc">Position</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for Position&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">quantity</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Position.datetime"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Position.datetime">[文档]</a>    <span class="k">def</span> <span class="nf">datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">datetime</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Position.price"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Position.price">[文档]</a>    <span class="k">def</span> <span class="nf">price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 成交价格&quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">price</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Position.assure_ratio"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Position.assure_ratio">[文档]</a>    <span class="k">def</span> <span class="nf">assure_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 保证金比例 &quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">assure_ratio</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Position.direction"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Position.direction">[文档]</a>    <span class="k">def</span> <span class="nf">direction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">direction</span>
+
+    <span class="c">#def order_time(self):</span>
+        <span class="c">#return self.order.datetime</span>
+
+    <span class="c">#def order_price(self):</span>
+        <span class="c">#pass</span>
+</div>
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_hash&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span>  <span class="nb">hash</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">time2int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">                Position:</span>
+<span class="s">                   datetime - </span><span class="si">%s</span><span class="s"></span>
+<span class="s">                   price - </span><span class="si">%f</span><span class="s"></span>
+<span class="s">                   quantity - </span><span class="si">%d</span><span class="s"></span>
+<span class="s">               &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rst</span>
+
+</div>
+<div class="viewcode-block" id="Bar"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Bar">[文档]</a><span class="k">class</span> <span class="nc">Bar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for Bar&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="nb">open</span><span class="p">,</span> <span class="n">close</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span> <span class="o">=</span> <span class="nb">open</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span> <span class="o">=</span> <span class="n">close</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high</span> <span class="o">=</span> <span class="n">high</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low</span> <span class="o">=</span> <span class="n">low</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">vol</span>
+
+</div>
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Transaction">[文档]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 成交记录 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">order</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contract</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">contract</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">direction</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">quantity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kpp</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">kpp</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">datetime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commission</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assure_ratio</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_hash&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span>  <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+
+<div class="viewcode-block" id="Transaction.profit"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Transaction.profit">[文档]</a>    <span class="k">def</span> <span class="nf">profit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_price</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for pro&quot;&quot;&quot;</span> 
+        <span class="n">profit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Direction</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span>
+            <span class="n">profit</span> <span class="o">+=</span> <span class="p">(</span><span class="n">new_price</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">profit</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">-</span> <span class="n">new_price</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span>
+        <span class="k">return</span> <span class="n">profit</span>
+</div>
+<div class="viewcode-block" id="Transaction.deposit"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Transaction.deposit">[文档]</a>    <span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_price</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for deposit&quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">assure_ratio</span>
+
+    </div></div>
+<div class="viewcode-block" id="OrderID"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.OrderID">[文档]</a><span class="k">class</span> <span class="nc">OrderID</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for OrderID&quot;&quot;&quot;</span>
+    <span class="n">order_id</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="OrderID.next_order_id"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.OrderID.next_order_id">[文档]</a>    <span class="k">def</span> <span class="nf">next_order_id</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for next_order_id&quot;&quot;&quot;</span> 
+        <span class="n">cls</span><span class="o">.</span><span class="n">order_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">OrderID</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">order_id</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span>
+        
+</div>
+<div class="viewcode-block" id="Order"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Order">[文档]</a><span class="k">class</span> <span class="nc">Order</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 订单 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">contract</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">kpp</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">quantity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;     </span>
+<span class="sd">        Args:</span>
+<span class="sd">            dt (datetime): 下单日期和时间</span>
+<span class="sd">            contract (Contract): 合约</span>
+<span class="sd">            type_ (str): 下单方式，限价单(&#39;limit&#39;), 市价单(&#39;market&#39;)</span>
+<span class="sd">            kpp (str): 开仓(&#39;k&#39;), 或平仓(&#39;p&#39;)</span>
+<span class="sd">            direction (str): 多头(&#39;d&#39;), 或空头(&#39;k&#39;)</span>
+<span class="sd">            price (float): 价格</span>
+<span class="sd">            amount (int): 数量</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int. The result</span>
+<span class="sd">        Raises:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contract</span> <span class="o">=</span> <span class="n">contract</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kpp</span> <span class="o">=</span> <span class="n">kpp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">type_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">OrderID</span><span class="o">.</span><span class="n">next_order_id</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Order.print_order"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Order.print_order">[文档]</a>    <span class="k">def</span> <span class="nf">print_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#print &quot;Order: Symbol=%s, Type=%s, Quantity=%s, Direction=%s&quot; % \</span>
+            <span class="c">#(self.symbol, self.order_type, self.quantity, self.direction)</span>
+        <span class="k">pass</span>
+</div>
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_hash&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span>  <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+
+    </div>
+<div class="viewcode-block" id="Contract"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Contract">[文档]</a><span class="k">class</span> <span class="nc">Contract</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 合约 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">str_contract</span><span class="p">):</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">str_contract</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">info</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">exchange</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">## @todo 合约到市场的映射。</span>
+            <span class="k">assert</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exch_type</span> <span class="o">=</span> <span class="n">exchange</span>  <span class="c"># 用&#39;stock&#39;表示中国股市</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exch_type</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_hash&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span>  <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__str__</span><span class="p">())</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+
+</div>
+<div class="viewcode-block" id="Period"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Period">[文档]</a><span class="k">class</span> <span class="nc">Period</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 周期 &quot;&quot;&quot;</span>
+    <span class="c">#class Type(Enum):</span>
+        <span class="c">#MilliSeconds = &quot;MilliSeconds&quot; </span>
+        <span class="c">#Seconds = &quot;Seconds&quot; </span>
+        <span class="c">#Minutes = &quot;Minutes&quot; </span>
+        <span class="c">#Hours = &quot;Hours&quot; </span>
+        <span class="c">#Days = &quot;Days&quot; </span>
+        <span class="c">#Months = &quot;Months&quot; </span>
+        <span class="c">#Seasons = &quot;Seasons&quot; </span>
+        <span class="c">#Years = &quot;Years&quot; </span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;MilliSecond&quot;</span><span class="p">,</span> <span class="s">&quot;Second&quot;</span><span class="p">,</span> <span class="s">&quot;Minute&quot;</span><span class="p">,</span> <span class="s">&quot;Hour&quot;</span><span class="p">,</span>
+               <span class="s">&quot;Day&quot;</span><span class="p">,</span> <span class="s">&quot;Month&quot;</span><span class="p">,</span> <span class="s">&quot;Season&quot;</span><span class="p">,</span> <span class="s">&quot;Year&quot;</span><span class="p">]</span>    
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">str_period</span><span class="p">):</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="n">str_period</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">period</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">unit_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">time_unit</span> <span class="o">=</span> <span class="n">period</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PeriodTypeError</span>
+        <span class="k">if</span> <span class="n">time_unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PeriodTypeError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">time_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="n">unit_count</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Period.type"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Period.type">[文档]</a>    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Period.length"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.Period.length">[文档]</a>    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length</span>
+</div>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_hash&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span>  <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__str__</span><span class="p">())</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+
+
+</div>
+<div class="viewcode-block" id="PContract"><a class="viewcode-back" href="../../../quantdigger.kernel.html#quantdigger.kernel.datastruct.PContract">[文档]</a><span class="k">class</span> <span class="nc">PContract</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contract</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contract</span> <span class="o">=</span> <span class="n">contract</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; return string like &#39;SHEF-IF000-Minutes-10&#39;  &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contract</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_hash&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span> <span class="o">=</span>  <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__str__</span><span class="p">())</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

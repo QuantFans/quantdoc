@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.indicators.common &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.indicators.common 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+<span class="c">##</span>
+<span class="c"># @file common.py</span>
+<span class="c"># @brief </span>
+<span class="c"># @author dingjie.wang@foxmail.com</span>
+<span class="c"># @version 0.1</span>
+<span class="c"># @date 2015-12-23</span>
+<span class="kn">import</span> <span class="nn">talib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">indicator</span> <span class="kn">import</span> <span class="n">IndicatorBase</span><span class="p">,</span> <span class="n">create_attributes</span><span class="p">,</span> <span class="n">override_attributes</span><span class="p">,</span> <span class="n">transform2ndarray</span>
+            
+<div class="viewcode-block" id="MA"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.MA">[文档]</a><span class="k">class</span> <span class="nc">MA</span><span class="p">(</span><span class="n">IndicatorBase</span><span class="p">):</span>
+    <span class="c">## @todo assure name is unique, it there are same names,</span>
+    <span class="c"># modify the repeat name.</span>
+    <span class="nd">@create_attributes</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;MA&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s">&quot;line&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MA</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="c"># self.value为任何支持index的数据结构。</span>
+        <span class="c"># 在策略中，price变量可能为NumberSeries，需要用NUMBER_SERIES_SUPPORT处理，</span>
+        <span class="c"># 转化为numpy.ndarray等能被指标函数处理的参数。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moving_average</span><span class="p">(</span><span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_algo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_moving_average</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">_iter_moving_average</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 逐步运行的均值函数。&quot;&quot;&quot;</span> 
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_moving_average</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 向量化运行的均值函数。 &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">transform2ndarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">talib</span><span class="o">.</span><span class="n">SMA</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MA.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.MA.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 绘图，参数可由UI调整。 &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">)</span>
+
+    <span class="c">#@override_attributes</span>
+    <span class="c">#def plot(self, widget, color=&#39;y&#39;, lw=2, style=&quot;line&quot;):</span>
+        <span class="c">#&quot;&quot;&quot; 绘图，参数可由UI调整。 </span>
+        <span class="c">### @note 构造函数中的绘图参数需与函数</span>
+           <span class="c">#的绘图函数一致。这样函数参数可覆盖默认的属性参数。</span>
+        <span class="c">#&quot;&quot;&quot;</span>
+        <span class="c">#self.widget = widget</span>
+        <span class="c">#self.plot_line(self.value, color, lw, style)</span>
+
+</div></div>
+<div class="viewcode-block" id="BOLL"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.BOLL">[文档]</a><span class="k">class</span> <span class="nc">BOLL</span><span class="p">(</span><span class="n">IndicatorBase</span><span class="p">):</span>
+    <span class="c">## @todo assure name is unique, it there are same names,</span>
+    <span class="c"># modify the repeat name.</span>
+    <span class="nd">@create_attributes</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;BOLL&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s">&quot;line&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BOLL</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="c"># self.value为任何支持index的数据结构。</span>
+        <span class="c"># 在策略中，price变量可能为NumberSeries，需要用NUMBER_SERIES_SUPPORT处理，</span>
+        <span class="c"># 转化为numpy.ndarray等能被指标函数处理的参数。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boll</span><span class="p">(</span><span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_algo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_boll</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">_iter_boll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 逐步运行。&quot;&quot;&quot;</span> 
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_boll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 向量化运行的均值函数。 &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">transform2ndarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">upper</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">lower</span> <span class="o">=</span>  <span class="n">talib</span><span class="o">.</span><span class="n">BBANDS</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">lower</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BOLL.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.BOLL.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 绘图，参数可由UI调整。 &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">widget</span>
+        <span class="c">#self.plot_line(self.value, self.color, self.lw, self.style)</span>
+
+
+</div></div>
+<div class="viewcode-block" id="RSI"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.RSI">[文档]</a><span class="k">class</span> <span class="nc">RSI</span><span class="p">(</span><span class="n">IndicatorBase</span><span class="p">):</span>
+    <span class="nd">@create_attributes</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;RSI&quot;</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RSI</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative_strength</span><span class="p">(</span><span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="c">## @todo 一种绘图风格</span>
+        <span class="c"># 固定的y范围</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stick_yrange</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_relative_strength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
+        <span class="n">deltas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">deltas</span><span class="p">[:</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">up</span> <span class="o">=</span> <span class="n">seed</span><span class="p">[</span><span class="n">seed</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">n</span>
+        <span class="n">down</span> <span class="o">=</span> <span class="o">-</span><span class="n">seed</span><span class="p">[</span><span class="n">seed</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">n</span>
+        <span class="n">rs</span> <span class="o">=</span> <span class="n">up</span><span class="o">/</span><span class="n">down</span>
+        <span class="n">rsi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
+        <span class="n">rsi</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.</span> <span class="o">-</span> <span class="mf">100.</span><span class="o">/</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">rs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">prices</span><span class="p">)):</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">deltas</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c"># cause the diff is 1 shorter</span>
+            <span class="k">if</span> <span class="n">delta</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">upval</span> <span class="o">=</span> <span class="n">delta</span>
+                <span class="n">downval</span> <span class="o">=</span> <span class="mf">0.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">upval</span> <span class="o">=</span> <span class="mf">0.</span>
+                <span class="n">downval</span> <span class="o">=</span> <span class="o">-</span><span class="n">delta</span>
+
+            <span class="n">up</span> <span class="o">=</span> <span class="p">(</span><span class="n">up</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">upval</span><span class="p">)</span><span class="o">/</span><span class="n">n</span>
+            <span class="n">down</span> <span class="o">=</span> <span class="p">(</span><span class="n">down</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">downval</span><span class="p">)</span><span class="o">/</span><span class="n">n</span>
+
+            <span class="n">rs</span> <span class="o">=</span> <span class="n">up</span><span class="o">/</span><span class="n">down</span>
+            <span class="n">rsi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.</span> <span class="o">-</span> <span class="mf">100.</span><span class="o">/</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">rs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rsi</span>
+
+    <span class="nd">@override_attributes</span>
+<div class="viewcode-block" id="RSI.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.RSI.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mplot</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">fillcolor</span><span class="p">)</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_mplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fillcolor</span><span class="p">):</span>
+        <span class="n">textsize</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">&gt;=</span><span class="mi">70</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">&lt;=</span><span class="mi">30</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s">&#39;&gt;70 = overbought&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">textsize</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#39;k&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s">&#39;&lt;30 = oversold&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">textsize</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#39;k&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span><span class="mi">70</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s">&#39;rsi (14)&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">textsize</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="MACD"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.MACD">[文档]</a><span class="k">class</span> <span class="nc">MACD</span><span class="p">(</span><span class="n">IndicatorBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">nslow</span><span class="p">,</span> <span class="n">nfast</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;MACD&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MACD</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emaslow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emafast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">macd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moving_average_convergence</span><span class="p">(</span><span class="n">prices</span><span class="p">,</span> <span class="n">nslow</span><span class="o">=</span><span class="n">nslow</span><span class="p">,</span> <span class="n">nfast</span><span class="o">=</span><span class="n">nfast</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emaslow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emafast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">macd</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_moving_average_convergence</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nslow</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">nfast</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        compute the MACD (Moving Average Convergence/Divergence) using a fast and slow exponential moving avg&#39;</span>
+<span class="sd">        return value is emaslow, emafast, macd which are len(x) arrays</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">emaslow</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nslow</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;exponential&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">emafast</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nfast</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;exponential&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">emaslow</span><span class="p">,</span> <span class="n">emafast</span><span class="p">,</span> <span class="n">emafast</span> <span class="o">-</span> <span class="n">emaslow</span>
+        
+<div class="viewcode-block" id="MACD.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.MACD.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mplot</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_mplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+        <span class="n">fillcolor</span> <span class="o">=</span> <span class="s">&#39;darkslategrey&#39;</span>
+        <span class="n">nema</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="n">ema9</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macd</span><span class="p">,</span> <span class="n">nema</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;exponential&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macd</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ema9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macd</span><span class="o">-</span><span class="n">ema9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">fillcolor</span><span class="p">)</span>
+
+    <span class="c">#def _qtplot(self, widget, fillcolor):</span>
+        <span class="c">#raise  NotImplementedError</span>
+</div>
+<span class="kn">import</span> <span class="nn">matplotlib.finance</span> <span class="kn">as</span> <span class="nn">finance</span>
+<div class="viewcode-block" id="Volume"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.Volume">[文档]</a><span class="k">class</span> <span class="nc">Volume</span><span class="p">(</span><span class="n">IndicatorBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for Volume&quot;&quot;&quot;</span>
+    <span class="nd">@create_attributes</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="nb">open</span><span class="p">,</span> <span class="n">close</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;volume&#39;</span><span class="p">,</span> <span class="n">colorup</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">colordown</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Volume</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">transform2ndarray</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span>
+        <span class="c">#self.name = name</span>
+        <span class="c">#self.volume = volume</span>
+        <span class="c">#self.open = open</span>
+        <span class="c">#self.close = close</span>
+        <span class="c">#self.colorup = colorup</span>
+        <span class="c">#self.colordown = colordown</span>
+        <span class="c">#self.width = width</span>
+
+    <span class="nd">@override_attributes</span>
+<div class="viewcode-block" id="Volume.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.Volume.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">colorup</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">colordown</span> <span class="o">=</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for plot&quot;&quot;&quot;</span> 
+        <span class="n">finance</span><span class="o">.</span><span class="n">volume_overlay</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span> <span class="n">colorup</span><span class="p">,</span> <span class="n">colordown</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+
+
+</div></div>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">colorConverter</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">LineCollection</span><span class="p">,</span> <span class="n">PolyCollection</span>
+<div class="viewcode-block" id="Candles"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.Candles">[文档]</a><span class="k">class</span> <span class="nc">Candles</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;candle&#39;</span><span class="p">,</span>  <span class="n">width</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">colorup</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">colordown</span><span class="o">=</span><span class="s">&#39;g&#39;</span><span class="p">,</span> <span class="n">lc</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Represent the open, close as a bar line and high low range as a</span>
+<span class="sd">        vertical line.</span>
+
+
+<span class="sd">        ax          : an Axes instance to plot to</span>
+<span class="sd">        width       : the bar width in points</span>
+<span class="sd">        colorup     : the color of the lines where close &gt;= open</span>
+<span class="sd">        colordown   : the color of the lines where close &lt;  open</span>
+<span class="sd">        alpha       : bar transparency</span>
+
+<span class="sd">        return value is lineCollection, barCollection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#super(Candles, self).__init__(tracker, name)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_yrange</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">low</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">high</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="c"># note this code assumes if any value open, close, low, high is</span>
+    <span class="c"># missing they all are missing</span>
+<div class="viewcode-block" id="Candles.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.Candles.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">colorup</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">colordown</span><span class="o">=</span><span class="s">&#39;g&#39;</span><span class="p">,</span> <span class="n">lc</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for plot&quot;&quot;&quot;</span> 
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">width</span><span class="o">/</span><span class="mf">2.</span>
+        <span class="n">barVerts</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="nb">open</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="n">close</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">delta</span><span class="p">,</span> <span class="n">close</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">delta</span><span class="p">,</span> <span class="nb">open</span><span class="p">)</span> <span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="nb">open</span><span class="p">,</span> <span class="n">close</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">close</span><span class="p">)</span> <span class="k">if</span> <span class="nb">open</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">close</span><span class="o">!=-</span><span class="mi">1</span> <span class="p">]</span>
+        <span class="n">rangeSegments</span> <span class="o">=</span> <span class="p">[</span> <span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">low</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">high</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">high</span><span class="p">)</span> <span class="k">if</span> <span class="n">low</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="p">]</span>
+        <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">colorConverter</span><span class="o">.</span><span class="n">to_rgb</span><span class="p">(</span><span class="n">colorup</span><span class="p">)</span>
+        <span class="n">colorup</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">alpha</span>
+        <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">colorConverter</span><span class="o">.</span><span class="n">to_rgb</span><span class="p">(</span><span class="n">colordown</span><span class="p">)</span>
+        <span class="n">colordown</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">alpha</span>
+        <span class="n">colord</span> <span class="o">=</span> <span class="p">{</span> <span class="bp">True</span> <span class="p">:</span> <span class="n">colorup</span><span class="p">,</span>
+                   <span class="bp">False</span> <span class="p">:</span> <span class="n">colordown</span><span class="p">,</span>
+                   <span class="p">}</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">colord</span><span class="p">[</span><span class="nb">open</span><span class="o">&lt;</span><span class="n">close</span><span class="p">]</span> <span class="k">for</span> <span class="nb">open</span><span class="p">,</span> <span class="n">close</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">close</span><span class="p">)</span> <span class="k">if</span> <span class="nb">open</span><span class="o">!=-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">close</span> <span class="o">!=-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">barVerts</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">rangeSegments</span><span class="p">))</span>
+        <span class="n">useAA</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>  <span class="c"># use tuple here</span>
+        <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>   <span class="c"># and here</span>
+        <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">colorConverter</span><span class="o">.</span><span class="n">to_rgb</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
+        <span class="n">linecolor</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">alpha</span>
+        <span class="n">lineCollection</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="n">rangeSegments</span><span class="p">,</span>
+                                         <span class="n">colors</span>       <span class="o">=</span> <span class="p">(</span> <span class="n">linecolor</span><span class="p">,</span> <span class="p">),</span>
+                                         <span class="n">linewidths</span>   <span class="o">=</span> <span class="n">lw</span><span class="p">,</span>
+                                         <span class="n">antialiaseds</span> <span class="o">=</span> <span class="n">useAA</span><span class="p">,</span>
+                                         <span class="n">zorder</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                                         <span class="p">)</span>
+
+        <span class="n">barCollection</span> <span class="o">=</span> <span class="n">PolyCollection</span><span class="p">(</span><span class="n">barVerts</span><span class="p">,</span>
+                                       <span class="n">facecolors</span>   <span class="o">=</span> <span class="n">colors</span><span class="p">,</span>
+                                       <span class="n">edgecolors</span>   <span class="o">=</span> <span class="n">colors</span><span class="p">,</span>
+                                       <span class="n">antialiaseds</span> <span class="o">=</span> <span class="n">useAA</span><span class="p">,</span>
+                                       <span class="n">linewidths</span>   <span class="o">=</span> <span class="n">lw</span><span class="p">,</span>
+                                       <span class="n">zorder</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                                       <span class="p">)</span>
+        <span class="c">#minx, maxx = 0, len(rangeSegments)</span>
+        <span class="c">#miny = min([low for low in self.data.low if low !=-1])</span>
+        <span class="c">#maxy = max([high for high in self.data.high if high != -1])</span>
+        <span class="c">#corners = (minx, miny), (maxx, maxy)</span>
+        <span class="c">#ax.update_datalim(corners)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">autoscale_view</span><span class="p">()</span>
+        <span class="c"># add these last</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">barCollection</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lineCollection</span><span class="p">)</span>
+
+        <span class="c">#ax.plot(self.data.close, color = &#39;y&#39;)</span>
+        <span class="c">#lineCollection, barCollection = None, None</span>
+        <span class="k">return</span> <span class="n">lineCollection</span><span class="p">,</span> <span class="n">barCollection</span>
+</div>
+<div class="viewcode-block" id="Candles.set_yrange"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.Candles.set_yrange">[文档]</a>    <span class="k">def</span> <span class="nf">set_yrange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper</span> <span class="o">=</span> <span class="n">upper</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="n">lower</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="o">=</span> <span class="n">lower</span>
+</div>
+<div class="viewcode-block" id="Candles.y_interval"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.Candles.y_interval">[文档]</a>    <span class="k">def</span> <span class="nf">y_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_left</span><span class="p">,</span> <span class="n">w_right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span> 
+        <span class="n">ymax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">[</span><span class="n">w_left</span><span class="p">:</span> <span class="n">w_right</span><span class="p">])</span>
+        <span class="n">ymin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">[</span><span class="n">w_left</span><span class="p">:</span> <span class="n">w_right</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">ymin</span>
+
+</div></div>
+<div class="viewcode-block" id="TradingSignal"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.TradingSignal">[文档]</a><span class="k">class</span> <span class="nc">TradingSignal</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for signalWindow&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;Signal&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="c">#self.set_yrange(price)</span>
+        <span class="c">#self.signal=signal</span>
+        <span class="c">#self.c = c</span>
+        <span class="c">#self.lw = lw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+<div class="viewcode-block" id="TradingSignal.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.TradingSignal.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">useAA</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>  <span class="c"># use tuple here</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span>
+                                <span class="n">antialiaseds</span><span class="o">=</span><span class="n">useAA</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TradingSignal.y_interval"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.TradingSignal.y_interval">[文档]</a>    <span class="k">def</span> <span class="nf">y_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_left</span><span class="p">,</span> <span class="n">w_right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100000000</span>
+
+</div></div>
+<div class="viewcode-block" id="TradingSignalPos"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.TradingSignalPos">[文档]</a><span class="k">class</span> <span class="nc">TradingSignalPos</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for signalWindow&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">price_data</span><span class="p">,</span> <span class="n">deals</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;Signal&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">deal</span> <span class="ow">in</span> <span class="n">deals</span><span class="p">:</span>
+            <span class="c"># ((x0, y0), (x1, y1))</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="p">((</span><span class="n">price_data</span><span class="o">.</span><span class="n">row</span><span class="p">[</span><span class="n">deal</span><span class="o">.</span><span class="n">open_datetime</span><span class="p">],</span> <span class="n">deal</span><span class="o">.</span><span class="n">open_price</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">price_data</span><span class="o">.</span><span class="n">row</span><span class="p">[</span><span class="n">deal</span><span class="o">.</span><span class="n">close_datetime</span><span class="p">],</span> <span class="n">deal</span><span class="o">.</span><span class="n">close_price</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">deal</span><span class="o">.</span><span class="n">profit</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+<div class="viewcode-block" id="TradingSignalPos.plot"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.TradingSignalPos.plot">[文档]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">useAA</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>  <span class="c"># use tuple here</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span>
+                                <span class="n">antialiaseds</span><span class="o">=</span><span class="n">useAA</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TradingSignalPos.y_interval"><a class="viewcode-back" href="../../../../quantdigger.kernel.indicators.html#quantdigger.kernel.indicators.common.TradingSignalPos.y_interval">[文档]</a>    <span class="k">def</span> <span class="nf">y_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w_left</span><span class="p">,</span> <span class="n">w_right</span><span class="p">):</span>
+        <span class="c">## @todo signal interval</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100000000</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

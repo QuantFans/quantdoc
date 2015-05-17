@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.engine.execute_unit &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.engine.execute_unit 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+<span class="kn">import</span> <span class="nn">Queue</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.datasource.data</span> <span class="kn">import</span> <span class="n">local_data</span>
+<span class="kn">from</span> <span class="nn">quantdigger.errors</span> <span class="kn">import</span> <span class="n">DataAlignError</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.strategy</span> <span class="kn">import</span> <span class="n">BarTracker</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.event</span> <span class="kn">import</span> <span class="n">Event</span>
+<div class="viewcode-block" id="ExecuteUnit"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.execute_unit.ExecuteUnit">[文档]</a><span class="k">class</span> <span class="nc">ExecuteUnit</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 策略执行的物理单元，支持多个策略同时运行。&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pcontracts</span><span class="p">,</span> <span class="n">begin_dt</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">end_dt</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+
+<span class="sd">        每个执行单元都可能跟踪多个数据(策略用到的周期合约数据集合)。</span>
+<span class="sd">        其中第一个合约为@主合约</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            pcontracts (PContract List): 周期合约列表</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">begin_dt</span> <span class="o">=</span> <span class="n">begin_dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_dt</span> <span class="o">=</span> <span class="n">end_dt</span>
+        <span class="c"># 不同周期合约数据。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>     <span class="c"># PContract -&gt; pandas.DataFrame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pcontracts</span> <span class="o">=</span> <span class="n">pcontracts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trackers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_strategies</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># 如果begin_dt, end_dt 等于None，做特殊处理。</span>
+        <span class="c"># accociate with a mplot widget</span>
+        <span class="c">#tracker.pcontracts</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">pcontracts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">pcon</span> <span class="ow">in</span> <span class="n">pcontracts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">pcon</span><span class="p">)</span>
+            <span class="n">BarTracker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pcon</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExecuteUnit.run"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.execute_unit.ExecuteUnit.run">[文档]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span> 
+        <span class="k">print</span> <span class="s">&#39;running...&#39;</span>
+        <span class="n">bar_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">bar_index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span><span class="p">:</span>
+            <span class="c">#</span>
+            <span class="n">latest_bars</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+            <span class="k">for</span> <span class="n">tracker</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trackers</span><span class="p">:</span>
+                <span class="n">bar</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">bar_index</span><span class="p">)</span>
+                <span class="n">latest_bars</span><span class="p">[</span><span class="n">tracker</span><span class="o">.</span><span class="n">_main_contract</span><span class="p">]</span> <span class="o">=</span> <span class="n">bar</span>
+            <span class="c"># 在回测中无需MARKET事件。</span>
+            <span class="c"># 这样可以加速回测速度。</span>
+            <span class="k">for</span> <span class="n">algo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strategies</span><span class="p">:</span>
+                <span class="n">bar</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">bar_index</span><span class="p">)</span>
+                <span class="n">algo</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">update_datetime</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+                <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_datetime</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+                <span class="n">latest_bars</span><span class="p">[</span><span class="n">algo</span><span class="o">.</span><span class="n">_main_contract</span><span class="p">]</span> <span class="o">=</span> <span class="n">bar</span>
+                <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_bar</span><span class="p">(</span><span class="n">latest_bars</span><span class="p">)</span>
+                <span class="c">#algo.exchange.make_market(bar)</span>
+                <span class="c"># 对新的价格运行算法。</span>
+                <span class="n">algo</span><span class="o">.</span><span class="n">execute_strategy</span><span class="p">()</span>
+                <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                   <span class="c"># 事件处理。 </span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">event</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">events_pool</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                    <span class="k">except</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="c">#if event.type == &#39;MARKET&#39;:</span>
+                                <span class="c">#strategy.calculate_signals(event)</span>
+                                <span class="c">#port.update_timeindex(event)</span>
+                            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">:</span>
+                                <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_signal</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+                            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">ORDER</span><span class="p">:</span>
+                                <span class="n">algo</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">update_order</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+                            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">FILL</span><span class="p">:</span>
+                                <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_fill</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                    <span class="c"># 价格撮合。note: bar价格撮合要求撮合置于运算后面。</span>
+                    <span class="n">algo</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">make_market</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+            <span class="n">bar_index</span> <span class="o">+=</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="ExecuteUnit.load_data"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.execute_unit.ExecuteUnit.load_data">[文档]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pcontract</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">pcontract</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">local_data</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">pcontract</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_data_length&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> 
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">DataAlignError</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&#39;row&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">pcontract</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="k">return</span> <span class="n">data</span>
+</div>
+<div class="viewcode-block" id="ExecuteUnit.add_tracker"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.execute_unit.ExecuteUnit.add_tracker">[文档]</a>    <span class="k">def</span> <span class="nf">add_tracker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trackers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tracker</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ExecuteUnit.add_strategy"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.execute_unit.ExecuteUnit.add_strategy">[文档]</a>    <span class="k">def</span> <span class="nf">add_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_strategies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+
+
+<span class="c">#def plot_result(price_data, indicators, signals, blotter):</span>
+    <span class="c">#import matplotlib</span>
+    <span class="c">#matplotlib.use(&#39;TkAgg&#39;)</span>
+    <span class="c">#import matplotlib.pyplot as plt</span>
+    <span class="c">#from quantdigger.plugin.mplotwidgets import techmplot</span>
+    <span class="c">#from quantdigger.plugin.mplotwidgets import widgets</span>
+    <span class="c">#from quantdigger.kernel.indicators.common import *</span>
+
+    <span class="c">##price_data, entry_x, entry_y, exit_x, exit_y, colors = data.get_stock_signal_data()</span>
+    <span class="c">##print zip(zip(entry_x,entry_y),zip(exit_x,exit_y))</span>
+    <span class="c">##assert False</span>
+
+    <span class="c">#fig = plt.figure()</span>
+    <span class="c">#frame = techmplot.TechMPlot(fig,</span>
+                                <span class="c">#price_data,</span>
+                                <span class="c">#50          # 窗口显示k线数量。</span>
+                                <span class="c">#)</span>
+
+    <span class="c">## 添加k线</span>
+    <span class="c">#kwindow = widgets.CandleWindow(&quot;kwindow&quot;, price_data, 100, 50)</span>
+    <span class="c">#frame.add_widget(0, kwindow, True)</span>
+    <span class="c">## 交易信号。</span>
+    <span class="c">#signal = TradingSignalPos(None, price_data, signals, lw=2)</span>
+    <span class="c">#frame.add_indicator(0, signal)</span>
+
+    <span class="c">## 添加指标</span>
+    <span class="c">#k_axes, = frame</span>
+    <span class="c">#for indic in indicators:</span>
+        <span class="c">#indic.plot(k_axes)</span>
+    <span class="c">#frame.draw_window()</span>
+
+
+    <span class="c">## at most 5 ticks, pruning the upper and lower so they don&#39;t overlap</span>
+    <span class="c">## with other ticks</span>
+    <span class="c">##ax_volume.yaxis.set_major_locator(techmplot.MyLocator(5, prune=&#39;both&#39;))</span>
+
+    <span class="c">## sharex 所有所有的窗口都移动</span>
+
+    <span class="c">#fig2 = plt.figure()</span>
+    <span class="c">#ax = fig2.add_axes((0.1, 0.1, 0.9, 0.9))</span>
+    <span class="c">#ax.plot(blotter.equity_curve.total)</span>
+    <span class="c">#plt.show()</span>
+
+<span class="c">#def pcontract(exchange, contract, time_unit, unit_count):</span>
+    <span class="c">#&quot;&quot;&quot; 构建周期合约结构的便捷方式。</span>
+    
+    <span class="c">#Args:</span>
+        <span class="c">#exchange (str): 交易所</span>
+        <span class="c">#contract (str): 合约</span>
+        <span class="c">#time_unit (str): 时间单位</span>
+        <span class="c">#unit_count (int): 时间数目</span>
+    
+    <span class="c">#Returns:</span>
+        <span class="c">#int. The result</span>
+    <span class="c">#Raises:</span>
+    <span class="c">#&quot;&quot;&quot;</span>
+    <span class="c">#&quot;&quot;&quot;docstring for pco&quot;&quot;&quot; </span>
+    <span class="c">#return PContract(Contract(exchange, contract),</span>
+                     <span class="c">#Period(time_unit, unit_count))</span>
+
+<span class="c">#if __name__ == &#39;__main__&#39;:</span>
+    <span class="c">#from strategy import DemoStrategy</span>
+    <span class="c">#from quantdigger.kernel.datastruct import PContract, Contract, Period</span>
+
+    <span class="c">#begin_dt, end_dt = None, None</span>
+    <span class="c">#pcon = pcontract(&#39;SHFE&#39;, &#39;IF000&#39;, &#39;Minutes&#39;, 10)</span>
+    <span class="c">#algo = DemoStrategy([pcon])</span>
+    <span class="c">#simulator = ExecuteUnit(begin_dt, end_dt)</span>
+    <span class="c">#simulator.add_strategy(algo)</span>
+    <span class="c">#simulator.run()</span>
+
+    <span class="c">#blotter = algo.blotter</span>
+    <span class="c">#blotter.create_equity_curve_dataframe()</span>
+    <span class="c">#print blotter.output_summary_stats()</span>
+
+    <span class="c">#plot_result(simulator.data[pcon], algo._indicators,</span>
+            <span class="c">#algo.blotter.deal_positions, blotter)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.engine.blotter &mdash; quantdigger 0.1 文档</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.1 文档" href="../../../../index.html" />
+    <link rel="up" title="模块代码" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">模块代码</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>quantdigger.kernel.engine.blotter 源代码</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf8 -*-</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.event</span> <span class="kn">import</span> <span class="n">OrderEvent</span><span class="p">,</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.datastruct</span> <span class="kn">import</span> <span class="n">Position</span><span class="p">,</span> <span class="n">TradeSide</span><span class="p">,</span> <span class="n">Direction</span>
+<span class="kn">from</span> <span class="nn">performance</span> <span class="kn">import</span> <span class="n">create_sharpe_ratio</span><span class="p">,</span> <span class="n">create_drawdowns</span>
+
+<div class="viewcode-block" id="Positions"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.Positions">[文档]</a><span class="k">class</span> <span class="nc">Positions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;docstring for Positions&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Positions.profit"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.Positions.profit">[文档]</a>    <span class="k">def</span> <span class="nf">profit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_price</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for pro&quot;&quot;&quot;</span> 
+        <span class="n">profit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">:</span>
+            <span class="n">profit</span> <span class="o">+=</span> <span class="n">pos</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">profit</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">profit</span>
+</div>
+<div class="viewcode-block" id="Positions.deposit"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.Positions.deposit">[文档]</a>    <span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_price</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for pro&quot;&quot;&quot;</span> 
+        <span class="n">deposit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">:</span>
+            <span class="n">deposit</span> <span class="o">+=</span> <span class="n">pos</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">deposit</span>
+
+</div></div>
+<div class="viewcode-block" id="DealPosition"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.DealPosition">[文档]</a><span class="k">class</span> <span class="nc">DealPosition</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 开仓，平仓对&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buy_trans</span><span class="p">,</span> <span class="n">sell_trans</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">buy_trans</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span> <span class="o">=</span> <span class="n">sell_trans</span>
+
+<div class="viewcode-block" id="DealPosition.profit"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.DealPosition.profit">[文档]</a>    <span class="k">def</span> <span class="nf">profit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span> 
+        <span class="n">direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">order</span><span class="o">.</span><span class="n">direction</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">Direction</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">price</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">price</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">price</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">price</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="DealPosition.open_datetime"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.DealPosition.open_datetime">[文档]</a>    <span class="k">def</span> <span class="nf">open_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">datetime</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="DealPosition.open_price"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.DealPosition.open_price">[文档]</a>    <span class="k">def</span> <span class="nf">open_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">price</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="DealPosition.close_datetime"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.DealPosition.close_datetime">[文档]</a>    <span class="k">def</span> <span class="nf">close_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">datetime</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="DealPosition.close_price"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.DealPosition.close_price">[文档]</a>    <span class="k">def</span> <span class="nf">close_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="o">.</span><span class="n">price</span>
+
+</div></div>
+<div class="viewcode-block" id="Blotter"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.Blotter">[文档]</a><span class="k">class</span> <span class="nc">Blotter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    订单管理</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Blotter.update_signal"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.Blotter.update_signal">[文档]</a>    <span class="k">def</span> <span class="nf">update_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Acts on a SignalEvent to generate new orders </span>
+<span class="sd">        based on the portfolio logic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;Should implement update_signal()&quot;</span><span class="p">)</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Blotter.update_fill"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.Blotter.update_fill">[文档]</a>    <span class="k">def</span> <span class="nf">update_fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the portfolio current positions and holdings </span>
+<span class="sd">        from a FillEvent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;Should implement update_fill()&quot;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="SimpleBlotter"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter">[文档]</a><span class="k">class</span> <span class="nc">SimpleBlotter</span><span class="p">(</span><span class="n">Blotter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The SimpleBlotter object is designed to send orders to</span>
+<span class="sd">    a brokerage object with a constant quantity size blindly,</span>
+<span class="sd">    i.e. without any risk management or position sizing. It is</span>
+<span class="sd">    used to test simpler strategies such as BuyAndHoldStrategy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeseries</span><span class="p">,</span> <span class="n">events_pool</span><span class="p">,</span> <span class="n">initial_capital</span><span class="o">=</span><span class="mf">5000.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timeseries</span> <span class="o">=</span> <span class="n">timeseries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">events_pool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pre_settlement</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c"># 昨日结算价</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datetime</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># 当前时间</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_captial</span> <span class="o">=</span> <span class="n">initial_capital</span>
+
+        <span class="c"># 用于分析策略性能数据</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_orders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_capital</span> <span class="o">=</span> <span class="n">initial_capital</span>    <span class="c"># 初始权益</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_positions</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># 当前持仓 dict of list, 包含细节。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># 当前的资金 dict</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_positions</span> <span class="o">=</span> <span class="p">[]</span>    <span class="c"># 在所有时间点上的持仓 list of dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_holdings</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c"># 所有时间点上的资金 list of dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deals</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># 每笔交易</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deal_positions</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c"># 开平仓对</span>
+
+    <span class="k">def</span> <span class="nf">_init_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for _init_state&quot;&quot;&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_positions</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;datetime&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_date</span> <span class="p">}]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;cash&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_capital</span><span class="p">,</span>
+                <span class="s">&#39;commission&#39;</span><span class="p">:</span>  <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s">&#39;history_profit&#39;</span><span class="p">:</span>  <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s">&#39;equity&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_capital</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_holdings</span> <span class="o">=</span> <span class="p">[{</span>
+            <span class="s">&#39;datetime&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_date</span><span class="p">,</span>
+            <span class="s">&#39;cash&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_capital</span><span class="p">,</span>
+            <span class="s">&#39;commission&#39;</span><span class="p">:</span>  <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s">&#39;equity&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_capital</span>
+        <span class="p">}]</span>
+
+<div class="viewcode-block" id="SimpleBlotter.update_bar"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter.update_bar">[文档]</a>    <span class="k">def</span> <span class="nf">update_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bars</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;docstring for update_bar&quot;&quot;&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bars</span> <span class="o">=</span> <span class="n">bars</span>
+</div>
+<div class="viewcode-block" id="SimpleBlotter.update_datetime"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter.update_datetime">[文档]</a>    <span class="k">def</span> <span class="nf">update_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        在新的价格数据来的时候触发。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datetime</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_date</span> <span class="o">=</span> <span class="n">dt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_state</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datetime</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_status</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SimpleBlotter.update_fill"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter.update_fill">[文档]</a>    <span class="k">def</span> <span class="nf">update_fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        订单成交。</span>
+<span class="sd">        Updates the portfolio current positions and holdings </span>
+<span class="sd">        from a FillEvent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">FILL</span>
+        <span class="n">t_order</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">event</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="n">t_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">t_order</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_positions</span><span class="p">(</span><span class="n">t_order</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_holdings</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">transaction</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SimpleBlotter.update_signal"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter.update_signal">[文档]</a>    <span class="k">def</span> <span class="nf">update_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        处理交易系统产生的订单。</span>
+<span class="sd">        Acts on a SignalEvent to generate new orders </span>
+<span class="sd">        based on the portfolio logic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">SIGNAL</span>
+        <span class="n">valid_orders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_order</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">OrderEvent</span><span class="p">(</span><span class="n">order</span><span class="p">))</span> 
+                <span class="n">valid_orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_orders</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">valid_orders</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_orders</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">valid_orders</span><span class="p">)</span>
+        <span class="c">#print &quot;Receive %d signals!&quot; % len(event.orders)</span>
+        <span class="c">#self.generate_naive_order(event.orders)</span>
+</div>
+<div class="viewcode-block" id="SimpleBlotter.valid_order"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter.valid_order">[文档]</a>    <span class="k">def</span> <span class="nf">valid_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 判断订单是否合法 &quot;&quot;&quot;</span> 
+        <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">kpp</span> <span class="o">==</span> <span class="n">TradeSide</span><span class="o">.</span><span class="n">PING</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_positions</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">contract</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Direction</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span>
+                    <span class="c">## @todo 自动改变合法仓位。</span>
+                    <span class="k">if</span> <span class="n">pos</span><span class="o">.</span><span class="n">total</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">True</span> 
+                <span class="k">elif</span> <span class="n">order</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Direction</span><span class="o">.</span><span class="n">SHORT</span><span class="p">:</span>
+                    <span class="c">## @todo 自动改变合法仓位。</span>
+                    <span class="k">if</span> <span class="n">pos</span><span class="o">.</span><span class="n">total</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">True</span> 
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+    <span class="k">def</span> <span class="nf">_update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 更新历史持仓，当前权益&quot;&quot;&quot;</span>
+        <span class="c"># 更新持仓历史。</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="n">dp</span><span class="p">[</span><span class="s">&#39;datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="n">dp</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_positions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span>
+
+        <span class="c"># 更新资金历史。</span>
+        <span class="c">## @todo  由持仓历史推断资金历史。</span>
+        <span class="n">dh</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="n">dh</span><span class="p">[</span><span class="s">&#39;datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="n">dh</span><span class="p">[</span><span class="s">&#39;commission&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;commission&#39;</span><span class="p">]</span>
+        <span class="n">profit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">deposit</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c"># 计算当前持仓历史盈亏。</span>
+        <span class="c"># 以close价格替代市场价格。</span>
+        <span class="k">for</span> <span class="n">contract</span><span class="p">,</span> <span class="n">pos_info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_positions</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">new_price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bars</span><span class="p">[</span><span class="n">contract</span><span class="p">]</span><span class="o">.</span><span class="n">close</span>
+            <span class="n">profit</span> <span class="o">+=</span> <span class="n">pos_info</span><span class="o">.</span><span class="n">profit</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+            <span class="c">## @bug 昨持仓的，可能是按昨日保证金，一天一结?</span>
+            <span class="n">deposit</span> <span class="o">+=</span> <span class="n">pos_info</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+
+        <span class="c"># 当前权益 = 初始资金 - 佣金 + 历史持仓盈亏 + 当前持仓历史盈亏</span>
+        <span class="n">dh</span><span class="p">[</span><span class="s">&#39;equity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_captial</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;commission&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;history_profit&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">profit</span>
+        <span class="n">dh</span><span class="p">[</span><span class="s">&#39;cash&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dh</span><span class="p">[</span><span class="s">&#39;equity&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">deposit</span> 
+        <span class="k">if</span> <span class="n">dh</span><span class="p">[</span><span class="s">&#39;cash&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;你已经破产!&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;cash&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dh</span><span class="p">[</span><span class="s">&#39;cash&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;equity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dh</span><span class="p">[</span><span class="s">&#39;equity&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_holdings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dh</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">trans</span><span class="p">):</span>
+        <span class="c">## @todo 把复杂统计单独出来。</span>
+        <span class="sd">&quot;&quot;&quot; 更新持仓 &quot;&quot;&quot;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_positions</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">trans</span><span class="o">.</span><span class="n">contract</span><span class="p">,</span> <span class="n">Positions</span><span class="p">())</span>
+        <span class="n">new_pos</span> <span class="o">=</span> <span class="n">Position</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">trans</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trans</span><span class="o">.</span><span class="n">kpp</span> <span class="o">==</span> <span class="n">TradeSide</span><span class="o">.</span><span class="n">KAI</span><span class="p">:</span>
+            <span class="c"># 开仓</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">trans</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Direction</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">total</span> <span class="o">+=</span> <span class="n">trans</span><span class="o">.</span><span class="n">quantity</span> 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">total</span> <span class="o">-=</span> <span class="n">trans</span><span class="o">.</span><span class="n">quantity</span> 
+        <span class="k">elif</span> <span class="n">trans</span><span class="o">.</span><span class="n">kpp</span> <span class="o">==</span> <span class="n">TradeSide</span><span class="o">.</span><span class="n">PING</span><span class="p">:</span>
+            <span class="c"># 平仓</span>
+            <span class="k">if</span> <span class="n">trans</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Direction</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">total</span> <span class="o">-=</span> <span class="n">trans</span><span class="o">.</span><span class="n">quantity</span> 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">total</span> <span class="o">+=</span> <span class="n">trans</span><span class="o">.</span><span class="n">quantity</span> 
+            <span class="n">to_delete</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">left_vol</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">quantity</span>
+            <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">positions</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deal_positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DealPosition</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">new_pos</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">position</span><span class="o">.</span><span class="n">quantity</span> <span class="o">&lt;</span> <span class="n">left_vol</span><span class="p">:</span>
+                    <span class="c"># 还需从之前的仓位中平。</span>
+                    <span class="n">left_vol</span> <span class="o">-=</span> <span class="n">position</span><span class="o">.</span><span class="n">quantity</span>
+                    <span class="n">to_delete</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+
+                <span class="k">elif</span> <span class="n">position</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="n">left_vol</span><span class="p">:</span>
+                    <span class="n">left_vol</span> <span class="o">-=</span> <span class="n">position</span><span class="o">.</span><span class="n">quantity</span>
+                    <span class="n">to_delete</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+                    <span class="k">break</span> 
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="bp">False</span>
+                    <span class="n">position</span><span class="o">.</span><span class="n">quantity</span> <span class="o">-=</span> <span class="n">left_vol</span>
+                    <span class="n">left_vol</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">break</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">positions</span> <span class="o">-=</span> <span class="n">to_delete</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">left_vol</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_holdings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        更新资金</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">trans_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bars</span><span class="p">[</span><span class="n">trans</span><span class="o">.</span><span class="n">contract</span><span class="p">]</span><span class="o">.</span><span class="n">close</span>
+        <span class="c"># 每笔佣金，和数目无关！</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;commission&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">trans</span><span class="o">.</span><span class="n">commission</span>
+        <span class="c"># 平仓，更新历史持仓盈亏。</span>
+        <span class="k">if</span> <span class="n">trans</span><span class="o">.</span><span class="n">kpp</span> <span class="o">==</span> <span class="n">TradeSide</span><span class="o">.</span><span class="n">PING</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_holdings</span><span class="p">[</span><span class="s">&#39;history_profit&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">trans</span><span class="o">.</span><span class="n">profit</span><span class="p">(</span><span class="n">trans_cost</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SimpleBlotter.create_equity_curve_dataframe"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter.create_equity_curve_dataframe">[文档]</a>    <span class="k">def</span> <span class="nf">create_equity_curve_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a pandas DataFrame from the all_holdings</span>
+<span class="sd">        list of dictionaries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_holdings</span><span class="p">)</span>
+        <span class="n">curve</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">&#39;datetime&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">curve</span><span class="p">[</span><span class="s">&#39;returns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">curve</span><span class="p">[</span><span class="s">&#39;equity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
+        <span class="n">curve</span><span class="p">[</span><span class="s">&#39;equity_curve&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">curve</span><span class="p">[</span><span class="s">&#39;returns&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">cumprod</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">equity_curve</span> <span class="o">=</span> <span class="n">curve</span>
+</div>
+<div class="viewcode-block" id="SimpleBlotter.output_summary_stats"><a class="viewcode-back" href="../../../../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.SimpleBlotter.output_summary_stats">[文档]</a>    <span class="k">def</span> <span class="nf">output_summary_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a list of summary statistics for the portfolio such</span>
+<span class="sd">        as Sharpe Ratio and drawdown information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equity_curve</span><span class="p">[</span><span class="s">&#39;equity_curve&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">returns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equity_curve</span><span class="p">[</span><span class="s">&#39;returns&#39;</span><span class="p">]</span>
+        <span class="n">pnl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equity_curve</span><span class="p">[</span><span class="s">&#39;equity_curve&#39;</span><span class="p">]</span>
+
+        <span class="n">sharpe_ratio</span> <span class="o">=</span> <span class="n">create_sharpe_ratio</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span>
+        <span class="n">max_dd</span><span class="p">,</span> <span class="n">dd_duration</span> <span class="o">=</span> <span class="n">create_drawdowns</span><span class="p">(</span><span class="n">pnl</span><span class="p">)</span>
+
+        <span class="n">stats</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Total Return&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%0.2f%%</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">((</span><span class="n">total_return</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)),</span>
+                 <span class="p">(</span><span class="s">&quot;Sharpe Ratio&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%0.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">sharpe_ratio</span><span class="p">),</span>
+                 <span class="p">(</span><span class="s">&quot;Max Drawdown&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%0.2f%%</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">max_dd</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)),</span>
+                 <span class="p">(</span><span class="s">&quot;Drawdown Duration&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">dd_duration</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">stats</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="../../../../index.html">quantdigger 0.1 文档</a> &raquo;</li>
+          <li><a href="../../../index.html" >模块代码</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+      由 <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3 创建。
+    </div>
+  </body>
+</html>
