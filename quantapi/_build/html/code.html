@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>code package &mdash; quantapi 0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="quantapi 0.1 文档" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="index.html">quantapi 0.1 文档</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="code-package">
+<h1>code package<a class="headerlink" href="#code-package" title="永久链接至标题">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="code-call-module">
+<h2>code.call module<a class="headerlink" href="#code-call-module" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="code-callback-module">
+<h2>code.callback module<a class="headerlink" href="#code-callback-module" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-code">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-code" title="永久链接至标题">¶</a></h2>
+<p>Utilities needed to emulate Python&#8217;s interactive interpreter.</p>
+<dl class="class">
+<dt id="code.InteractiveInterpreter">
+<em class="property">class </em><tt class="descclassname">code.</tt><tt class="descname">InteractiveInterpreter</tt><big>(</big><em>locals=None</em><big>)</big><a class="headerlink" href="#code.InteractiveInterpreter" title="永久链接至目标">¶</a></dt>
+<dd><p>Base class for InteractiveConsole.</p>
+<p>This class deals with parsing and interpreter state (the user&#8217;s
+namespace); it doesn&#8217;t deal with input buffering or prompting or
+input file naming (the filename is always passed in explicitly).</p>
+<dl class="method">
+<dt id="code.InteractiveInterpreter.runcode">
+<tt class="descname">runcode</tt><big>(</big><em>code</em><big>)</big><a class="headerlink" href="#code.InteractiveInterpreter.runcode" title="永久链接至目标">¶</a></dt>
+<dd><p>Execute a code object.</p>
+<p>When an exception occurs, self.showtraceback() is called to
+display a traceback.  All exceptions are caught except
+SystemExit, which is reraised.</p>
+<p>A note about KeyboardInterrupt: this exception may occur
+elsewhere in this code, and may not always be caught.  The
+caller should be prepared to deal with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="code.InteractiveInterpreter.runsource">
+<tt class="descname">runsource</tt><big>(</big><em>source</em>, <em>filename='&lt;input&gt;'</em>, <em>symbol='single'</em><big>)</big><a class="headerlink" href="#code.InteractiveInterpreter.runsource" title="永久链接至目标">¶</a></dt>
+<dd><p>Compile and run some source in the interpreter.</p>
+<p>Arguments are as for compile_command().</p>
+<p>One several things can happen:</p>
+<p>1) The input is incorrect; compile_command() raised an
+exception (SyntaxError or OverflowError).  A syntax traceback
+will be printed by calling the showsyntaxerror() method.</p>
+<p>2) The input is incomplete, and more input is required;
+compile_command() returned None.  Nothing happens.</p>
+<p>3) The input is complete; compile_command() returned a code
+object.  The code is executed by calling self.runcode() (which
+also handles run-time exceptions, except for SystemExit).</p>
+<p>The return value is True in case 2, False in the other cases (unless
+an exception is raised).  The return value can be used to
+decide whether to use sys.ps1 or sys.ps2 to prompt the next
+line.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="code.InteractiveInterpreter.showsyntaxerror">
+<tt class="descname">showsyntaxerror</tt><big>(</big><em>filename=None</em><big>)</big><a class="headerlink" href="#code.InteractiveInterpreter.showsyntaxerror" title="永久链接至目标">¶</a></dt>
+<dd><p>Display the syntax error that just occurred.</p>
+<p>This doesn&#8217;t display a stack trace because there isn&#8217;t one.</p>
+<p>If a filename is given, it is stuffed in the exception instead
+of what was there before (because Python&#8217;s parser always uses
+&#8220;&lt;string&gt;&#8221; when reading from a string).</p>
+<p>The output is written by self.write(), below.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="code.InteractiveInterpreter.showtraceback">
+<tt class="descname">showtraceback</tt><big>(</big><big>)</big><a class="headerlink" href="#code.InteractiveInterpreter.showtraceback" title="永久链接至目标">¶</a></dt>
+<dd><p>Display the exception that just occurred.</p>
+<p>We remove the first stack item because it is our own code.</p>
+<p>The output is written by self.write(), below.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="code.InteractiveInterpreter.write">
+<tt class="descname">write</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#code.InteractiveInterpreter.write" title="永久链接至目标">¶</a></dt>
+<dd><p>Write a string.</p>
+<p>The base implementation writes to sys.stderr; a subclass may
+replace this with a different implementation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="code.InteractiveConsole">
+<em class="property">class </em><tt class="descclassname">code.</tt><tt class="descname">InteractiveConsole</tt><big>(</big><em>locals=None</em>, <em>filename='&lt;console&gt;'</em><big>)</big><a class="headerlink" href="#code.InteractiveConsole" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="#code.InteractiveInterpreter" title="code.InteractiveInterpreter"><tt class="xref py py-class docutils literal"><span class="pre">code.InteractiveInterpreter</span></tt></a></p>
+<p>Closely emulate the behavior of the interactive Python interpreter.</p>
+<p>This class builds on InteractiveInterpreter and adds prompting
+using the familiar sys.ps1 and sys.ps2, and input buffering.</p>
+<dl class="method">
+<dt id="code.InteractiveConsole.interact">
+<tt class="descname">interact</tt><big>(</big><em>banner=None</em><big>)</big><a class="headerlink" href="#code.InteractiveConsole.interact" title="永久链接至目标">¶</a></dt>
+<dd><p>Closely emulate the interactive Python console.</p>
+<p>The optional banner argument specify the banner to print
+before the first interaction; by default it prints a banner
+similar to the one printed by the real Python interpreter,
+followed by the current class name in parentheses (so as not
+to confuse this with the real interpreter &#8211; since it&#8217;s so
+close!).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="code.InteractiveConsole.push">
+<tt class="descname">push</tt><big>(</big><em>line</em><big>)</big><a class="headerlink" href="#code.InteractiveConsole.push" title="永久链接至目标">¶</a></dt>
+<dd><p>Push a line to the interpreter.</p>
+<p>The line should not have a trailing newline; it may have
+internal newlines.  The line is appended to a buffer and the
+interpreter&#8217;s runsource() method is called with the
+concatenated contents of the buffer as source.  If this
+indicates that the command was executed or invalid, the buffer
+is reset; otherwise, the command is incomplete, and the buffer
+is left as it was after the line was appended.  The return
+value is 1 if more input is required, 0 if the line was dealt
+with in some way (this is the same as runsource()).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="code.InteractiveConsole.raw_input">
+<tt class="descname">raw_input</tt><big>(</big><em>prompt=''</em><big>)</big><a class="headerlink" href="#code.InteractiveConsole.raw_input" title="永久链接至目标">¶</a></dt>
+<dd><p>Write a prompt and read a line.</p>
+<p>The returned line does not include the trailing newline.
+When the user enters the EOF key sequence, EOFError is raised.</p>
+<p>The base implementation uses the built-in function
+raw_input(); a subclass may replace this with a different
+implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="code.InteractiveConsole.resetbuffer">
+<tt class="descname">resetbuffer</tt><big>(</big><big>)</big><a class="headerlink" href="#code.InteractiveConsole.resetbuffer" title="永久链接至目标">¶</a></dt>
+<dd><p>Reset the input buffer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="code.interact">
+<tt class="descclassname">code.</tt><tt class="descname">interact</tt><big>(</big><em>banner=None</em>, <em>readfunc=None</em>, <em>local=None</em><big>)</big><a class="headerlink" href="#code.interact" title="永久链接至目标">¶</a></dt>
+<dd><p>Closely emulate the interactive Python interpreter.</p>
+<p>This is a backwards compatible interface to the InteractiveConsole
+class.  When readfunc is not specified, it attempts to import the
+readline module to enable GNU readline if it is available.</p>
+<p>Arguments (all optional, all default to None):</p>
+<p>banner &#8211; passed to InteractiveConsole.interact()
+readfunc &#8211; if not None, replaces InteractiveConsole.raw_input()
+local &#8211; passed to InteractiveInterpreter.__init__()</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="code.compile_command">
+<tt class="descclassname">code.</tt><tt class="descname">compile_command</tt><big>(</big><em>source</em>, <em>filename='&lt;input&gt;'</em>, <em>symbol='single'</em><big>)</big><a class="headerlink" href="#code.compile_command" title="永久链接至目标">¶</a></dt>
+<dd><p>Compile a command and determine whether it is incomplete.</p>
+<p>Arguments:</p>
+<p>source &#8211; the source string; may contain n characters
+filename &#8211; optional filename from which source was read; default</p>
+<blockquote>
+<div>&#8220;&lt;input&gt;&#8221;</div></blockquote>
+<p>symbol &#8211; optional grammar start symbol; &#8220;single&#8221; (default) or &#8220;eval&#8221;</p>
+<p>Return value / exceptions raised:</p>
+<ul class="simple">
+<li>Return a code object if the command is complete and valid</li>
+<li>Return None if the command is incomplete</li>
+<li>Raise SyntaxError, ValueError or OverflowError if the command is a
+syntax error (OverflowError and ValueError can be produced by
+malformed literals).</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">code package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#code-call-module">code.call module</a></li>
+<li><a class="reference internal" href="#code-callback-module">code.callback module</a></li>
+<li><a class="reference internal" href="#module-code">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python 模块索引"
+             >模块</a> |</li>
+        <li><a href="index.html">quantapi 0.1 文档</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+    </div>
+  </body>
+</html>

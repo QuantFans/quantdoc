@@ -1,0 +1,30 @@
+code package
+============
+
+Submodules
+----------
+
+code.call module
+----------------
+
+.. automodule:: code.call
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+code.callback module
+--------------------
+
+.. automodule:: code.callback
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: code
+    :members:
+    :undoc-members:
+    :show-inheritance:

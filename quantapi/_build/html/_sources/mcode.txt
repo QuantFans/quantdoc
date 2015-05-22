@@ -1,0 +1,18 @@
+mcode package
+=============
+
+主调函数
+-----------------
+
+.. automodule:: mcode.call
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+回调函数
+---------------------
+
+.. automodule:: mcode.callback
+    :members:
+    :undoc-members:
+    :show-inheritance:
