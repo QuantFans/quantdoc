@@ -51,6 +51,24 @@
   <div class="section" id="module-quantapi">
 <span id="quantapi-module"></span><h1>quantapi module<a class="headerlink" href="#module-quantapi" title="永久链接至标题">¶</a></h1>
 <dl class="function">
+<dt id="quantapi.qcancel_data">
+<tt class="descclassname">quantapi.</tt><tt class="descname">qcancel_data</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.qcancel_data" title="永久链接至目标">¶</a></dt>
+<dd><p>取消价格数据订阅。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>contract</strong> (<em>str</em>) &#8211; 合约编号。</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">如果失败则返回负数，为错误编码。成功返回0。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="quantapi.qcancel_order">
 <tt class="descclassname">quantapi.</tt><tt class="descname">qcancel_order</tt><big>(</big><em>order_id</em>, <em>logon_id=None</em>, <em>callback=None</em><big>)</big><a class="headerlink" href="#quantapi.qcancel_order" title="永久链接至目标">¶</a></dt>
 <dd><p>取消委托。</p>
@@ -70,24 +88,6 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">int</p>
 </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="quantapi.qcanceldata">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qcanceldata</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.qcanceldata" title="永久链接至目标">¶</a></dt>
-<dd><p>取消价格数据订阅。</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>contract</strong> (<em>str</em>) &#8211; 合约编号。</td>
-</tr>
-<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">如果失败则返回负数，为错误编码。成功返回0。</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>

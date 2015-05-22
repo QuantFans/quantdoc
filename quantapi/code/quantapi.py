@@ -77,7 +77,7 @@ def qreqdata(contract, callback):
     pass
 
 
-def qcanceldata(contract):
+def qcancel_data(contract):
     """ 取消价格数据订阅。
     
        :param str contract: 合约编号。
