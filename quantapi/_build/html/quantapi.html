@@ -50,9 +50,50 @@
             
   <div class="section" id="module-quantapi">
 <span id="quantapi-module"></span><h1>quantapi module<a class="headerlink" href="#module-quantapi" title="永久链接至标题">¶</a></h1>
-<dl class="function">
-<dt id="quantapi.qcancel_data">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qcancel_data</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.qcancel_data" title="永久链接至目标">¶</a></dt>
+<dl class="class">
+<dt id="quantapi.QAPI">
+<em class="property">class </em><tt class="descclassname">quantapi.</tt><tt class="descname">QAPI</tt><a class="headerlink" href="#quantapi.QAPI" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>交易接口类</p>
+<dl class="method">
+<dt id="quantapi.QAPI.on_orderstatus">
+<tt class="descname">on_orderstatus</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.on_orderstatus" title="永久链接至目标">¶</a></dt>
+<dd><p>委托成交回调函数。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>order</strong> (<em>Order</em>) &#8211; <p>订单成交信息。字段包括：</p>
+<p>price: 当前价格。</p>
+<p>buy1: 买一</p>
+<p>sell1: 卖一</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantapi.QAPI.on_tickprice">
+<tt class="descname">on_tickprice</tt><big>(</big><em>tick</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.on_tickprice" title="永久链接至目标">¶</a></dt>
+<dd><p>tick数据回调函数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>tick</strong> (<em>TickData</em>) &#8211; <p>tick数据信息。字段包括：</p>
+<p>price: 当前价格。</p>
+<p>buy1: 买一</p>
+<p>sell1: 卖一</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantapi.QAPI.qcancel_data">
+<tt class="descname">qcancel_data</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qcancel_data" title="永久链接至目标">¶</a></dt>
 <dd><p>取消价格数据订阅。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -68,9 +109,9 @@
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="quantapi.qcancel_order">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qcancel_order</tt><big>(</big><em>order_id</em>, <em>logon_id=None</em>, <em>callback=None</em><big>)</big><a class="headerlink" href="#quantapi.qcancel_order" title="永久链接至目标">¶</a></dt>
+<dl class="method">
+<dt id="quantapi.QAPI.qcancel_order">
+<tt class="descname">qcancel_order</tt><big>(</big><em>order_id</em>, <em>logon_id=None</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qcancel_order" title="永久链接至目标">¶</a></dt>
 <dd><p>取消委托。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -79,23 +120,23 @@
 <tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first simple">
 <li><strong>order_id</strong> (<em>int</em>) &#8211; 订单编号。</li>
 <li><strong>logon_id</strong> (<em>int</em>) &#8211; 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。</li>
-<li><strong>callback</strong> (<em>function</em>) &#8211; 撤单成功后调用的函数。</li>
+<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在成功后返回。否则函数会立即返回，并在成功后调用回调函数。</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first">如果失败则返回负数，为错误编码。成功返回0。</p>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first">返回字典，字段：&#8217;error_code&#8217; 错误编码，0表示成功；</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">int</p>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="quantapi.qlogon">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qlogon</tt><big>(</big><em>broker_id</em>, <em>user_id</em>, <em>password</em>, <em>api_type='ctp'</em><big>)</big><a class="headerlink" href="#quantapi.qlogon" title="永久链接至目标">¶</a></dt>
+<dl class="method">
+<dt id="quantapi.QAPI.qlogon">
+<tt class="descname">qlogon</tt><big>(</big><em>broker_id</em>, <em>user_id</em>, <em>password</em>, <em>api_type='ctp'</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qlogon" title="永久链接至目标">¶</a></dt>
 <dd><p>登录交易帐号。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -119,9 +160,9 @@
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="quantapi.qlogout">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qlogout</tt><big>(</big><em>logon_id</em><big>)</big><a class="headerlink" href="#quantapi.qlogout" title="永久链接至目标">¶</a></dt>
+<dl class="method">
+<dt id="quantapi.QAPI.qlogout">
+<tt class="descname">qlogout</tt><big>(</big><em>logon_id</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qlogout" title="永久链接至目标">¶</a></dt>
 <dd><p>退出帐号。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -137,9 +178,9 @@
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="quantapi.qorder">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qorder</tt><big>(</big><em>contract</em>, <em>trade_side</em>, <em>price</em>, <em>quantity</em>, <em>order_type='LMT'</em>, <em>hedge_type='SPEC'</em>, <em>logon_id=None</em>, <em>callback=None</em><big>)</big><a class="headerlink" href="#quantapi.qorder" title="永久链接至目标">¶</a></dt>
+<dl class="method">
+<dt id="quantapi.QAPI.qorder">
+<tt class="descname">qorder</tt><big>(</big><em>contract</em>, <em>trade_side</em>, <em>price</em>, <em>quantity</em>, <em>order_type='LMT'</em>, <em>hedge_type='SPEC'</em>, <em>logon_id=None</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qorder" title="永久链接至目标">¶</a></dt>
 <dd><p>委托下单。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -153,23 +194,23 @@
 <li><strong>order_type</strong> (<em>str</em>) &#8211; 订单成交类型， 可取：0/&#8217;LMT&#8217; - 限价单， 1/&#8217;MKT&#8217; - 市价单。</li>
 <li><strong>hedge_type</strong> (<em>str</em>) &#8211; 交易类型， 可取：0/&#8217;SPEC&#8217; - 投机(默认值)，1/&#8217;HEDG&#8217; - 套保。</li>
 <li><strong>logon_id</strong> (<em>int</em>) &#8211; 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。</li>
-<li><strong>callback</strong> (<em>function</em>) &#8211; 成交后调用的函数。</li>
+<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数。</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first">如果失败则返回负数，为错误编码。成功返回委托编号。</p>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first">返回字典，字段：&#8217;error_code&#8217; 错误编码，0表示成功； 如果是同步调用，还返回：&#8217;price&#8217; 成交价格，&#8217;datetime&#8217; 成交时间..</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">int</p>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="quantapi.qquery">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qquery</tt><big>(</big><em>qrycode</em>, <em>logon_id=None</em>, <em>request_id=None</em>, <em>order_id=None</em>, <em>contract=None</em><big>)</big><a class="headerlink" href="#quantapi.qquery" title="永久链接至目标">¶</a></dt>
+<dl class="method">
+<dt id="quantapi.QAPI.qquery">
+<tt class="descname">qquery</tt><big>(</big><em>qrycode</em>, <em>logon_id=None</em>, <em>request_id=None</em>, <em>order_id=None</em>, <em>contract=None</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qquery" title="永久链接至目标">¶</a></dt>
 <dd><p>查询资金，持仓，委托情况等。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -181,22 +222,27 @@
 <li><strong>request_id</strong> (<em>int</em>) &#8211; 委托编号，委托查询的时候使用。</li>
 <li><strong>order_id</strong> (<em>int</em>) &#8211; 订单编号，查询特定订单的成交信息。</li>
 <li><strong>contract</strong> (<em>str</em>) &#8211; 合约编号，持仓查询的时候使用。</li>
+<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在成功后返回。
+否则函数会立即返回，并在成功后调用回调函数。</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first">查询结果。</p>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first"><p>返回字典，字段：&#8217;error_code&#8217; 错误编码，0表示成功； 如果是同步调用且</p>
+<p>是资金查询：还返回：&#8217;cash&#8217; 当前权益</p>
+<p>是持仓查询：还返回：&#8217;price&#8217; 成交价格，&#8217;datetime&#8217; 成交时间..</p>
+</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">object</p>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">dict</p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="quantapi.qreqdata">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qreqdata</tt><big>(</big><em>contract</em>, <em>callback</em><big>)</big><a class="headerlink" href="#quantapi.qreqdata" title="永久链接至目标">¶</a></dt>
+<dl class="method">
+<dt id="quantapi.QAPI.qreqdata">
+<tt class="descname">qreqdata</tt><big>(</big><em>contract</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qreqdata" title="永久链接至目标">¶</a></dt>
 <dd><p>数据订阅, 成功后每隔一定的时间callback函数会被调用。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -204,7 +250,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first simple">
 <li><strong>contract</strong> (<em>str</em>) &#8211; 合约编号。</li>
-<li><strong>callback</strong> (<em>function</em>) &#8211; 数据到达后调用的回调函数。</li>
+<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在接收到数据后返回。</li>
 </ul>
 </td>
 </tr>
@@ -218,10 +264,10 @@
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="quantapi.qreqdata_now">
-<tt class="descclassname">quantapi.</tt><tt class="descname">qreqdata_now</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.qreqdata_now" title="永久链接至目标">¶</a></dt>
-<dd><p>获取当前价格数据,一次性订阅。</p>
+<dl class="method">
+<dt id="quantapi.QAPI.qreqdata_now">
+<tt class="descname">qreqdata_now</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qreqdata_now" title="永久链接至目标">¶</a></dt>
+<dd><p>获取当前价格数据,一次性同步订阅。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -234,6 +280,8 @@
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
