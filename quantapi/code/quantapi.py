@@ -36,7 +36,7 @@ class QAPI(object):
            :param str order_type:  订单成交类型， 可取：0/'LMT' - 限价单， 1/'MKT' - 市价单。
            :param str hedge_type:  交易类型， 可取：0/'SPEC' - 投机(默认值)，1/'HEDG' - 套保。
            :param int logon_id: 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。
-           :param bool syn: 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数。
+           :param bool syn: 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数 :meth:`.QAPI.on_orderstatus`。
            :return: 返回字典，字段：'error_code' 错误编码，0表示成功； 如果是同步调用，还返回：'price' 成交价格，'datetime' 成交时间..
            :rtype: dict
         """
@@ -47,7 +47,7 @@ class QAPI(object):
         
            :param int order_id: 订单编号。
            :param int logon_id: 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。
-           :param bool syn: 是否同步调用。如果取True，则会在成功后返回。否则函数会立即返回，并在成功后调用回调函数。
+           :param bool syn: 是否同步调用。如果取True，则会在成功后返回。否则函数会立即返回，并在成功后调用回调函数 :meth:`.QAPI.on_cancelorder`。
            :return: 返回字典，字段：'error_code' 错误编码，0表示成功；
            :rtype: dict
         """
@@ -65,15 +65,15 @@ class QAPI(object):
                             否则函数会立即返回，并在成功后调用回调函数。
            :return: 返回字典，字段：'error_code' 错误编码，0表示成功； 如果是同步调用且
 
-                    是资金查询：还返回：'cash' 当前权益
+                    是资金查询还返回：'cash' 当前权益.
 
-                    是持仓查询：还返回：'price' 成交价格，'datetime' 成交时间..
+                    是持仓查询还返回：'contract' 合约编号，'price' 成交价格，'datetime' 成交时间.
            :rtype: dict
         """
         pass
 
-    def qreqdata(contract, syn=True):
-        """ 数据订阅, 成功后每隔一定的时间callback函数会被调用。
+    def qreqtick(contract, syn=True):
+        """ 数据订阅, 成功后每隔一定的时间回调函数 :meth:`.QAPI.on_tickprice` 会被调用。
         
            :param str contract: 合约编号。
            :param bool syn: 是否同步调用。如果取True，则会在接收到数据后返回。
@@ -111,7 +111,7 @@ class QAPI(object):
 
                                  sell1: 卖一
         """
-        pass
+        print(tick)
 
     def on_orderstatus(self, order):
         """ 委托成交回调函数。
@@ -124,6 +124,17 @@ class QAPI(object):
 
                                  sell1: 卖一
         """
-        pass
+        print(order)
 
+    def on_cancelorder(self, order):
+        """ 撤单成功回调函数。
+        
+           :param Order order: 订单成交信息。字段包括：
 
+                                 price: 当前价格。
+
+                                 buy1: 买一
+
+                                 sell1: 卖一
+        """
+        print(order)
