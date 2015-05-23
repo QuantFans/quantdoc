@@ -74,17 +74,16 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="quantapi.QAPI.on_orderstatus">
-<tt class="descname">on_orderstatus</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.on_orderstatus" title="永久链接至目标">¶</a></dt>
-<dd><p>委托成交回调函数。</p>
+<dt id="quantapi.QAPI.on_query">
+<tt class="descname">on_query</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.on_query" title="永久链接至目标">¶</a></dt>
+<dd><p>查询结果回调函数</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>order</strong> (<em>Order</em>) &#8211; <p>订单成交信息。字段包括：</p>
-<p>price: 当前价格。</p>
-<p>buy1: 买一</p>
-<p>sell1: 卖一</p>
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) &#8211; <p>查询结果，字段：&#8217;qrycode&#8217; 查询类型；如果</p>
+<p>是资金查询还返回：&#8217;cash&#8217; 当前权益.</p>
+<p>是持仓查询还返回：&#8217;contract&#8217; 合约编号，&#8217;price&#8217; 成交价格，&#8217;datetime&#8217; 成交时间.</p>
 </td>
 </tr>
 </tbody>
@@ -100,6 +99,24 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>tick</strong> (<em>TickData</em>) &#8211; <p>tick数据信息。字段包括：</p>
+<p>price: 当前价格。</p>
+<p>buy1: 买一</p>
+<p>sell1: 卖一</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantapi.QAPI.on_tradestatus">
+<tt class="descname">on_tradestatus</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.on_tradestatus" title="永久链接至目标">¶</a></dt>
+<dd><p>委托成交回调函数。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>order</strong> (<em>Order</em>) &#8211; <p>订单成交信息。字段包括：</p>
 <p>price: 当前价格。</p>
 <p>buy1: 买一</p>
 <p>sell1: 卖一</p>
@@ -212,7 +229,7 @@
 <li><strong>order_type</strong> (<em>str</em>) &#8211; 订单成交类型， 可取：0/&#8217;LMT&#8217; - 限价单， 1/&#8217;MKT&#8217; - 市价单。</li>
 <li><strong>hedge_type</strong> (<em>str</em>) &#8211; 交易类型， 可取：0/&#8217;SPEC&#8217; - 投机(默认值)，1/&#8217;HEDG&#8217; - 套保。</li>
 <li><strong>logon_id</strong> (<em>int</em>) &#8211; 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。</li>
-<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数 <a class="reference internal" href="#quantapi.QAPI.on_orderstatus" title="quantapi.QAPI.on_orderstatus"><tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_orderstatus()</span></tt></a>。</li>
+<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数 <tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_orderstatus()</span></tt>。</li>
 </ul>
 </td>
 </tr>
@@ -241,7 +258,7 @@
 <li><strong>order_id</strong> (<em>int</em>) &#8211; 订单编号，查询特定订单的成交信息。</li>
 <li><strong>contract</strong> (<em>str</em>) &#8211; 合约编号，持仓查询的时候使用。</li>
 <li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在成功后返回。
-否则函数会立即返回，并在成功后调用回调函数。</li>
+否则函数会立即返回，并在成功后调用回调函数 <a class="reference internal" href="#quantapi.QAPI.on_query" title="quantapi.QAPI.on_query"><tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_query()</span></tt></a>。</li>
 </ul>
 </td>
 </tr>

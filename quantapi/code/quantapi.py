@@ -62,7 +62,7 @@ class QAPI(object):
            :param int order_id: 订单编号，查询特定订单的成交信息。
            :param str contract: 合约编号，持仓查询的时候使用。
            :param bool syn: 是否同步调用。如果取True，则会在成功后返回。
-                            否则函数会立即返回，并在成功后调用回调函数。
+                            否则函数会立即返回，并在成功后调用回调函数 :meth:`.QAPI.on_query`。
            :return: 返回字典，字段：'error_code' 错误编码，0表示成功； 如果是同步调用且
 
                     是资金查询还返回：'cash' 当前权益.
@@ -113,16 +113,16 @@ class QAPI(object):
         """
         print(tick)
 
-    def on_orderstatus(self, order):
+    def on_tradestatus(self, order):
         """ 委托成交回调函数。
         
            :param Order order: 订单成交信息。字段包括：
 
-                                 price: 当前价格。
+                               price: 当前价格。
 
-                                 buy1: 买一
+                               buy1: 买一
 
-                                 sell1: 卖一
+                               sell1: 卖一
         """
         print(order)
 
@@ -138,3 +138,14 @@ class QAPI(object):
                                  sell1: 卖一
         """
         print(order)
+
+    def on_query(self, data):
+        """ 查询结果回调函数
+        
+           :param dict data: 查询结果，字段：'qrycode' 查询类型；如果
+
+                            是资金查询还返回：'cash' 当前权益.
+
+                            是持仓查询还返回：'contract' 合约编号，'price' 成交价格，'datetime' 成交时间.
+        """
+        pass
