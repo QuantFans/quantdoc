@@ -110,24 +110,6 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="quantapi.QAPI.qcancel_data">
-<tt class="descname">qcancel_data</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qcancel_data" title="永久链接至目标">¶</a></dt>
-<dd><p>取消价格数据订阅。</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>contract</strong> (<em>str</em>) &#8211; 合约编号。</td>
-</tr>
-<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">如果失败则返回负数，为错误编码。成功返回0。</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="quantapi.QAPI.qcancel_order">
 <tt class="descname">qcancel_order</tt><big>(</big><em>order_id</em>, <em>logon_id=None</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qcancel_order" title="永久链接至目标">¶</a></dt>
 <dd><p>取消委托。</p>
@@ -147,6 +129,24 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">dict</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantapi.QAPI.qcancel_tick">
+<tt class="descname">qcancel_tick</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qcancel_tick" title="永久链接至目标">¶</a></dt>
+<dd><p>取消价格数据订阅。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>contract</strong> (<em>str</em>) &#8211; 合约编号。</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">如果失败则返回负数，为错误编码。成功返回0。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -259,8 +259,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="quantapi.QAPI.qreqdata_now">
-<tt class="descname">qreqdata_now</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qreqdata_now" title="永久链接至目标">¶</a></dt>
+<dt id="quantapi.QAPI.qreq1tick">
+<tt class="descname">qreq1tick</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qreq1tick" title="永久链接至目标">¶</a></dt>
 <dd><p>获取当前价格数据,一次性同步订阅。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

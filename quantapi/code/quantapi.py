@@ -82,7 +82,7 @@ class QAPI(object):
         """
         pass
 
-    def qcancel_data(contract):
+    def qcancel_tick(contract):
         """ 取消价格数据订阅。
         
            :param str contract: 合约编号。
@@ -91,7 +91,7 @@ class QAPI(object):
         """
         pass
 
-    def qreqdata_now(contract):
+    def qreq1tick(contract):
         """ 获取当前价格数据,一次性同步订阅。
         
            :param str contract: 合约编号。
