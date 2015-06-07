@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quantapi module &mdash; quantapi 0.1 文档</title>
+    <title>交易接口 &mdash; quantapi 0.1 文档</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -49,7 +49,7 @@
           <div class="body">
             
   <div class="section" id="module-quantapi">
-<span id="quantapi-module"></span><h1>quantapi module<a class="headerlink" href="#module-quantapi" title="永久链接至标题">¶</a></h1>
+<span id="id1"></span><h1>交易接口<a class="headerlink" href="#module-quantapi" title="永久链接至标题">¶</a></h1>
 <dl class="class">
 <dt id="quantapi.QAPI">
 <em class="property">class </em><tt class="descclassname">quantapi.</tt><tt class="descname">QAPI</tt><a class="headerlink" href="#quantapi.QAPI" title="永久链接至目标">¶</a></dt>
@@ -128,7 +128,7 @@
 
 <dl class="method">
 <dt id="quantapi.QAPI.qcancel_order">
-<tt class="descname">qcancel_order</tt><big>(</big><em>order_id</em>, <em>logon_id=None</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qcancel_order" title="永久链接至目标">¶</a></dt>
+<tt class="descname">qcancel_order</tt><big>(</big><em>order_id</em>, <em>logon_id=None</em>, <em>sync=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qcancel_order" title="永久链接至目标">¶</a></dt>
 <dd><p>取消委托。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -137,7 +137,7 @@
 <tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first simple">
 <li><strong>order_id</strong> (<em>int</em>) &#8211; 订单编号。</li>
 <li><strong>logon_id</strong> (<em>int</em>) &#8211; 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。</li>
-<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在成功后返回。否则函数会立即返回，并在成功后调用回调函数 <a class="reference internal" href="#quantapi.QAPI.on_cancelorder" title="quantapi.QAPI.on_cancelorder"><tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_cancelorder()</span></tt></a>。</li>
+<li><strong>sync</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在成功后返回。否则函数会立即返回，并在成功后调用回调函数 <a class="reference internal" href="#quantapi.QAPI.on_cancelorder" title="quantapi.QAPI.on_cancelorder"><tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_cancelorder()</span></tt></a>。</li>
 </ul>
 </td>
 </tr>
@@ -215,7 +215,7 @@
 
 <dl class="method">
 <dt id="quantapi.QAPI.qorder">
-<tt class="descname">qorder</tt><big>(</big><em>contract</em>, <em>trade_side</em>, <em>price</em>, <em>quantity</em>, <em>order_type='LMT'</em>, <em>hedge_type='SPEC'</em>, <em>logon_id=None</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qorder" title="永久链接至目标">¶</a></dt>
+<tt class="descname">qorder</tt><big>(</big><em>contract</em>, <em>trade_side</em>, <em>price</em>, <em>quantity</em>, <em>order_type='LMT'</em>, <em>hedge_type='SPEC'</em>, <em>logon_id=None</em>, <em>sync=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qorder" title="永久链接至目标">¶</a></dt>
 <dd><p>委托下单。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -229,7 +229,7 @@
 <li><strong>order_type</strong> (<em>str</em>) &#8211; 订单成交类型， 可取：0/&#8217;LMT&#8217; - 限价单， 1/&#8217;MKT&#8217; - 市价单。</li>
 <li><strong>hedge_type</strong> (<em>str</em>) &#8211; 交易类型， 可取：0/&#8217;SPEC&#8217; - 投机(默认值)，1/&#8217;HEDG&#8217; - 套保。</li>
 <li><strong>logon_id</strong> (<em>int</em>) &#8211; 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。</li>
-<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数 <tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_orderstatus()</span></tt>。</li>
+<li><strong>sync</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数 <tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_orderstatus()</span></tt>。</li>
 </ul>
 </td>
 </tr>
@@ -245,7 +245,7 @@
 
 <dl class="method">
 <dt id="quantapi.QAPI.qquery">
-<tt class="descname">qquery</tt><big>(</big><em>qrycode</em>, <em>logon_id=None</em>, <em>request_id=None</em>, <em>order_id=None</em>, <em>contract=None</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qquery" title="永久链接至目标">¶</a></dt>
+<tt class="descname">qquery</tt><big>(</big><em>qrycode</em>, <em>logon_id=None</em>, <em>request_id=None</em>, <em>order_id=None</em>, <em>contract=None</em>, <em>sync=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qquery" title="永久链接至目标">¶</a></dt>
 <dd><p>查询资金，持仓，委托情况等。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -257,7 +257,7 @@
 <li><strong>request_id</strong> (<em>int</em>) &#8211; 委托编号，委托查询的时候使用。</li>
 <li><strong>order_id</strong> (<em>int</em>) &#8211; 订单编号，查询特定订单的成交信息。</li>
 <li><strong>contract</strong> (<em>str</em>) &#8211; 合约编号，持仓查询的时候使用。</li>
-<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在成功后返回。
+<li><strong>sync</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在成功后返回。
 否则函数会立即返回，并在成功后调用回调函数 <a class="reference internal" href="#quantapi.QAPI.on_query" title="quantapi.QAPI.on_query"><tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_query()</span></tt></a>。</li>
 </ul>
 </td>
@@ -276,26 +276,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="quantapi.QAPI.qreq1tick">
-<tt class="descname">qreq1tick</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qreq1tick" title="永久链接至目标">¶</a></dt>
-<dd><p>获取当前价格数据,一次性同步订阅。</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>contract</strong> (<em>str</em>) &#8211; 合约编号。</td>
-</tr>
-<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">当前数据</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">object</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="quantapi.QAPI.qreqtick">
-<tt class="descname">qreqtick</tt><big>(</big><em>contract</em>, <em>syn=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qreqtick" title="永久链接至目标">¶</a></dt>
+<tt class="descname">qreqtick</tt><big>(</big><em>contract</em>, <em>snapshot=False</em>, <em>sync=True</em><big>)</big><a class="headerlink" href="#quantapi.QAPI.qreqtick" title="永久链接至目标">¶</a></dt>
 <dd><p>数据订阅, 成功后每隔一定的时间回调函数 <a class="reference internal" href="#quantapi.QAPI.on_tickprice" title="quantapi.QAPI.on_tickprice"><tt class="xref py py-meth docutils literal"><span class="pre">QAPI.on_tickprice()</span></tt></a> 会被调用。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -303,7 +285,8 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first simple">
 <li><strong>contract</strong> (<em>str</em>) &#8211; 合约编号。</li>
-<li><strong>syn</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在接收到数据后返回。</li>
+<li><strong>snapshot</strong> (<em>bool</em>) &#8211; 是否是一次性查询。</li>
+<li><strong>sync</strong> (<em>bool</em>) &#8211; 是否同步调用。如果取True，则会在接收到数据后返回。</li>
 </ul>
 </td>
 </tr>

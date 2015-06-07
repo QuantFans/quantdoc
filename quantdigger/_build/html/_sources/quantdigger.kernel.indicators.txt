@@ -1,18 +1,7 @@
-quantdigger.kernel.indicators package
+指标模块
 =====================================
 
-Submodules
-----------
-
-quantdigger.kernel.indicators.common module
--------------------------------------------
-
-.. automodule:: quantdigger.kernel.indicators.common
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-quantdigger.kernel.indicators.indicator module
+指标基类
 ----------------------------------------------
 
 .. automodule:: quantdigger.kernel.indicators.indicator
@@ -20,11 +9,10 @@ quantdigger.kernel.indicators.indicator module
     :undoc-members:
     :show-inheritance:
 
+常用指标
+-------------------------------------------
 
-Module contents
----------------
-
-.. automodule:: quantdigger.kernel.indicators
+.. automodule:: quantdigger.kernel.indicators.common
     :members:
     :undoc-members:
     :show-inheritance:

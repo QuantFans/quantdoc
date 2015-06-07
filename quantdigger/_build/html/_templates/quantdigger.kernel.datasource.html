@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.datasource package &mdash; quantdigger 0.14 文档</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.14',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.14 文档" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="quantdigger-kernel-datasource-package">
+<h1>quantdigger.kernel.datasource package<a class="headerlink" href="#quantdigger-kernel-datasource-package" title="永久链接至标题">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-quantdigger.kernel.datasource.data">
+<span id="quantdigger-kernel-datasource-data-module"></span><h2>quantdigger.kernel.datasource.data module<a class="headerlink" href="#module-quantdigger.kernel.datasource.data" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.datasource.data.DataManager">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">DataManager</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.DataManager" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datasource.data.LocalData">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">LocalData</tt><a class="headerlink" href="#quantdigger.kernel.datasource.data.LocalData" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>本地数据数据接口类。</p>
+<p>包括数据，合约信息等。</p>
+<dl class="method">
+<dt id="quantdigger.kernel.datasource.data.LocalData.loadContractsInfo">
+<tt class="descname">loadContractsInfo</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.LocalData.loadContractsInfo" title="永久链接至目标">¶</a></dt>
+<dd><p>合约信息</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.datasource.data.LocalData.loadTickData">
+<tt class="descname">loadTickData</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.LocalData.loadTickData" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.datasource.data.LocalData.load_data">
+<tt class="descname">load_data</tt><big>(</big><em>pcontract</em>, <em>dt_start=None</em>, <em>dt_end=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.LocalData.load_data" title="永久链接至目标">¶</a></dt>
+<dd><p>加载本地周期合约数据.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>pcontract (PContract): 周期合约</dd>
+<dt>Returns:</dt>
+<dd>DataFrame.</dd>
+<dt>Raises:</dt>
+<dd>FileDoesNotExist</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datasource.data.QuoteCache">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">QuoteCache</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.QuoteCache" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>docstring for QuoteCache</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.process_tushare_data">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">process_tushare_data</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.process_tushare_data" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.datasource">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-quantdigger.kernel.datasource" title="永久链接至标题">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">quantdigger.kernel.datasource package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.datasource.data">quantdigger.kernel.datasource.data module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.datasource">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             >索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+    </div>
+  </body>
+</html>

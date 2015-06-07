@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger package &mdash; quantdigger 0.14 文档</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.14',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.14 文档" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="quantdigger-package">
+<h1>quantdigger package<a class="headerlink" href="#quantdigger-package" title="永久链接至标题">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="永久链接至标题">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quantdigger.kernel.html">quantdigger.kernel package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.datasource.html">quantdigger.kernel.datasource package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.datasource.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.datasource.html#module-quantdigger.kernel.datasource.data">quantdigger.kernel.datasource.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.datasource.html#module-quantdigger.kernel.datasource">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html">quantdigger.kernel.engine package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#quantdigger-kernel-engine-api-module">quantdigger.kernel.engine.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.blotter">quantdigger.kernel.engine.blotter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.data">quantdigger.kernel.engine.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.event">quantdigger.kernel.engine.event module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.exchange">quantdigger.kernel.engine.exchange module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.execute_unit">quantdigger.kernel.engine.execute_unit module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.performance">quantdigger.kernel.engine.performance module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.series">quantdigger.kernel.engine.series module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.strategy">quantdigger.kernel.engine.strategy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#quantdigger-kernel-engine-trader-module">quantdigger.kernel.engine.trader module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.indicators.html">quantdigger.kernel.indicators package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators.common">quantdigger.kernel.indicators.common module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators.indicator">quantdigger.kernel.indicators.indicator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#module-quantdigger.kernel.datastruct">quantdigger.kernel.datastruct module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#module-quantdigger.kernel">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quantdigger.plugin.html">quantdigger.plugin package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html">quantdigger.plugin.mplotwidgets package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#quantdigger-plugin-mplotwidgets-indicator-module">quantdigger.plugin.mplotwidgets.indicator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#quantdigger-plugin-mplotwidgets-main-module">quantdigger.plugin.mplotwidgets.main module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets.stock_plot">quantdigger.plugin.mplotwidgets.stock_plot module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets.techmplot">quantdigger.plugin.mplotwidgets.techmplot module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets.widgets">quantdigger.plugin.mplotwidgets.widgets module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html">quantdigger.plugin.qtwidgets package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html#quantdigger-plugin-qtwidgets-techwidget-module">quantdigger.plugin.qtwidgets.techwidget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html#module-quantdigger.plugin.qtwidgets">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#quantdigger-plugin-plugin-interface-module">quantdigger.plugin.plugin_interface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#module-quantdigger.plugin">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-quantdigger.errors">
+<span id="quantdigger-errors-module"></span><h2>quantdigger.errors module<a class="headerlink" href="#module-quantdigger.errors" title="永久链接至标题">¶</a></h2>
+<dl class="exception">
+<dt id="quantdigger.errors.BadOrderParameters">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">BadOrderParameters</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.BadOrderParameters" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if any impossible parameters (nan, negative limit/stop)
+are passed to an order call.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.BadOrderParameters.msg">
+<tt class="descname">msg</tt><em class="property"> = '{msg}'</em><a class="headerlink" href="#quantdigger.errors.BadOrderParameters.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.BreakConstError">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">BreakConstError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.BreakConstError" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.BreakConstError.msg">
+<tt class="descname">msg</tt><em class="property"> = '\xe4\xb8\x8d\xe8\x83\xbd\xe5\xaf\xb9\xe5\xb8\xb8\xe9\x87\x8f\xe8\xb5\x8b\xe5\x80\xbc\xef\xbc\x81'</em><a class="headerlink" href="#quantdigger.errors.BreakConstError.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.DataAlignError">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">DataAlignError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.DataAlignError" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.DataAlignError.msg">
+<tt class="descname">msg</tt><em class="property"> = '\xe6\x95\xb0\xe6\x8d\xae\xe6\xb2\xa1\xe6\x9c\x89\xe5\xaf\xb9\xe9\xbd\x90\xef\xbc\x81'</em><a class="headerlink" href="#quantdigger.errors.DataAlignError.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.DataFormatError">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">DataFormatError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.DataFormatError" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.DataFormatError.msg">
+<tt class="descname">msg</tt><em class="property"> = '\xe9\x94\x99\xe8\xaf\xaf\xe7\x9a\x84\xe6\x95\xb0\xe6\x8d\xae\xe6\xa0\xbc\xe5\xbc\x8f\xef\xbc\x81'</em><a class="headerlink" href="#quantdigger.errors.DataFormatError.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.FileDoesNotExist">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">FileDoesNotExist</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.FileDoesNotExist" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>当本地文件不存在的时候触发。</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.FileDoesNotExist.msg">
+<tt class="descname">msg</tt><em class="property"> = '\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8\xe6\x96\x87\xe4\xbb\xb6:{file}'</em><a class="headerlink" href="#quantdigger.errors.FileDoesNotExist.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.IncompatibleHistoryFrequency">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">IncompatibleHistoryFrequency</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.IncompatibleHistoryFrequency" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised when a frequency is given to history which is not supported.
+At least, not yet.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.IncompatibleHistoryFrequency.msg">
+<tt class="descname">msg</tt><em class="property"> = &quot;Requested history at frequency '{frequency}' cannot be created with data\nat frequency '{data_frequency}'.&quot;</em><a class="headerlink" href="#quantdigger.errors.IncompatibleHistoryFrequency.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.OrderDuringInitialize">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">OrderDuringInitialize</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.OrderDuringInitialize" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if order is called during initialize()</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.OrderDuringInitialize.msg">
+<tt class="descname">msg</tt><em class="property"> = '{msg}'</em><a class="headerlink" href="#quantdigger.errors.OrderDuringInitialize.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.OverrideCommissionPostInit">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">OverrideCommissionPostInit</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.OverrideCommissionPostInit" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if a users script calls override_commission magic
+after the initialize method has returned.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.OverrideCommissionPostInit.msg">
+<tt class="descname">msg</tt><em class="property"> = 'You attempted to override commission outside of `initialize`. You may only call override_commission in your initialize method.'</em><a class="headerlink" href="#quantdigger.errors.OverrideCommissionPostInit.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.OverrideSlippagePostInit">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">OverrideSlippagePostInit</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.OverrideSlippagePostInit" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.OverrideSlippagePostInit.msg">
+<tt class="descname">msg</tt><em class="property"> = 'You attempted to override slippage outside of `initialize`. You may only call override_slippage in your initialize method.'</em><a class="headerlink" href="#quantdigger.errors.OverrideSlippagePostInit.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.PeriodTypeError">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">PeriodTypeError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.PeriodTypeError" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.PeriodTypeError.msg">
+<tt class="descname">msg</tt><em class="property"> = '\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8\xe8\xaf\xa5\xe5\x91\xa8\xe6\x9c\x9f\xef\xbc\x81'</em><a class="headerlink" href="#quantdigger.errors.PeriodTypeError.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.QuantDiggerError">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">QuantDiggerError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.QuantDiggerError" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.QuantDiggerError.msg">
+<tt class="descname">msg</tt><em class="property"> = None</em><a class="headerlink" href="#quantdigger.errors.QuantDiggerError.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.RegisterTradingControlPostInit">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">RegisterTradingControlPostInit</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.RegisterTradingControlPostInit" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.RegisterTradingControlPostInit.msg">
+<tt class="descname">msg</tt><em class="property"> = 'You attempted to set a trading control outside of `initialize`. Trading controls may only be set in your initialize method.'</em><a class="headerlink" href="#quantdigger.errors.RegisterTradingControlPostInit.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.SeriesIndexError">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">SeriesIndexError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.SeriesIndexError" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<dl class="attribute">
+<dt id="quantdigger.errors.SeriesIndexError.msg">
+<tt class="descname">msg</tt><em class="property"> = '\xe5\xba\x8f\xe5\x88\x97\xe5\x8f\x98\xe9\x87\x8f\xe7\xb4\xa2\xe5\xbc\x95\xe8\xb6\x8a\xe7\x95\x8c\xef\xbc\x81'</em><a class="headerlink" href="#quantdigger.errors.SeriesIndexError.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.TradingControlViolation">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">TradingControlViolation</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.TradingControlViolation" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if an order would violate a constraint set by a TradingControl.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.TradingControlViolation.msg">
+<tt class="descname">msg</tt><em class="property"> = 'Order for {amount} shares of {sid} violates trading constraint {constraint}.'</em><a class="headerlink" href="#quantdigger.errors.TradingControlViolation.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.TransactionVolumeExceedsOrder">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">TransactionVolumeExceedsOrder</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.TransactionVolumeExceedsOrder" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<blockquote>
+<div>Raised if a transact call returns a transaction with a volume greater than</div></blockquote>
+<p>the corresponding order.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.TransactionVolumeExceedsOrder.msg">
+<tt class="descname">msg</tt><em class="property"> = 'Transaction volume of {txn} exceeds the order volume of {order}.'</em><a class="headerlink" href="#quantdigger.errors.TransactionVolumeExceedsOrder.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.TransactionWithNoAmount">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">TransactionWithNoAmount</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.TransactionWithNoAmount" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if a transact call returns a transaction with zero amount.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.TransactionWithNoAmount.msg">
+<tt class="descname">msg</tt><em class="property"> = 'Transaction {txn} has an amount of zero.'</em><a class="headerlink" href="#quantdigger.errors.TransactionWithNoAmount.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.TransactionWithNoVolume">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">TransactionWithNoVolume</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.TransactionWithNoVolume" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if a transact call returns a transaction with zero volume.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.TransactionWithNoVolume.msg">
+<tt class="descname">msg</tt><em class="property"> = 'Transaction {txn} has a volume of zero.'</em><a class="headerlink" href="#quantdigger.errors.TransactionWithNoVolume.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.TransactionWithWrongDirection">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">TransactionWithWrongDirection</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.TransactionWithWrongDirection" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if a transact call returns a transaction with a direction that
+does not match the order.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.TransactionWithWrongDirection.msg">
+<tt class="descname">msg</tt><em class="property"> = 'Transaction {txn} not in same direction as corresponding order {order}.'</em><a class="headerlink" href="#quantdigger.errors.TransactionWithWrongDirection.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.UnsupportedCommissionModel">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">UnsupportedCommissionModel</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.UnsupportedCommissionModel" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if a user script calls the override_commission magic
+with a commission object that isn&#8217;t a PerShare, PerTrade or
+PerDollar commission</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.UnsupportedCommissionModel.msg">
+<tt class="descname">msg</tt><em class="property"> = 'You attempted to override commission with an unsupported class. Please use PerShare or PerTrade.'</em><a class="headerlink" href="#quantdigger.errors.UnsupportedCommissionModel.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.UnsupportedOrderParameters">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">UnsupportedOrderParameters</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.UnsupportedOrderParameters" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if a set of mutually exclusive parameters are passed to an order
+call.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.UnsupportedOrderParameters.msg">
+<tt class="descname">msg</tt><em class="property"> = '{msg}'</em><a class="headerlink" href="#quantdigger.errors.UnsupportedOrderParameters.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.UnsupportedSlippageModel">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">UnsupportedSlippageModel</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.UnsupportedSlippageModel" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised if a user script calls the override_slippage magic
+with a slipage object that isn&#8217;t a VolumeShareSlippage or
+FixedSlipapge</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.UnsupportedSlippageModel.msg">
+<tt class="descname">msg</tt><em class="property"> = 'You attempted to override slippage with an unsupported class. Please use VolumeShareSlippage or FixedSlippage.'</em><a class="headerlink" href="#quantdigger.errors.UnsupportedSlippageModel.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="quantdigger.errors.WrongDataForTransform">
+<em class="property">exception </em><tt class="descclassname">quantdigger.errors.</tt><tt class="descname">WrongDataForTransform</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.errors.WrongDataForTransform" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.html#quantdigger.errors.QuantDiggerError" title="quantdigger.errors.QuantDiggerError"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.errors.QuantDiggerError</span></tt></a></p>
+<p>Raised whenever a rolling transform is called on an event that
+does not have the necessary properties.</p>
+<dl class="attribute">
+<dt id="quantdigger.errors.WrongDataForTransform.msg">
+<tt class="descname">msg</tt><em class="property"> = '{transform} requires {fields}. Event cannot be processed.'</em><a class="headerlink" href="#quantdigger.errors.WrongDataForTransform.msg" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.util">
+<span id="quantdigger-util-module"></span><h2>quantdigger.util module<a class="headerlink" href="#module-quantdigger.util" title="永久链接至标题">¶</a></h2>
+<dl class="function">
+<dt id="quantdigger.util.pcontract">
+<tt class="descclassname">quantdigger.util.</tt><tt class="descname">pcontract</tt><big>(</big><em>contract</em>, <em>period</em><big>)</big><a class="headerlink" href="#quantdigger.util.pcontract" title="永久链接至目标">¶</a></dt>
+<dd><p>构建周期合约结构的便捷方式。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>contract (str): 合约如：&#8217;IF000.SHEF&#8217;
+period(str): 周期如：&#8216;10.Minute&#8217;</dd>
+<dt>Returns:</dt>
+<dd>PContract. 周期合约</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.util.stock">
+<tt class="descclassname">quantdigger.util.</tt><tt class="descname">stock</tt><big>(</big><em>code</em><big>)</big><a class="headerlink" href="#quantdigger.util.stock" title="永久链接至目标">¶</a></dt>
+<dd><p>构建周期合约结构的便捷方式。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>code (str): 股票代码</dd>
+<dt>Returns:</dt>
+<dd>PContract. 周期合约</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.util.time2int">
+<tt class="descclassname">quantdigger.util.</tt><tt class="descname">time2int</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#quantdigger.util.time2int" title="永久链接至目标">¶</a></dt>
+<dd><p>datetime to int</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-quantdigger" title="永久链接至标题">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">quantdigger package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-quantdigger.errors">quantdigger.errors module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.util">quantdigger.util module</a></li>
+<li><a class="reference internal" href="#module-quantdigger">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             >索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+    </div>
+  </body>
+</html>

@@ -26,7 +26,7 @@ class QAPI(object):
         """ 
         pass
 
-    def qorder(contract, trade_side, price, quantity, order_type='LMT', hedge_type='SPEC', logon_id=None, syn=True):
+    def qorder(contract, trade_side, price, quantity, order_type='LMT', hedge_type='SPEC', logon_id=None, sync=True):
         """ 委托下单。  
         
            :param str contract: 合约编号，如：'600000.SH'。 
@@ -36,24 +36,24 @@ class QAPI(object):
            :param str order_type:  订单成交类型， 可取：0/'LMT' - 限价单， 1/'MKT' - 市价单。
            :param str hedge_type:  交易类型， 可取：0/'SPEC' - 投机(默认值)，1/'HEDG' - 套保。
            :param int logon_id: 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。
-           :param bool syn: 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数 :meth:`.QAPI.on_orderstatus`。
+           :param bool sync: 是否同步调用。如果取True，则会在订单成交后返回。否则函数会立即返回，并在成交后调用回调函数 :meth:`.QAPI.on_orderstatus`。
            :return: 返回字典，字段：'error_code' 错误编码，0表示成功； 如果是同步调用，还返回：'price' 成交价格，'datetime' 成交时间..
            :rtype: dict
         """
         pass
 
-    def qcancel_order(order_id, logon_id=None, syn=True):
+    def qcancel_order(order_id, logon_id=None, sync=True):
         """ 取消委托。
         
            :param int order_id: 订单编号。
            :param int logon_id: 只有一个交易登录时，可以不输入logon_id， 否则一定需要输入。
-           :param bool syn: 是否同步调用。如果取True，则会在成功后返回。否则函数会立即返回，并在成功后调用回调函数 :meth:`.QAPI.on_cancelorder`。
+           :param bool sync: 是否同步调用。如果取True，则会在成功后返回。否则函数会立即返回，并在成功后调用回调函数 :meth:`.QAPI.on_cancelorder`。
            :return: 返回字典，字段：'error_code' 错误编码，0表示成功；
            :rtype: dict
         """
         pass
 
-    def qquery(qrycode, logon_id=None, request_id=None, order_id=None, contract=None, syn=True):
+    def qquery(qrycode, logon_id=None, request_id=None, order_id=None, contract=None, sync=True):
         """ 查询资金，持仓，委托情况等。
         
            :param str qrycode: qrycode 可取:0/'CAPITAL' 资金查询；1/'POSITION' 持仓查询； 2/'ORDER' 今日委托查询；3/'TRADE'  今日成交查询。
@@ -61,7 +61,7 @@ class QAPI(object):
            :param int request_id: 委托编号，委托查询的时候使用。
            :param int order_id: 订单编号，查询特定订单的成交信息。
            :param str contract: 合约编号，持仓查询的时候使用。
-           :param bool syn: 是否同步调用。如果取True，则会在成功后返回。
+           :param bool sync: 是否同步调用。如果取True，则会在成功后返回。
                             否则函数会立即返回，并在成功后调用回调函数 :meth:`.QAPI.on_query`。
            :return: 返回字典，字段：'error_code' 错误编码，0表示成功； 如果是同步调用且
 
@@ -72,11 +72,12 @@ class QAPI(object):
         """
         pass
 
-    def qreqtick(contract, syn=True):
-        """ 数据订阅, 成功后每隔一定的时间回调函数 :meth:`.QAPI.on_tickprice` 会被调用。
+    def qreqtick(contract, snapshot=False, sync=True):
+        """ 数据订阅, 成功后每隔一定的时间回调函数 :meth:`.QAPI.on_tick` 会被调用。
         
            :param str contract: 合约编号。
-           :param bool syn: 是否同步调用。如果取True，则会在接收到数据后返回。
+           :param bool snapshot: 是否是一次性查询。
+           :param bool sync: 是否同步调用。如果取True，则会在接收到数据后返回。
            :return: 如果失败则返回负数，为错误编码。成功返回0。
            :rtype: int
         """
@@ -91,16 +92,7 @@ class QAPI(object):
         """
         pass
 
-    def qreq1tick(contract):
-        """ 获取当前价格数据,一次性同步订阅。
-        
-           :param str contract: 合约编号。
-           :return: 当前数据
-           :rtype: object
-        """
-        pass
-
-    def on_tickprice(self, tick):
+    def on_tick(self, tick):
         """ tick数据回调函数
         
            :param TickData tick: tick数据信息。字段包括：

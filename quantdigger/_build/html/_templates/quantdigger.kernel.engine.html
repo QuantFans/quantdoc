@@ -1,0 +1,730 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.kernel.engine package &mdash; quantdigger 0.14 文档</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.14',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.14 文档" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="quantdigger-kernel-engine-package">
+<h1>quantdigger.kernel.engine package<a class="headerlink" href="#quantdigger-kernel-engine-package" title="永久链接至标题">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="quantdigger-kernel-engine-api-module">
+<h2>quantdigger.kernel.engine.api module<a class="headerlink" href="#quantdigger-kernel-engine-api-module" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.blotter">
+<span id="quantdigger-kernel-engine-blotter-module"></span><h2>quantdigger.kernel.engine.blotter module<a class="headerlink" href="#module-quantdigger.kernel.engine.blotter" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.engine.blotter.Blotter">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.blotter.</tt><tt class="descname">Blotter</tt><a class="headerlink" href="#quantdigger.kernel.engine.blotter.Blotter" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>订单管理</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.Blotter.update_fill">
+<tt class="descname">update_fill</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.Blotter.update_fill" title="永久链接至目标">¶</a></dt>
+<dd><p>Updates the portfolio current positions and holdings 
+from a FillEvent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.Blotter.update_signal">
+<tt class="descname">update_signal</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.Blotter.update_signal" title="永久链接至目标">¶</a></dt>
+<dd><p>Acts on a SignalEvent to generate new orders 
+based on the portfolio logic.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.blotter.DealPosition">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.blotter.</tt><tt class="descname">DealPosition</tt><big>(</big><em>buy_trans</em>, <em>sell_trans</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.DealPosition" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>开仓，平仓对</p>
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.blotter.DealPosition.close_datetime">
+<tt class="descname">close_datetime</tt><a class="headerlink" href="#quantdigger.kernel.engine.blotter.DealPosition.close_datetime" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.blotter.DealPosition.close_price">
+<tt class="descname">close_price</tt><a class="headerlink" href="#quantdigger.kernel.engine.blotter.DealPosition.close_price" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.blotter.DealPosition.open_datetime">
+<tt class="descname">open_datetime</tt><a class="headerlink" href="#quantdigger.kernel.engine.blotter.DealPosition.open_datetime" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.blotter.DealPosition.open_price">
+<tt class="descname">open_price</tt><a class="headerlink" href="#quantdigger.kernel.engine.blotter.DealPosition.open_price" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.DealPosition.profit">
+<tt class="descname">profit</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.DealPosition.profit" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.blotter.Positions">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.blotter.</tt><tt class="descname">Positions</tt><a class="headerlink" href="#quantdigger.kernel.engine.blotter.Positions" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>docstring for Positions</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.Positions.deposit">
+<tt class="descname">deposit</tt><big>(</big><em>new_price</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.Positions.deposit" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for pro</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.Positions.profit">
+<tt class="descname">profit</tt><big>(</big><em>new_price</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.Positions.profit" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for pro</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.blotter.</tt><tt class="descname">SimpleBlotter</tt><big>(</big><em>timeseries</em>, <em>events_pool</em>, <em>initial_capital=5000.0</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.kernel.engine.html#quantdigger.kernel.engine.blotter.Blotter" title="quantdigger.kernel.engine.blotter.Blotter"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.blotter.Blotter</span></tt></a></p>
+<p>The SimpleBlotter object is designed to send orders to
+a brokerage object with a constant quantity size blindly,
+i.e. without any risk management or position sizing. It is
+used to test simpler strategies such as BuyAndHoldStrategy.</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter.create_equity_curve_dataframe">
+<tt class="descname">create_equity_curve_dataframe</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter.create_equity_curve_dataframe" title="永久链接至目标">¶</a></dt>
+<dd><p>Creates a pandas DataFrame from the all_holdings
+list of dictionaries.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter.output_summary_stats">
+<tt class="descname">output_summary_stats</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter.output_summary_stats" title="永久链接至目标">¶</a></dt>
+<dd><p>Creates a list of summary statistics for the portfolio such
+as Sharpe Ratio and drawdown information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter.update_bar">
+<tt class="descname">update_bar</tt><big>(</big><em>bars</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter.update_bar" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for update_bar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter.update_datetime">
+<tt class="descname">update_datetime</tt><big>(</big><em>dt</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter.update_datetime" title="永久链接至目标">¶</a></dt>
+<dd><p>在新的价格数据来的时候触发。</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter.update_fill">
+<tt class="descname">update_fill</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter.update_fill" title="永久链接至目标">¶</a></dt>
+<dd><p>订单成交。
+Updates the portfolio current positions and holdings 
+from a FillEvent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter.update_signal">
+<tt class="descname">update_signal</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter.update_signal" title="永久链接至目标">¶</a></dt>
+<dd><p>处理交易系统产生的订单。
+Acts on a SignalEvent to generate new orders 
+based on the portfolio logic.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.blotter.SimpleBlotter.valid_order">
+<tt class="descname">valid_order</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.blotter.SimpleBlotter.valid_order" title="永久链接至目标">¶</a></dt>
+<dd><p>判断订单是否合法</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.data">
+<span id="quantdigger-kernel-engine-data-module"></span><h2>quantdigger.kernel.engine.data module<a class="headerlink" href="#module-quantdigger.kernel.engine.data" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.engine.data.DataHandler">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.data.</tt><tt class="descname">DataHandler</tt><a class="headerlink" href="#quantdigger.kernel.engine.data.DataHandler" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>DataHandler is an abstract base class providing an interface for
+all subsequent (inherited) data handlers (both live and historic).</p>
+<p>The goal of a (derived) DataHandler object is to output a generated
+set of bars (OLHCVI) for each symbol requested.</p>
+<p>This will replicate how a live strategy would function as current
+market data would be sent &#8220;down the pipe&#8221;. Thus a historic and live
+system will be treated identically by the rest of the backtesting suite.</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.data.DataHandler.get_latest_bars">
+<tt class="descname">get_latest_bars</tt><big>(</big><em>symbol</em>, <em>N=1</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.data.DataHandler.get_latest_bars" title="永久链接至目标">¶</a></dt>
+<dd><p>Returns the last N bars from the latest_symbol list,
+or fewer if less bars are available.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.data.DataHandler.update_bars">
+<tt class="descname">update_bars</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.data.DataHandler.update_bars" title="永久链接至目标">¶</a></dt>
+<dd><p>Pushes the latest bar to the latest symbol structure
+for all symbols in the symbol list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.data.HistoricCSVDataHandler">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.data.</tt><tt class="descname">HistoricCSVDataHandler</tt><big>(</big><em>events</em>, <em>csv_dir</em>, <em>symbol_list</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.data.HistoricCSVDataHandler" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.kernel.engine.html#quantdigger.kernel.engine.data.DataHandler" title="quantdigger.kernel.engine.data.DataHandler"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.data.DataHandler</span></tt></a></p>
+<p>HistoricCSVDataHandler is designed to read CSV files for
+each requested symbol from disk and provide an interface
+to obtain the &#8220;latest&#8221; bar in a manner identical to a live
+trading interface.</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.data.HistoricCSVDataHandler.get_latest_bars">
+<tt class="descname">get_latest_bars</tt><big>(</big><em>symbol</em>, <em>N=1</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.data.HistoricCSVDataHandler.get_latest_bars" title="永久链接至目标">¶</a></dt>
+<dd><p>Returns the last N bars from the latest_symbol list,
+or N-k if less available.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.data.HistoricCSVDataHandler.update_bars">
+<tt class="descname">update_bars</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.data.HistoricCSVDataHandler.update_bars" title="永久链接至目标">¶</a></dt>
+<dd><p>Pushes the latest bar to the latest_symbol_data structure
+for all symbols in the symbol list.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.event">
+<span id="quantdigger-kernel-engine-event-module"></span><h2>quantdigger.kernel.engine.event module<a class="headerlink" href="#module-quantdigger.kernel.engine.event" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.engine.event.Event">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.event.</tt><tt class="descname">Event</tt><a class="headerlink" href="#quantdigger.kernel.engine.event.Event" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.event.Event.FILL">
+<tt class="descname">FILL</tt><em class="property"> = 4</em><a class="headerlink" href="#quantdigger.kernel.engine.event.Event.FILL" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.event.Event.MARKET">
+<tt class="descname">MARKET</tt><em class="property"> = 1</em><a class="headerlink" href="#quantdigger.kernel.engine.event.Event.MARKET" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.event.Event.ORDER">
+<tt class="descname">ORDER</tt><em class="property"> = 3</em><a class="headerlink" href="#quantdigger.kernel.engine.event.Event.ORDER" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.event.Event.SIGNAL">
+<tt class="descname">SIGNAL</tt><em class="property"> = 2</em><a class="headerlink" href="#quantdigger.kernel.engine.event.Event.SIGNAL" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.event.EventsPool">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.event.</tt><tt class="descname">EventsPool</tt><big>(</big><em>container=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.event.EventsPool" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>事件池。</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.event.EventsPool.get">
+<tt class="descname">get</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.event.EventsPool.get" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for get</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.event.EventsPool.put">
+<tt class="descname">put</tt><big>(</big><em>item</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.event.EventsPool.put" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.event.FillEvent">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.event.</tt><tt class="descname">FillEvent</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.event.FillEvent" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.event.MarketEvent">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.event.</tt><tt class="descname">MarketEvent</tt><a class="headerlink" href="#quantdigger.kernel.engine.event.MarketEvent" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Handles the event of receiving a new market update with 
+corresponding bars.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.event.OrderEvent">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.event.</tt><tt class="descname">OrderEvent</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.event.OrderEvent" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Handles the event of sending an Order to an execution system.
+The order contains a symbol (e.g. GOOG), a type (market or limit),
+quantity and a direction.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.event.SignalEvent">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.event.</tt><tt class="descname">SignalEvent</tt><big>(</big><em>orders</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.event.SignalEvent" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Handles the event of sending a Signal from a Strategy object.
+This is received by a Portfolio object and acted upon.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.exchange">
+<span id="quantdigger-kernel-engine-exchange-module"></span><h2>quantdigger.kernel.engine.exchange module<a class="headerlink" href="#module-quantdigger.kernel.engine.exchange" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.engine.exchange.Exchange">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.exchange.</tt><tt class="descname">Exchange</tt><big>(</big><em>events_pool</em>, <em>slippage=None</em>, <em>strict=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.exchange.Exchange" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>交易所</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.exchange.Exchange.cancel_order">
+<tt class="descname">cancel_order</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.exchange.Exchange.cancel_order" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for cancel_order</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.exchange.Exchange.insert_order">
+<tt class="descname">insert_order</tt><big>(</big><em>order_event</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.exchange.Exchange.insert_order" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for place_order</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.exchange.Exchange.make_market">
+<tt class="descname">make_market</tt><big>(</big><em>bar</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.exchange.Exchange.make_market" title="永久链接至目标">¶</a></dt>
+<dd><p>价格撮合</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.exchange.Exchange.update_datetime">
+<tt class="descname">update_datetime</tt><big>(</big><em>dt</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.exchange.Exchange.update_datetime" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.exchange.Exchange.update_order">
+<tt class="descname">update_order</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.exchange.Exchange.update_order" title="永久链接至目标">¶</a></dt>
+<dd><p>模拟交易所收到订单。</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.execute_unit">
+<span id="quantdigger-kernel-engine-execute-unit-module"></span><h2>quantdigger.kernel.engine.execute_unit module<a class="headerlink" href="#module-quantdigger.kernel.engine.execute_unit" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.engine.execute_unit.ExecuteUnit">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.execute_unit.</tt><tt class="descname">ExecuteUnit</tt><big>(</big><em>pcontracts</em>, <em>begin_dt=None</em>, <em>end_dt=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.execute_unit.ExecuteUnit" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>策略执行的物理单元，支持多个策略同时运行。</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.execute_unit.ExecuteUnit.add_strategy">
+<tt class="descname">add_strategy</tt><big>(</big><em>strategy</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.execute_unit.ExecuteUnit.add_strategy" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.execute_unit.ExecuteUnit.add_tracker">
+<tt class="descname">add_tracker</tt><big>(</big><em>tracker</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.execute_unit.ExecuteUnit.add_tracker" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.execute_unit.ExecuteUnit.load_data">
+<tt class="descname">load_data</tt><big>(</big><em>pcontract</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.execute_unit.ExecuteUnit.load_data" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.execute_unit.ExecuteUnit.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.execute_unit.ExecuteUnit.run" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.performance">
+<span id="quantdigger-kernel-engine-performance-module"></span><h2>quantdigger.kernel.engine.performance module<a class="headerlink" href="#module-quantdigger.kernel.engine.performance" title="永久链接至标题">¶</a></h2>
+<dl class="function">
+<dt id="quantdigger.kernel.engine.performance.create_drawdowns">
+<tt class="descclassname">quantdigger.kernel.engine.performance.</tt><tt class="descname">create_drawdowns</tt><big>(</big><em>equity_curve</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.performance.create_drawdowns" title="永久链接至目标">¶</a></dt>
+<dd><p>Calculate the largest peak-to-trough drawdown of the PnL curve
+as well as the duration of the drawdown. Requires that the 
+pnl_returns is a pandas Series.</p>
+<p>Parameters:
+pnl - A pandas Series representing period percentage returns.</p>
+<p>Returns:
+drawdown, duration - Highest peak-to-trough drawdown and duration.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.engine.performance.create_sharpe_ratio">
+<tt class="descclassname">quantdigger.kernel.engine.performance.</tt><tt class="descname">create_sharpe_ratio</tt><big>(</big><em>returns</em>, <em>periods=252</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.performance.create_sharpe_ratio" title="永久链接至目标">¶</a></dt>
+<dd><p>Create the Sharpe ratio for the strategy, based on a 
+benchmark of zero (i.e. no risk-free rate information).</p>
+<p>Parameters:
+returns - A pandas Series representing period percentage returns.
+periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.series">
+<span id="quantdigger-kernel-engine-series-module"></span><h2>quantdigger.kernel.engine.series module<a class="headerlink" href="#module-quantdigger.kernel.engine.series" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.engine.series.DateTimeSeries">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.series.</tt><tt class="descname">DateTimeSeries</tt><big>(</big><em>tracker</em>, <em>data=[]</em>, <em>system_var=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.DateTimeSeries" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.kernel.engine.html#quantdigger.kernel.engine.series.QuantSeries" title="quantdigger.kernel.engine.series.QuantSeries"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.series.QuantSeries</span></tt></a></p>
+<p>docstring for NumberSeries</p>
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.series.DateTimeSeries.DEFAULT_VALUE">
+<tt class="descname">DEFAULT_VALUE</tt><em class="property"> = 0.0</em><a class="headerlink" href="#quantdigger.kernel.engine.series.DateTimeSeries.DEFAULT_VALUE" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.series.NumberSeries">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.series.</tt><tt class="descname">NumberSeries</tt><big>(</big><em>tracker</em>, <em>data=[]</em>, <em>system_var=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.NumberSeries" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.kernel.engine.html#quantdigger.kernel.engine.series.QuantSeries" title="quantdigger.kernel.engine.series.QuantSeries"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.series.QuantSeries</span></tt></a></p>
+<p>docstring for NumberSeries</p>
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.series.NumberSeries.DEFAULT_VALUE">
+<tt class="descname">DEFAULT_VALUE</tt><em class="property"> = 0.0</em><a class="headerlink" href="#quantdigger.kernel.engine.series.NumberSeries.DEFAULT_VALUE" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.series.NumberSeries.value_type">
+<tt class="descname">value_type</tt><a class="headerlink" href="#quantdigger.kernel.engine.series.NumberSeries.value_type" title="永久链接至目标">¶</a></dt>
+<dd><p><tt class="xref py py-class docutils literal"><span class="pre">float</span></tt> 的别名</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.series.QuantSeries">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.series.</tt><tt class="descname">QuantSeries</tt><big>(</big><em>tracker</em>, <em>data=[]</em>, <em>system_var=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.QuantSeries" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.series.QuantSeries.DEFAULT_VALUE">
+<tt class="descname">DEFAULT_VALUE</tt><em class="property"> = None</em><a class="headerlink" href="#quantdigger.kernel.engine.series.QuantSeries.DEFAULT_VALUE" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.series.QuantSeries.curbar">
+<tt class="descname">curbar</tt><a class="headerlink" href="#quantdigger.kernel.engine.series.QuantSeries.curbar" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.series.QuantSeries.duplicate_last_element">
+<tt class="descname">duplicate_last_element</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.QuantSeries.duplicate_last_element" title="永久链接至目标">¶</a></dt>
+<dd><p>只有非系统系列变量才会运行这个</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.series.QuantSeries.length_history">
+<tt class="descname">length_history</tt><a class="headerlink" href="#quantdigger.kernel.engine.series.QuantSeries.length_history" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.series.QuantSeries.update">
+<tt class="descname">update</tt><big>(</big><em>v</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.QuantSeries.update" title="永久链接至目标">¶</a></dt>
+<dd><p>赋值操作</p>
+<p>非系统序列变量。
+python没有&#8217;=&#8217;运算符重载:(</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.series.QuantSeries.update_curbar">
+<tt class="descname">update_curbar</tt><big>(</big><em>curbar</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.QuantSeries.update_curbar" title="永久链接至目标">¶</a></dt>
+<dd><p>被tracker调用。</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quantdigger.kernel.engine.strategy">
+<span id="quantdigger-kernel-engine-strategy-module"></span><h2>quantdigger.kernel.engine.strategy module<a class="headerlink" href="#module-quantdigger.kernel.engine.strategy" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.engine.strategy.BarTracker">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.strategy.</tt><tt class="descname">BarTracker</tt><big>(</big><em>exe_unit</em>, <em>pcontract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.Simulator" title="quantdigger.kernel.engine.strategy.Simulator"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.strategy.Simulator</span></tt></a></p>
+<p>跟踪器，可能是策略，策略用到的非主合约数据，独立指标。</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.BarTracker.add_series">
+<tt class="descname">add_series</tt><big>(</big><em>series</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker.add_series" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.engine.strategy.BarTracker.container_day">
+<tt class="descname">container_day</tt><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker.container_day" title="永久链接至目标">¶</a></dt>
+<dd><p>为当天数据预留的空间</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.BarTracker.execute_strategy">
+<tt class="descname">execute_strategy</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker.execute_strategy" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.BarTracker.length_day">
+<tt class="descname">length_day</tt><big>(</big><em>pcontract</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker.length_day" title="永久链接至目标">¶</a></dt>
+<dd><p>计算当天的数据量</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.BarTracker.on_tick">
+<tt class="descname">on_tick</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker.on_tick" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.BarTracker.update_curbar">
+<tt class="descname">update_curbar</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker.update_curbar" title="永久链接至目标">¶</a></dt>
+<dd><p>更新当前bar索引。</p>
+<p>更新注册过的serie变量的索引，
+计算系列指标中的最新值。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>index (int): 当前bar索引。</dd>
+<dt>Raises:</dt>
+<dd>SeriesIndexError</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.strategy.CrossTrackerMixin">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.strategy.</tt><tt class="descname">CrossTrackerMixin</tt><a class="headerlink" href="#quantdigger.kernel.engine.strategy.CrossTrackerMixin" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>跨跟踪器数据引用</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.CrossTrackerMixin.close_">
+<tt class="descname">close_</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.CrossTrackerMixin.close_" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.CrossTrackerMixin.datetime_">
+<tt class="descname">datetime_</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.CrossTrackerMixin.datetime_" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.CrossTrackerMixin.high_">
+<tt class="descname">high_</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.CrossTrackerMixin.high_" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.CrossTrackerMixin.low_">
+<tt class="descname">low_</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.CrossTrackerMixin.low_" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.CrossTrackerMixin.open_">
+<tt class="descname">open_</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.CrossTrackerMixin.open_" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.CrossTrackerMixin.volume_">
+<tt class="descname">volume_</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.CrossTrackerMixin.volume_" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.strategy.Simulator">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.strategy.</tt><tt class="descname">Simulator</tt><a class="headerlink" href="#quantdigger.kernel.engine.strategy.Simulator" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>docstring for Simulator</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.strategy.</tt><tt class="descname">TradingStrategy</tt><big>(</big><em>exe</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.BarTracker" title="quantdigger.kernel.engine.strategy.BarTracker"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.strategy.BarTracker</span></tt></a>, <a class="reference internal" href="../quantdigger.kernel.engine.html#quantdigger.kernel.engine.strategy.CrossTrackerMixin" title="quantdigger.kernel.engine.strategy.CrossTrackerMixin"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.strategy.CrossTrackerMixin</span></tt></a></p>
+<p>策略的基类</p>
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.add_indicator">
+<tt class="descname">add_indicator</tt><big>(</big><em>indic</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.add_indicator" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.buy">
+<tt class="descname">buy</tt><big>(</big><em>direction</em>, <em>price</em>, <em>quantity</em>, <em>deal_type='limit'</em>, <em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.buy" title="永久链接至目标">¶</a></dt>
+<dd><p>开仓</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>direction (str): 多头(&#8216;long&#8217;), 或者空头(&#8216;short&#8217;)
+quantity (int): 数量
+price (float): 价格
+deal_type (str): 下单方式，限价单(&#8216;limit&#8217;), 市价单(&#8216;market&#8217;)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.cash">
+<tt class="descname">cash</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.cash" title="永久链接至目标">¶</a></dt>
+<dd><p>现金。</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.day_profit">
+<tt class="descname">day_profit</tt><big>(</big><em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.day_profit" title="永久链接至目标">¶</a></dt>
+<dd><p>当前持仓的浮动盈亏</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.equity">
+<tt class="descname">equity</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.equity" title="永久链接至目标">¶</a></dt>
+<dd><p>当前权益</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.execute_strategy">
+<tt class="descname">execute_strategy</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.execute_strategy" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.position">
+<tt class="descname">position</tt><big>(</big><em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.position" title="永久链接至目标">¶</a></dt>
+<dd><p>当前仓位。</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.profit">
+<tt class="descname">profit</tt><big>(</big><em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.profit" title="永久链接至目标">¶</a></dt>
+<dd><p>当前持仓的历史盈亏</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.sell">
+<tt class="descname">sell</tt><big>(</big><em>direction</em>, <em>price</em>, <em>quantity</em>, <em>deal_type='limit'</em>, <em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.sell" title="永久链接至目标">¶</a></dt>
+<dd><p>平仓</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>direction (str): 多头(&#8216;d&#8217;), 或者空头(&#8216;k&#8217;)
+quantity (int): 数量
+price (float): 价格
+deal_type (str): 下单方式，限价单(&#8216;limit&#8217;), 市价单(&#8216;market&#8217;)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.strategy.TradingStrategy.update_curbar">
+<tt class="descname">update_curbar</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.update_curbar" title="永久链接至目标">¶</a></dt>
+<dd><p>更新当前bar索引。</p>
+<p>更新注册过的serie变量的索引，
+计算系列指标中的最新值。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>index (int): 当前bar索引。</dd>
+<dt>Raises:</dt>
+<dd>SeriesIndexError</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="quantdigger-kernel-engine-trader-module">
+<h2>quantdigger.kernel.engine.trader module<a class="headerlink" href="#quantdigger-kernel-engine-trader-module" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-quantdigger.kernel.engine">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-quantdigger.kernel.engine" title="永久链接至标题">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">quantdigger.kernel.engine package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#quantdigger-kernel-engine-api-module">quantdigger.kernel.engine.api module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.blotter">quantdigger.kernel.engine.blotter module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.data">quantdigger.kernel.engine.data module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.event">quantdigger.kernel.engine.event module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.exchange">quantdigger.kernel.engine.exchange module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.execute_unit">quantdigger.kernel.engine.execute_unit module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.performance">quantdigger.kernel.engine.performance module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.series">quantdigger.kernel.engine.series module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.strategy">quantdigger.kernel.engine.strategy module</a></li>
+<li><a class="reference internal" href="#quantdigger-kernel-engine-trader-module">quantdigger.kernel.engine.trader module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             >索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+    </div>
+  </body>
+</html>

@@ -1,66 +1,15 @@
-quantdigger.kernel.engine package
+交易引擎
 =================================
 
-Submodules
-----------
 
-quantdigger.kernel.engine.api module
-------------------------------------
-
-.. automodule:: quantdigger.kernel.engine.api
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-quantdigger.kernel.engine.blotter module
-----------------------------------------
-
-.. automodule:: quantdigger.kernel.engine.blotter
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-quantdigger.kernel.engine.data module
--------------------------------------
-
-.. automodule:: quantdigger.kernel.engine.data
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-quantdigger.kernel.engine.event module
+事件类型
 --------------------------------------
 
 .. automodule:: quantdigger.kernel.engine.event
     :members:
-    :undoc-members:
     :show-inheritance:
 
-quantdigger.kernel.engine.exchange module
------------------------------------------
-
-.. automodule:: quantdigger.kernel.engine.exchange
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-quantdigger.kernel.engine.execute_unit module
----------------------------------------------
-
-.. automodule:: quantdigger.kernel.engine.execute_unit
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-quantdigger.kernel.engine.performance module
---------------------------------------------
-
-.. automodule:: quantdigger.kernel.engine.performance
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-quantdigger.kernel.engine.series module
+时间序列变量
 ---------------------------------------
 
 .. automodule:: quantdigger.kernel.engine.series
@@ -68,7 +17,7 @@ quantdigger.kernel.engine.series module
     :undoc-members:
     :show-inheritance:
 
-quantdigger.kernel.engine.strategy module
+策略函数
 -----------------------------------------
 
 .. automodule:: quantdigger.kernel.engine.strategy
@@ -76,19 +25,42 @@ quantdigger.kernel.engine.strategy module
     :undoc-members:
     :show-inheritance:
 
-quantdigger.kernel.engine.trader module
----------------------------------------
+交易执行单元
+---------------------------------------------
 
-.. automodule:: quantdigger.kernel.engine.trader
+.. automodule:: quantdigger.kernel.engine.execute_unit
     :members:
     :undoc-members:
     :show-inheritance:
 
+下单控制
+----------------------------------------
 
-Module contents
----------------
+.. automodule:: quantdigger.kernel.engine.blotter
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
-.. automodule:: quantdigger.kernel.engine
+交易模拟器
+-----------------------------------------
+
+.. automodule:: quantdigger.kernel.engine.exchange
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+统计模块
+--------------------------------------------
+
+.. automodule:: quantdigger.kernel.engine.performance
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+交易接口
+------------------------------------
+
+.. automodule:: quantdigger.kernel.engine.api
     :members:
     :undoc-members:
     :show-inheritance:

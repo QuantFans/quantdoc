@@ -19,15 +19,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-
-.. py:function:: filterwarnings(action, message='', category=Warning, \
-                                module='', lineno=0, append=False)
-   :noindex:
-
-   :param str sender: The person sending the message
-   :param str recipient: The recipient of the message
-   :param str message_body: The body of the message
-   :param priority: The priority of the message, can be a number 1-5
-
-

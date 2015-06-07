@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quantdigger package &mdash; quantdigger 0.1 文档</title>
+    <title>quantdigger package &mdash; quantdigger 0.14 文档</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1',
+        VERSION:     '0.14',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="quantdigger 0.1 文档" href="index.html" /> 
+    <link rel="top" title="quantdigger 0.14 文档" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -32,7 +32,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="总目录"
              accesskey="I">索引</a></li>
-        <li><a href="index.html">quantdigger 0.1 文档</a> &raquo;</li> 
+        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -47,41 +47,31 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="永久链接至标题">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="quantdigger.kernel.html">1. quantdigger.kernel package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#subpackages">1.1. Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.datasource.html">1.1.1. quantdigger.kernel.datasource package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.datasource.html#submodules">1.1.1.1. Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.datasource.html#module-quantdigger.kernel.datasource.data">1.1.1.2. quantdigger.kernel.datasource.data module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.datasource.html#module-quantdigger.kernel.datasource">1.1.1.3. Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantdigger.kernel.html">quantdigger.kernel package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#module-quantdigger.kernel.datastruct">基本数据结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#id2">子模块</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.datasource.html">数据模块</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.datasource.html#module-quantdigger.kernel.datasource.data">数据类</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html">1.1.2. quantdigger.kernel.engine package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#submodules">1.1.2.1. Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#quantdigger-kernel-engine-api-module">1.1.2.2. quantdigger.kernel.engine.api module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.blotter">1.1.2.3. quantdigger.kernel.engine.blotter module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.data">1.1.2.4. quantdigger.kernel.engine.data module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.event">1.1.2.5. quantdigger.kernel.engine.event module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.exchange">1.1.2.6. quantdigger.kernel.engine.exchange module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.execute_unit">1.1.2.7. quantdigger.kernel.engine.execute_unit module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.performance">1.1.2.8. quantdigger.kernel.engine.performance module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.series">1.1.2.9. quantdigger.kernel.engine.series module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.strategy">1.1.2.10. quantdigger.kernel.engine.strategy module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#quantdigger-kernel-engine-trader-module">1.1.2.11. quantdigger.kernel.engine.trader module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine">1.1.2.12. Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html">交易引擎</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.event">事件类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.series">时间序列变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.strategy">策略函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.execute_unit">交易执行单元</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.blotter">下单控制</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.exchange">交易模拟器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.performance">统计模块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.api">交易接口</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.indicators.html">1.1.3. quantdigger.kernel.indicators package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#submodules">1.1.3.1. Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators.common">1.1.3.2. quantdigger.kernel.indicators.common module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators.indicator">1.1.3.3. quantdigger.kernel.indicators.indicator module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators">1.1.3.4. Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.indicators.html">指标模块</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators.indicator">指标基类</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators.common">常用指标</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#submodules">1.2. Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#module-quantdigger.kernel.datastruct">1.3. quantdigger.kernel.datastruct module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.html#module-quantdigger.kernel">1.4. Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quantdigger.plugin.html">quantdigger.plugin package</a><ul>
@@ -392,13 +382,24 @@ does not have the necessary properties.</p>
 <dt id="quantdigger.util.pcontract">
 <tt class="descclassname">quantdigger.util.</tt><tt class="descname">pcontract</tt><big>(</big><em>contract</em>, <em>period</em><big>)</big><a class="headerlink" href="#quantdigger.util.pcontract" title="永久链接至目标">¶</a></dt>
 <dd><p>构建周期合约结构的便捷方式。</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>contract (str): 合约如：&#8217;IF000.SHEF&#8217;
-period(str): 周期如：&#8216;10.Minute&#8217;</dd>
-<dt>Returns:</dt>
-<dd>PContract. 周期合约</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first simple">
+<li><strong>contract</strong> (<em>str</em>) &#8211; 合约如：&#8217;IF000.SHEF&#8217;</li>
+<li><strong>Period</strong> (<em>str</em>) &#8211; 周期如：&#8216;10.Minute&#8217;</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first">周期合约</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">PContract</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -416,7 +417,19 @@ period(str): 周期如：&#8216;10.Minute&#8217;</dd>
 <dl class="function">
 <dt id="quantdigger.util.time2int">
 <tt class="descclassname">quantdigger.util.</tt><tt class="descname">time2int</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#quantdigger.util.time2int" title="永久链接至目标">¶</a></dt>
-<dd><p>datetime to int</p>
+<dd><p>datetime转化为整数。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>t</strong> (<em>datetime</em>) &#8211; 时间。</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">整数。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -466,7 +479,7 @@ period(str): 周期如：&#8216;10.Minute&#8217;</dd>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="总目录"
              >索引</a></li>
-        <li><a href="index.html">quantdigger 0.1 文档</a> &raquo;</li> 
+        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
