@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quantdigger.widgets package &mdash; quantdigger 0.14 文档</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.14',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.14 文档" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="quantdigger-widgets-package">
+<h1>quantdigger.widgets package<a class="headerlink" href="#quantdigger-widgets-package" title="永久链接至标题">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="永久链接至标题">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html">quantdigger.widgets.mplotwidgets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html#module-quantdigger.widgets.mplotwidgets.mplots">quantdigger.widgets.mplotwidgets.mplots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html#module-quantdigger.widgets.mplotwidgets.stock_plot">quantdigger.widgets.mplotwidgets.stock_plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html#module-quantdigger.widgets.mplotwidgets.widgets">quantdigger.widgets.mplotwidgets.widgets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html#module-quantdigger.widgets.mplotwidgets">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quantdigger.widgets.qtwidgets.html">quantdigger.widgets.qtwidgets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.qtwidgets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.qtwidgets.html#quantdigger-widgets-qtwidgets-techwidget-module">quantdigger.widgets.qtwidgets.techwidget module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.qtwidgets.html#module-quantdigger.widgets.qtwidgets">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-quantdigger.widgets.plotting">
+<span id="quantdigger-widgets-plotting-module"></span><h2>quantdigger.widgets.plotting module<a class="headerlink" href="#module-quantdigger.widgets.plotting" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.widgets.plotting.AxWidget">
+<em class="property">class </em><tt class="descclassname">quantdigger.widgets.plotting.</tt><tt class="descname">AxWidget</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.AxWidget" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>matplotlib绘图容器</p>
+<dl class="method">
+<dt id="quantdigger.widgets.plotting.AxWidget.plot_line">
+<tt class="descname">plot_line</tt><big>(</big><em>widget</em>, <em>data</em>, <em>color</em>, <em>lw</em>, <em>style='line'</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.AxWidget.plot_line" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.widgets.plotting.PlotingActions">
+<em class="property">class </em><tt class="descclassname">quantdigger.widgets.plotting.</tt><tt class="descname">PlotingActions</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.PlotingActions" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="quantdigger.widgets.plotting.PlotingActions.plot">
+<tt class="descname">plot</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.PlotingActions.plot" title="永久链接至目标">¶</a></dt>
+<dd><p>如需绘制指标，则需重载此函数。</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.widgets.plotting.PlotingActions.plot_line">
+<tt class="descname">plot_line</tt><big>(</big><em>data</em>, <em>color</em>, <em>lw</em>, <em>style='line'</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.PlotingActions.plot_line" title="永久链接至目标">¶</a></dt>
+<dd><p>画线</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>list</em>) &#8211; 浮点数组。</li>
+<li><strong>color</strong> (<em>str</em>) &#8211; 画线颜色</li>
+<li><strong>lw</strong> (<em>int</em>) &#8211; 线宽</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.widgets.plotting.PlotingActions.set_yrange">
+<tt class="descname">set_yrange</tt><big>(</big><em>lower</em>, <em>upper</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.PlotingActions.set_yrange" title="永久链接至目标">¶</a></dt>
+<dd><p>设置纵坐标范围。</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.widgets.plotting.PlotingActions.stick_yrange">
+<tt class="descname">stick_yrange</tt><big>(</big><em>y_range</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.PlotingActions.stick_yrange" title="永久链接至目标">¶</a></dt>
+<dd><p>固定纵坐标范围。如RSI指标。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><strong>y_range</strong> (<em>list</em>) &#8211; 纵坐标范围。</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.widgets.plotting.PlotingActions.y_interval">
+<tt class="descname">y_interval</tt><big>(</big><em>w_left</em>, <em>w_right</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.PlotingActions.y_interval" title="永久链接至目标">¶</a></dt>
+<dd><p>可视区域移动时候重新计算纵坐标范围。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.widgets.plotting.QtWidget">
+<em class="property">class </em><tt class="descclassname">quantdigger.widgets.plotting.</tt><tt class="descname">QtWidget</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.QtWidget" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>pyqt绘图容器</p>
+<dl class="method">
+<dt id="quantdigger.widgets.plotting.QtWidget.plot_line">
+<tt class="descname">plot_line</tt><big>(</big><em>widget</em>, <em>data</em>, <em>color</em>, <em>lw</em>, <em>style='line'</em><big>)</big><a class="headerlink" href="#quantdigger.widgets.plotting.QtWidget.plot_line" title="永久链接至目标">¶</a></dt>
+<dd><p>使用matplotlib容器绘线</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="quantdigger-widgets-plugin-interface-module">
+<h2>quantdigger.widgets.plugin_interface module<a class="headerlink" href="#quantdigger-widgets-plugin-interface-module" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-quantdigger.widgets">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-quantdigger.widgets" title="永久链接至标题">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">quantdigger.widgets package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-quantdigger.widgets.plotting">quantdigger.widgets.plotting module</a></li>
+<li><a class="reference internal" href="#quantdigger-widgets-plugin-interface-module">quantdigger.widgets.plugin_interface module</a></li>
+<li><a class="reference internal" href="#module-quantdigger.widgets">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             >索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+    </div>
+  </body>
+</html>

@@ -1,22 +1,8 @@
-quantdigger.kernel.datasource package
+数据模块
 =====================================
 
-Submodules
-----------
-
-quantdigger.kernel.datasource.data module
+数据类
 -----------------------------------------
 
 .. automodule:: quantdigger.kernel.datasource.data
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: quantdigger.kernel.datasource
-    :members:
-    :undoc-members:
-    :show-inheritance:

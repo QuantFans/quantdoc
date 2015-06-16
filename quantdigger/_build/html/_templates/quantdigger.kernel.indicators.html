@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quantdigger.kernel.indicators package &mdash; quantdigger 0.14 文档</title>
+    <title>指标模块 &mdash; quantdigger 0.14 文档</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -41,17 +41,58 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="quantdigger-kernel-indicators-package">
-<h1>quantdigger.kernel.indicators package<a class="headerlink" href="#quantdigger-kernel-indicators-package" title="永久链接至标题">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
+  <div class="section" id="id1">
+<h1>指标模块<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="module-quantdigger.kernel.indicators.indicator">
+<span id="id2"></span><h2>指标基类<a class="headerlink" href="#module-quantdigger.kernel.indicators.indicator" title="永久链接至标题">¶</a></h2>
+<dl class="class">
+<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.indicator.</tt><tt class="descname">IndicatorBase</tt><big>(</big><em>tracker</em>, <em>name</em>, <em>widget=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="quantdigger.widgets.html#quantdigger.widgets.plotting.PlotingActions" title="quantdigger.widgets.plotting.PlotingActions"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.widgets.plotting.PlotingActions</span></tt></a></p>
+<p>指标基类。每个指标的内部数据为序列变量。所以每个指标对象都会与一个跟踪器相关联，
+负责更新其内部的序列变量。 如果是MA这样的单值指标, 重载函数可以使指标对象像序列变量一样被使用。
+如果是多值指标，如布林带，那么会以元组的形式返回多一个序列变量。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) &#8211; 指标对象名称</li>
+<li><strong>upper</strong> (<em>float</em>) &#8211; 坐标上界（绘图用）</li>
+<li><strong>lower</strong> (<em>float</em>) &#8211; 坐标上界（绘图用）</li>
+<li><strong>_tracker</strong> (<em>BarTracker</em>) &#8211; 关联跟踪器</li>
+<li><strong>widget</strong> &#8211; 绘图容器，暂定Axes</li>
+<li><strong>value</strong> &#8211; 向量化运行结果, 用于处理历史数据。</li>
+<li><strong>_series</strong> &#8211; 单值指标的序列变量或多值指标的序列变量数组。</li>
+<li><strong>_algo</strong> &#8211; 逐步指标函数。</li>
+<li><strong>_args</strong> &#8211; 逐步指标函数的参数。</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase.calculate_latest_element">
+<tt class="descname">calculate_latest_element</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase.calculate_latest_element" title="永久链接至目标">¶</a></dt>
+<dd><p>被tracker调用，确保内部序列变量总是最新的。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.indicators.indicator.transform2ndarray">
+<tt class="descclassname">quantdigger.kernel.indicators.indicator.</tt><tt class="descname">transform2ndarray</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.transform2ndarray" title="永久链接至目标">¶</a></dt>
+<dd><p>如果是序列变量，返回ndarray</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-quantdigger.kernel.indicators.common">
-<span id="quantdigger-kernel-indicators-common-module"></span><h2>quantdigger.kernel.indicators.common module<a class="headerlink" href="#module-quantdigger.kernel.indicators.common" title="永久链接至标题">¶</a></h2>
+<span id="id3"></span><h2>常用指标<a class="headerlink" href="#module-quantdigger.kernel.indicators.common" title="永久链接至标题">¶</a></h2>
 <dl class="class">
 <dt id="quantdigger.kernel.indicators.common.BOLL">
 <em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">BOLL</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.BOLL" title="永久链接至目标">¶</a></dt>
 <dd><p>基类：<a class="reference internal" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="quantdigger.kernel.indicators.indicator.IndicatorBase"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.indicators.indicator.IndicatorBase</span></tt></a></p>
+<p>布林带指标。</p>
 <dl class="method">
 <dt id="quantdigger.kernel.indicators.common.BOLL.plot">
 <tt class="descname">plot</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.BOLL.plot" title="永久链接至目标">¶</a></dt>
@@ -61,31 +102,10 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="quantdigger.kernel.indicators.common.Candles">
-<em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">Candles</tt><big>(</big><em>tracker</em>, <em>data</em>, <em>name='candle'</em>, <em>width=0.6</em>, <em>colorup='r'</em>, <em>colordown='g'</em>, <em>lc='k'</em>, <em>alpha=1</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.Candles" title="永久链接至目标">¶</a></dt>
-<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.common.Candles.plot">
-<tt class="descname">plot</tt><big>(</big><em>widget</em>, <em>width=0.6</em>, <em>colorup='r'</em>, <em>colordown='g'</em>, <em>lc='k'</em>, <em>alpha=1</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.Candles.plot" title="永久链接至目标">¶</a></dt>
-<dd><p>docstring for plot</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.common.Candles.set_yrange">
-<tt class="descname">set_yrange</tt><big>(</big><em>lower</em>, <em>upper=[]</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.Candles.set_yrange" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.common.Candles.y_interval">
-<tt class="descname">y_interval</tt><big>(</big><em>w_left</em>, <em>w_right</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.Candles.y_interval" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="quantdigger.kernel.indicators.common.MA">
 <em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">MA</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.MA" title="永久链接至目标">¶</a></dt>
 <dd><p>基类：<a class="reference internal" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="quantdigger.kernel.indicators.indicator.IndicatorBase"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.indicators.indicator.IndicatorBase</span></tt></a></p>
+<p>移动平均线指标。</p>
 <dl class="method">
 <dt id="quantdigger.kernel.indicators.common.MA.plot">
 <tt class="descname">plot</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.MA.plot" title="永久链接至目标">¶</a></dt>
@@ -96,7 +116,7 @@
 
 <dl class="class">
 <dt id="quantdigger.kernel.indicators.common.MACD">
-<em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">MACD</tt><big>(</big><em>tracker</em>, <em>prices</em>, <em>nslow</em>, <em>nfast</em>, <em>name='MACD'</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.MACD" title="永久链接至目标">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">MACD</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.MACD" title="永久链接至目标">¶</a></dt>
 <dd><p>基类：<a class="reference internal" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="quantdigger.kernel.indicators.indicator.IndicatorBase"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.indicators.indicator.IndicatorBase</span></tt></a></p>
 <dl class="method">
 <dt id="quantdigger.kernel.indicators.common.MACD.plot">
@@ -111,41 +131,7 @@
 <dd><p>基类：<a class="reference internal" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="quantdigger.kernel.indicators.indicator.IndicatorBase"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.indicators.indicator.IndicatorBase</span></tt></a></p>
 <dl class="method">
 <dt id="quantdigger.kernel.indicators.common.RSI.plot">
-<tt class="descname">plot</tt><big>(</big><em>widget</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.RSI.plot" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="quantdigger.kernel.indicators.common.TradingSignal">
-<em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">TradingSignal</tt><big>(</big><em>tracker</em>, <em>signal</em>, <em>name='Signal'</em>, <em>c=None</em>, <em>lw=2</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.TradingSignal" title="永久链接至目标">¶</a></dt>
-<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>docstring for signalWindow</p>
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.common.TradingSignal.plot">
-<tt class="descname">plot</tt><big>(</big><em>widget</em>, <em>c=None</em>, <em>lw=2</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.TradingSignal.plot" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.common.TradingSignal.y_interval">
-<tt class="descname">y_interval</tt><big>(</big><em>w_left</em>, <em>w_right</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.TradingSignal.y_interval" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="quantdigger.kernel.indicators.common.TradingSignalPos">
-<em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">TradingSignalPos</tt><big>(</big><em>tracker</em>, <em>price_data</em>, <em>deals</em>, <em>name='Signal'</em>, <em>c=None</em>, <em>lw=2</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.TradingSignalPos" title="永久链接至目标">¶</a></dt>
-<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>docstring for signalWindow</p>
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.common.TradingSignalPos.plot">
-<tt class="descname">plot</tt><big>(</big><em>widget</em>, <em>lw=2</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.TradingSignalPos.plot" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.common.TradingSignalPos.y_interval">
-<tt class="descname">y_interval</tt><big>(</big><em>w_left</em>, <em>w_right</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.TradingSignalPos.y_interval" title="永久链接至目标">¶</a></dt>
+<tt class="descname">plot</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.RSI.plot" title="永久链接至目标">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -154,81 +140,14 @@
 <dt id="quantdigger.kernel.indicators.common.Volume">
 <em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.common.</tt><tt class="descname">Volume</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.Volume" title="永久链接至目标">¶</a></dt>
 <dd><p>基类：<a class="reference internal" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="quantdigger.kernel.indicators.indicator.IndicatorBase"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.indicators.indicator.IndicatorBase</span></tt></a></p>
-<p>docstring for Volume</p>
+<p>柱状图。</p>
 <dl class="method">
 <dt id="quantdigger.kernel.indicators.common.Volume.plot">
-<tt class="descname">plot</tt><big>(</big><em>widget</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.Volume.plot" title="永久链接至目标">¶</a></dt>
+<tt class="descname">plot</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.common.Volume.plot" title="永久链接至目标">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-quantdigger.kernel.indicators.indicator">
-<span id="quantdigger-kernel-indicators-indicator-module"></span><h2>quantdigger.kernel.indicators.indicator module<a class="headerlink" href="#module-quantdigger.kernel.indicators.indicator" title="永久链接至标题">¶</a></h2>
-<dl class="class">
-<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase">
-<em class="property">class </em><tt class="descclassname">quantdigger.kernel.indicators.indicator.</tt><tt class="descname">IndicatorBase</tt><big>(</big><em>tracker</em>, <em>name</em>, <em>widget=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="永久链接至目标">¶</a></dt>
-<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>docstring for Indicator <a class="reference internal" href="#quantdigger.kernel.indicators.indicator.IndicatorBase" title="quantdigger.kernel.indicators.indicator.IndicatorBase"><tt class="xref py py-class docutils literal"><span class="pre">IndicatorBase</span></tt></a></p>
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase.calculate_latest_element">
-<tt class="descname">calculate_latest_element</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase.calculate_latest_element" title="永久链接至目标">¶</a></dt>
-<dd><p>被tracker调用，确保series总是最新的。</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase.calcute_bound">
-<tt class="descname">calcute_bound</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase.calcute_bound" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase.plot_line">
-<tt class="descname">plot_line</tt><big>(</big><em>data</em>, <em>color</em>, <em>lw</em>, <em>style='line'</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase.plot_line" title="永久链接至目标">¶</a></dt>
-<dd><p>画线</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>data (list): 浮点数组。
-color (str): 颜色。
-lw (int): 线宽。</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase.set_yrange">
-<tt class="descname">set_yrange</tt><big>(</big><em>lower</em>, <em>upper</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase.set_yrange" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase.stick_yrange">
-<tt class="descname">stick_yrange</tt><big>(</big><em>range_</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase.stick_yrange" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.indicators.indicator.IndicatorBase.y_interval">
-<tt class="descname">y_interval</tt><big>(</big><em>w_left</em>, <em>w_right</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.IndicatorBase.y_interval" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="quantdigger.kernel.indicators.indicator.create_attributes">
-<tt class="descclassname">quantdigger.kernel.indicators.indicator.</tt><tt class="descname">create_attributes</tt><big>(</big><em>method</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.create_attributes" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="quantdigger.kernel.indicators.indicator.override_attributes">
-<tt class="descclassname">quantdigger.kernel.indicators.indicator.</tt><tt class="descname">override_attributes</tt><big>(</big><em>method</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.override_attributes" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="quantdigger.kernel.indicators.indicator.transform2ndarray">
-<tt class="descclassname">quantdigger.kernel.indicators.indicator.</tt><tt class="descname">transform2ndarray</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.indicators.indicator.transform2ndarray" title="永久链接至目标">¶</a></dt>
-<dd><p>如果是series变量，返回ndarray</p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-quantdigger.kernel.indicators">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-quantdigger.kernel.indicators" title="永久链接至标题">¶</a></h2>
 </div>
 </div>
 
@@ -240,11 +159,9 @@ lw (int): 线宽。</dd>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">內容目录</a></h3>
   <ul>
-<li><a class="reference internal" href="#">quantdigger.kernel.indicators package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-quantdigger.kernel.indicators.common">quantdigger.kernel.indicators.common module</a></li>
-<li><a class="reference internal" href="#module-quantdigger.kernel.indicators.indicator">quantdigger.kernel.indicators.indicator module</a></li>
-<li><a class="reference internal" href="#module-quantdigger.kernel.indicators">Module contents</a></li>
+<li><a class="reference internal" href="#">指标模块</a><ul>
+<li><a class="reference internal" href="#module-quantdigger.kernel.indicators.indicator">指标基类</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.indicators.common">常用指标</a></li>
 </ul>
 </li>
 </ul>

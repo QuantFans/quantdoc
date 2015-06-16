@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quantdigger 文档 &mdash; quantdigger 0.14 文档</title>
+    <title>quantdigger 文档 &mdash; quantdigger 0.15 文档</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14',
+        VERSION:     '0.15',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="quantdigger 0.14 文档" href="#" />
+    <link rel="top" title="quantdigger 0.15 文档" href="#" />
     <link rel="next" title="使用指南" href="tutorial.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="tutorial.html" title="使用指南"
              accesskey="N">下一页</a> |</li>
-        <li><a href="#">quantdigger 0.14 文档</a> &raquo;</li> 
+        <li><a href="#">quantdigger 0.15 文档</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -47,12 +47,78 @@
             
   <div class="section" id="quantdigger">
 <h1>quantdigger 文档<a class="headerlink" href="#quantdigger" title="永久链接至标题">¶</a></h1>
-<p>目录:</p>
+<div class="section" id="id1">
+<h2>介绍<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>QuantDigger目前是一个基于python的量化回测框架。作者最初是因为对数据处理和机器学习感兴趣而选择了这个行业，
+接触了一些主流的期货交易软件，比如TB, 金字塔。他们的特点是语法比较简单，缺点是编程语言太封闭，有很多表达限制。
+所以选择自己开发一个交易系统，做为交易和研究的工具，甚至尝试过商业化。最初选择c++做为实现语言，但是后面
+发现开发效率太低，重要的是做为研究工具来说，其易用性和和扩展性都比不上基于python的回测框架。相比其它流行的
+回测框架比如 <a class="reference external" href="https://github.com/quantopian/zipline">zipline</a> , <a class="reference external" href="https://github.com/gbeced/pyalgotrade">pyalgotrade</a> ，QuantDigger的策略语法更简单，类似MC，TB这些商业软件，但并不牺牲灵活性，保留了python这门通用语言的
+所有功能。QuantDigger目前还是定位于研究工具，但是设计上还是会从实盘交易的角度考虑，将来也会接入交易接口。虽然有很多细节还有待完善，
+但是核心的设计和功能已经实现了。代码也比较简单，大家有兴趣的可以自己拓展。 如果大家有什么问题和建议，欢迎加入我们的QQ交流群&#8211;334555399，或者
+联系发起者(yellowblue QQ:33830957) 。 在项目的推进过程中得到很多人的帮助, 在这表示感谢！
+除了开发人员，还要特别感谢北京的 <a class="reference external" href="https://github.com/vodkabuaa">vodkabuaa</a> 和国元证券的王林峰给出的意见， <a class="reference external" href="https://github.com/ongbe">ongbe</a> 帮忙修复代码bug， <a class="reference external" href="https://github.com/waditu/tushare">tushare</a> 库的作者 <a class="reference external" href="https://github.com/jimmysoa">Jimmy</a> 和深大的邓志浩帮忙推荐
+这个库，以及所有朋友的支持。</p>
+<dl class="docutils">
+<dt><strong>代码主要贡献者:</strong></dt>
+<dd><p class="first"><a class="reference external" href="https://github.com/deepfish">deepfish</a></p>
+<p><a class="reference external" href="https://github.com/TeaEra">TeaEra</a></p>
+<p><a class="reference external" href="https://github.com/wondereamer">wondereamer</a></p>
+<p class="last"><a class="reference external" href="https://github.com/HonePhy">HonePhy</a></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id2">
+<h2>版本<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p><strong>0.16版本 日期待定</strong></p>
+<ul class="simple">
+<li>清理旧代码和数据文件</li>
+<li>重新设计数据模块</li>
+<li>改善UI, 补充UI文档</li>
+</ul>
+<p><strong>0.15版本 2015-06-16</strong></p>
+<ul class="simple">
+<li>夸品种的策略回测功能</li>
+<li>简单的交互</li>
+<li>指标，k线绘制</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>系统文件结构<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>quantdigger<ul>
+<li>kernel 核心功能代码<ul>
+<li>engine 交易引擎模块</li>
+<li>datasource 数据模块</li>
+<li>indicators 指标模块</li>
+<li>datastruct.py 核心数据结构</li>
+</ul>
+</li>
+<li>widgets 交互界面</li>
+<li>demo 示例</li>
+<li>backup 待整理的代码</li>
+<li>digger 待整理的代码</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>目录:<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">使用指南</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="first_strategy.html">第一个策略</a></li>
-<li class="toctree-l2"><a class="reference internal" href="first_indicator.html">第一个指标函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first_strategy.html">一个简单的策略</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="first_strategy.html#id2">策略代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="first_strategy.html#id3">策略结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="first_indicator.html">指标示例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="first_indicator.html#id2">算术平均指标类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="first_indicator.html#id3">算术平均线绘制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="first_indicator.html#id4">非向量化运行的指标函数</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="documents.html">API文档</a><ul>
@@ -64,7 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="quantdigger.kernel.engine.html">交易引擎</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.event">事件类型</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.series">时间序列变量</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.strategy">策略函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.strategy">策略接口</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.execute_unit">交易执行单元</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.blotter">下单控制</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.exchange">交易模拟器</a></li>
@@ -77,18 +143,29 @@
 <li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.indicators.html#module-quantdigger.kernel.indicators.common">常用指标</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="quantdigger.widgets.html">界面UI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html">基于matplotlib的UI</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html#module-quantdigger.widgets.mplotwidgets.mplots">基于matplotlib的绘图模块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.widgets.mplotwidgets.html#module-quantdigger.widgets.mplotwidgets.widgets">基于matplotlib的绘图控件</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.widgets.qtwidgets.html">基于Pyqt的UI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quantdigger.widgets.html#id1">系统统一绘图接口</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div class="section" id="id1">
-<h1>索引和表格<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id5">
+<h2>索引和表格<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><em>索引</em></a></li>
 <li><a class="reference internal" href="py-modindex.html"><em>模块索引</em></a></li>
 <li><a class="reference internal" href="search.html"><em>搜索页面</em></a></li>
 </ul>
+</div>
 </div>
 
 
@@ -99,8 +176,14 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">內容目录</a></h3>
   <ul>
-<li><a class="reference internal" href="#">quantdigger 文档</a></li>
-<li><a class="reference internal" href="#id1">索引和表格</a></li>
+<li><a class="reference internal" href="#">quantdigger 文档</a><ul>
+<li><a class="reference internal" href="#id1">介绍</a></li>
+<li><a class="reference internal" href="#id2">版本</a></li>
+<li><a class="reference internal" href="#id3">系统文件结构</a></li>
+<li><a class="reference internal" href="#id4">目录:</a></li>
+<li><a class="reference internal" href="#id5">索引和表格</a></li>
+</ul>
+</li>
 </ul>
 
   <h4>下一个主题</h4>
@@ -132,7 +215,7 @@
         <li class="right" >
           <a href="tutorial.html" title="使用指南"
              >下一页</a> |</li>
-        <li><a href="#">quantdigger 0.14 文档</a> &raquo;</li> 
+        <li><a href="#">quantdigger 0.15 文档</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

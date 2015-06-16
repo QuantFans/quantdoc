@@ -1,0 +1,38 @@
+quantdigger.widgets.mplotwidgets package
+========================================
+
+Submodules
+----------
+
+quantdigger.widgets.mplotwidgets.mplots module
+----------------------------------------------
+
+.. automodule:: quantdigger.widgets.mplotwidgets.mplots
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+quantdigger.widgets.mplotwidgets.stock_plot module
+--------------------------------------------------
+
+.. automodule:: quantdigger.widgets.mplotwidgets.stock_plot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+quantdigger.widgets.mplotwidgets.widgets module
+-----------------------------------------------
+
+.. automodule:: quantdigger.widgets.mplotwidgets.widgets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: quantdigger.widgets.mplotwidgets
+    :members:
+    :undoc-members:
+    :show-inheritance:

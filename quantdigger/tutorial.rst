@@ -3,5 +3,6 @@
 
 .. toctree::
 
+    install
     first_strategy
     first_indicator

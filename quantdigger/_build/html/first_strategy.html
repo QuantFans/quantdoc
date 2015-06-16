@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>第一个策略 &mdash; quantdigger 0.14 文档</title>
+    <title>一个简单的策略 &mdash; quantdigger 0.15 文档</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14',
+        VERSION:     '0.15',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="quantdigger 0.14 文档" href="index.html" />
+    <link rel="top" title="quantdigger 0.15 文档" href="index.html" />
     <link rel="up" title="使用指南" href="tutorial.html" />
-    <link rel="next" title="第一个指标函数" href="first_indicator.html" />
-    <link rel="prev" title="使用指南" href="tutorial.html" /> 
+    <link rel="next" title="指标示例" href="first_indicator.html" />
+    <link rel="prev" title="安装" href="install.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,12 +36,12 @@
           <a href="genindex.html" title="总目录"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="first_indicator.html" title="第一个指标函数"
+          <a href="first_indicator.html" title="指标示例"
              accesskey="N">下一页</a> |</li>
         <li class="right" >
-          <a href="tutorial.html" title="使用指南"
+          <a href="install.html" title="安装"
              accesskey="P">上一页</a> |</li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li>
           <li><a href="tutorial.html" accesskey="U">使用指南</a> &raquo;</li> 
       </ul>
     </div>  
@@ -52,7 +52,124 @@
           <div class="body">
             
   <div class="section" id="id1">
-<h1>第一个策略<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<h1>一个简单的策略<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>策略代码<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="code py highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.execute_unit</span> <span class="kn">import</span> <span class="n">ExecuteUnit</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.indicators.common</span> <span class="kn">import</span> <span class="n">MA</span><span class="p">,</span> <span class="n">BOLL</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.strategy</span> <span class="kn">import</span> <span class="n">TradingStrategy</span>
+<span class="kn">from</span> <span class="nn">quantdigger.util</span> <span class="kn">import</span>  <span class="n">pcontract</span>
+<span class="kn">import</span> <span class="nn">plotting</span>
+
+<span class="k">class</span> <span class="nc">DemoStrategy</span><span class="p">(</span><span class="n">TradingStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 策略实例 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exe</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DemoStrategy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">exe</span><span class="p">)</span>
+        <span class="c"># 创建平均线指标和布林带指标。其中MA和BOLL表示指标函数类。</span>
+        <span class="c"># 它们返回序列变量。</span>
+        <span class="c"># &#39;ma20&#39;：指标名. &#39;b&#39;画线颜色. ‘1‘: 线宽。如果无需</span>
+        <span class="c"># 绘图，则这些参数不需要给出。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span><span class="s">&#39;ma20&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="s">&#39;ma10&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_upper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_middler</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_lower</span> <span class="o">=</span> <span class="n">BOLL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="s">&#39;boll10&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 策略函数，对每根Bar运行一次。&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="s">&#39;long&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">contract</span> <span class="o">=</span> <span class="s">&#39;IF000.SHFE&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="s">&#39;long&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c"># 输出pcon1的当前K线开盘价格。</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">)</span>
+
+        <span class="c"># 夸品种数据引用</span>
+        <span class="c"># pcon2的前一根K线开盘价格。</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># 策略的运行对象周期合约</span>
+        <span class="n">pcon1</span> <span class="o">=</span> <span class="n">pcontract</span><span class="p">(</span><span class="s">&#39;IF000.SHFE&#39;</span><span class="p">,</span> <span class="s">&#39;10.Minute&#39;</span><span class="p">)</span>
+        <span class="n">pcon2</span> <span class="o">=</span> <span class="n">pcontract</span><span class="p">(</span><span class="s">&#39;IF000.SHFE&#39;</span><span class="p">,</span> <span class="s">&#39;10.Minute&#39;</span><span class="p">)</span>
+        <span class="c"># 创建模拟器，这里假设策略要用到两个不同的数据，比如套利。</span>
+        <span class="n">simulator</span> <span class="o">=</span> <span class="n">ExecuteUnit</span><span class="p">([</span><span class="n">pcon1</span><span class="p">,</span> <span class="n">pcon2</span><span class="p">]);</span>
+        <span class="c"># 创建策略。</span>
+        <span class="n">algo</span> <span class="o">=</span> <span class="n">DemoStrategy</span><span class="p">(</span><span class="n">simulator</span><span class="p">)</span>
+        <span class="c"># 运行模拟器，这里会开始事件循环。</span>
+        <span class="n">simulator</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+        <span class="c"># 显示回测结果</span>
+        <span class="n">plotting</span><span class="o">.</span><span class="n">plot_result</span><span class="p">(</span><span class="n">simulator</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">pcon</span><span class="p">],</span> <span class="n">algo</span><span class="o">.</span><span class="n">_indicators</span><span class="p">,</span>
+                            <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">deal_positions</span><span class="p">,</span> <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>示例策略代码很简单，其中TradingStrategy是策略的基类，实现了策略的接口，比如下单，持仓查询等。
+模拟器负责加载数据，你可以通过它同时运行一个或多个策略(创建多个策略实例)。也就是数据和策略间
+一对多的关系。 如果要在数据和策略间做多对多的回测，则要运行多个模拟器实例。 模拟器的run()函数
+会启动事件循环，核心代码如下：</p>
+<div class="code py highlight-python"><div class="highlight"><pre><span class="c"># 遍历每根Bar数据，运行所有策略。</span>
+<span class="n">bar_index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">bar_index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_length</span><span class="p">:</span>
+    <span class="o">.....</span>
+    <span class="c"># 遍历每个策略。</span>
+    <span class="k">for</span> <span class="n">algo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strategies</span><span class="p">:</span>
+        <span class="c"># 更新策略的当前Bar索引</span>
+        <span class="n">bar</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">update_curbar</span><span class="p">(</span><span class="n">bar_index</span><span class="p">)</span>
+        <span class="c"># 更新模拟交易所的当前时间。</span>
+        <span class="n">algo</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">update_datetime</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+        <span class="c"># 更新订单器的当前时间和最新的Bar数据。</span>
+        <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_datetime</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+        <span class="n">latest_bars</span><span class="p">[</span><span class="n">algo</span><span class="o">.</span><span class="n">_main_contract</span><span class="p">]</span> <span class="o">=</span> <span class="n">bar</span>
+        <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_bar</span><span class="p">(</span><span class="n">latest_bars</span><span class="p">)</span>
+        <span class="c"># 对新的Bar运行一步策略。</span>
+        <span class="n">algo</span><span class="o">.</span><span class="n">execute_strategy</span><span class="p">()</span>
+        <span class="c"># 根据这一步的运行结果，比如是否开仓，可能</span>
+        <span class="c"># 会引发一系列的事件。</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c"># 获取可能的事件。</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">events_pool</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                <span class="c"># 没有待处理事件，退出。</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="c"># 索引错误，退出。</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="c"># 订单管理器处理策略开平仓导致的信号事件。</span>
+                    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">:</span>
+                        <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_signal</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                    <span class="c"># 模拟交易所处理订单管理产生的下单事件。</span>
+                    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">ORDER</span><span class="p">:</span>
+                        <span class="n">algo</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">update_order</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                    <span class="c"># 订单管理器处理模拟交易所返回的委托成交事件。</span>
+                    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Event</span><span class="o">.</span><span class="n">FILL</span><span class="p">:</span>
+                        <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">update_fill</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="c"># 模拟交易所的价格戳和。</span>
+            <span class="n">algo</span><span class="o">.</span><span class="n">exchange</span><span class="o">.</span><span class="n">make_market</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+<span class="n">bar_index</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>策略结果<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<ul>
+<li><p class="first">k线和交易信号线</p>
+<a class="reference internal image-reference" href="_static/figure_signal.png"><img alt="_static/figure_signal.png" src="_static/figure_signal.png" style="width: 500px;" /></a>
+</li>
+<li><p class="first">资金曲线。</p>
+<a class="reference internal image-reference" href="_static/figure_money.png"><img alt="_static/figure_money.png" src="_static/figure_money.png" style="width: 500px;" /></a>
+</li>
+</ul>
+<p>图片的纵坐标表示价格，横坐标应该表示时间，目前只是表示Bar坐标，有待完善：P
+k线显示使用了系统自带的一个联动窗口控件，由蓝色的滑块控制显示区域，你也可以通过
+上下方向键来进行缩放。 关于联动窗口，后面会介绍。 下一节介绍指标函数。</p>
+</div>
 </div>
 
 
@@ -61,12 +178,21 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">一个简单的策略</a><ul>
+<li><a class="reference internal" href="#id2">策略代码</a></li>
+<li><a class="reference internal" href="#id3">策略结果</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>上一个主题</h4>
-  <p class="topless"><a href="tutorial.html"
-                        title="上一章">使用指南</a></p>
+  <p class="topless"><a href="install.html"
+                        title="上一章">安装</a></p>
   <h4>下一个主题</h4>
   <p class="topless"><a href="first_indicator.html"
-                        title="下一章">第一个指标函数</a></p>
+                        title="下一章">指标示例</a></p>
 <div id="searchbox" style="display: none">
   <h3>快速搜索</h3>
     <form class="search" action="search.html" method="get">
@@ -91,12 +217,12 @@
           <a href="genindex.html" title="总目录"
              >索引</a></li>
         <li class="right" >
-          <a href="first_indicator.html" title="第一个指标函数"
+          <a href="first_indicator.html" title="指标示例"
              >下一页</a> |</li>
         <li class="right" >
-          <a href="tutorial.html" title="使用指南"
+          <a href="install.html" title="安装"
              >上一页</a> |</li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li>
           <li><a href="tutorial.html" >使用指南</a> &raquo;</li> 
       </ul>
     </div>

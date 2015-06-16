@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>交易引擎 &mdash; quantdigger 0.14 文档</title>
+    <title>交易引擎 &mdash; quantdigger 0.15 文档</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14',
+        VERSION:     '0.15',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="quantdigger 0.14 文档" href="index.html" />
+    <link rel="top" title="quantdigger 0.15 文档" href="index.html" />
     <link rel="up" title="API文档" href="documents.html" />
     <link rel="next" title="指标模块" href="quantdigger.kernel.indicators.html" />
     <link rel="prev" title="数据模块" href="quantdigger.kernel.datasource.html" /> 
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="quantdigger.kernel.datasource.html" title="数据模块"
              accesskey="P">上一页</a> |</li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li>
           <li><a href="documents.html" accesskey="U">API文档</a> &raquo;</li> 
       </ul>
     </div>  
@@ -168,6 +168,14 @@
 <tt class="descname">DEFAULT_VALUE</tt><em class="property"> = None</em><a class="headerlink" href="#quantdigger.kernel.engine.series.SeriesBase.DEFAULT_VALUE" title="永久链接至目标">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="quantdigger.kernel.engine.series.SeriesBase.append">
+<tt class="descname">append</tt><big>(</big><em>v</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.SeriesBase.append" title="永久链接至目标">¶</a></dt>
+<dd><p>赋值操作</p>
+<p>非系统序列变量。
+python没有&#8217;=&#8217;运算符重载:(</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="quantdigger.kernel.engine.series.SeriesBase.curbar">
 <tt class="descname">curbar</tt><a class="headerlink" href="#quantdigger.kernel.engine.series.SeriesBase.curbar" title="永久链接至目标">¶</a></dt>
@@ -187,14 +195,6 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="quantdigger.kernel.engine.series.SeriesBase.update">
-<tt class="descname">update</tt><big>(</big><em>v</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.SeriesBase.update" title="永久链接至目标">¶</a></dt>
-<dd><p>赋值操作</p>
-<p>非系统序列变量。
-python没有&#8217;=&#8217;运算符重载:(</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="quantdigger.kernel.engine.series.SeriesBase.update_curbar">
 <tt class="descname">update_curbar</tt><big>(</big><em>curbar</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.series.SeriesBase.update_curbar" title="永久链接至目标">¶</a></dt>
 <dd><p>更新当前Bar索引， 被tracker调用。</p>
@@ -204,7 +204,7 @@ python没有&#8217;=&#8217;运算符重载:(</p>
 
 </div>
 <div class="section" id="module-quantdigger.kernel.engine.strategy">
-<span id="id4"></span><h2>策略函数<a class="headerlink" href="#module-quantdigger.kernel.engine.strategy" title="永久链接至标题">¶</a></h2>
+<span id="id4"></span><h2>策略接口<a class="headerlink" href="#module-quantdigger.kernel.engine.strategy" title="永久链接至标题">¶</a></h2>
 <dl class="class">
 <dt id="quantdigger.kernel.engine.strategy.BarTracker">
 <em class="property">class </em><tt class="descclassname">quantdigger.kernel.engine.strategy.</tt><tt class="descname">BarTracker</tt><big>(</big><em>exe_unit</em>, <em>pcontract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.BarTracker" title="永久链接至目标">¶</a></dt>
@@ -347,7 +347,7 @@ python没有&#8217;=&#8217;运算符重载:(</p>
 
 <dl class="method">
 <dt id="quantdigger.kernel.engine.strategy.TradingStrategy.buy">
-<tt class="descname">buy</tt><big>(</big><em>direction</em>, <em>price</em>, <em>quantity</em>, <em>deal_type='LMT'</em>, <em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.buy" title="永久链接至目标">¶</a></dt>
+<tt class="descname">buy</tt><big>(</big><em>direction</em>, <em>price</em>, <em>quantity</em>, <em>price_type='LMT'</em>, <em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.buy" title="永久链接至目标">¶</a></dt>
 <dd><p>开仓。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -357,7 +357,7 @@ python没有&#8217;=&#8217;运算符重载:(</p>
 <li><strong>direction</strong> (<em>str/int</em>) &#8211; 下单方向。多头 - &#8216;long&#8217; / 1 ；空头 - &#8216;short&#8217;  / 2</li>
 <li><strong>price</strong> (<em>float</em>) &#8211; 价格。</li>
 <li><strong>quantity</strong> (<em>int</em>) &#8211; 数量。</li>
-<li><strong>deal_type</strong> (<em>str/int</em>) &#8211; 下单价格类型。限价单 - &#8216;lmt&#8217; / 1；市价单 - &#8216;mkt&#8217; / 2</li>
+<li><strong>price_type</strong> (<em>str/int</em>) &#8211; 下单价格类型。限价单 - &#8216;lmt&#8217; / 1；市价单 - &#8216;mkt&#8217; / 2</li>
 </ul>
 </td>
 </tr>
@@ -414,7 +414,7 @@ python没有&#8217;=&#8217;运算符重载:(</p>
 
 <dl class="method">
 <dt id="quantdigger.kernel.engine.strategy.TradingStrategy.sell">
-<tt class="descname">sell</tt><big>(</big><em>direction</em>, <em>price</em>, <em>quantity</em>, <em>deal_type='MKT'</em>, <em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.sell" title="永久链接至目标">¶</a></dt>
+<tt class="descname">sell</tt><big>(</big><em>direction</em>, <em>price</em>, <em>quantity</em>, <em>price_type='MKT'</em>, <em>contract=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.strategy.TradingStrategy.sell" title="永久链接至目标">¶</a></dt>
 <dd><p>平仓。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -424,7 +424,7 @@ python没有&#8217;=&#8217;运算符重载:(</p>
 <li><strong>direction</strong> (<em>str/int</em>) &#8211; 下单方向。多头 - &#8216;long&#8217; / 1 ；空头 - &#8216;short&#8217;  / 2</li>
 <li><strong>price</strong> (<em>float</em>) &#8211; 价格。</li>
 <li><strong>quantity</strong> (<em>int</em>) &#8211; 数量。</li>
-<li><strong>deal_type</strong> (<em>str/int</em>) &#8211; 下单价格类型。限价单 - &#8216;lmt&#8217; / 1；市价单 - &#8216;mkt&#8217; / 2</li>
+<li><strong>price_type</strong> (<em>str/int</em>) &#8211; 下单价格类型。限价单 - &#8216;lmt&#8217; / 1；市价单 - &#8216;mkt&#8217; / 2</li>
 </ul>
 </td>
 </tr>
@@ -781,7 +781,7 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
 <p>Ctp交易类</p>
 <dl class="method">
 <dt id="quantdigger.kernel.engine.api.CtpTraderAPI.cancel_order">
-<tt class="descname">cancel_order</tt><big>(</big><em>contract_id</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.CtpTraderAPI.cancel_order" title="永久链接至目标">¶</a></dt>
+<tt class="descname">cancel_order</tt><big>(</big><em>orderid</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.CtpTraderAPI.cancel_order" title="永久链接至目标">¶</a></dt>
 <dd><p>撤单操作请求</p>
 </dd></dl>
 
@@ -793,20 +793,8 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
 
 <dl class="method">
 <dt id="quantdigger.kernel.engine.api.CtpTraderAPI.order">
-<tt class="descname">order</tt><big>(</big><em>contract_id</em>, <em>direction</em>, <em>buy_or_sell</em>, <em>price</em>, <em>volume</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.CtpTraderAPI.order" title="永久链接至目标">¶</a></dt>
+<tt class="descname">order</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.CtpTraderAPI.order" title="永久链接至目标">¶</a></dt>
 <dd><p>下单请求</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">contract_id (int): 合约编号</p>
-<p>direction (str): 交易方向</p>
-<p>buy_or_sell (str): 开平仓标志</p>
-<p>price (float): 价格</p>
-<p class="last">volume (int): 成交量</p>
-</dd>
-<dt>Returns:</dt>
-<dd>int. The result</dd>
-</dl>
-<p>Raises:</p>
 </dd></dl>
 
 <dl class="method">
@@ -822,15 +810,15 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="quantdigger.kernel.engine.api.CtpTraderAPI.query_depth_marketdata">
-<tt class="descname">query_depth_marketdata</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.CtpTraderAPI.query_depth_marketdata" title="永久链接至目标">¶</a></dt>
-<dd><p>深度行情数据</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="quantdigger.kernel.engine.api.CtpTraderAPI.query_position">
 <tt class="descname">query_position</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.CtpTraderAPI.query_position" title="永久链接至目标">¶</a></dt>
 <dd><p>查询投资者持仓</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.api.CtpTraderAPI.query_tick">
+<tt class="descname">query_tick</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.CtpTraderAPI.query_tick" title="永久链接至目标">¶</a></dt>
+<dd><p>深度行情数据</p>
 </dd></dl>
 
 </dd></dl>
@@ -841,15 +829,45 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
 <dd><p>基类：<a class="reference internal" href="#quantdigger.kernel.engine.api.Trader" title="quantdigger.kernel.engine.api.Trader"><tt class="xref py py-class docutils literal"><span class="pre">quantdigger.kernel.engine.api.Trader</span></tt></a></p>
 <p>模拟交易下单接口</p>
 <dl class="method">
-<dt id="quantdigger.kernel.engine.api.SimulateTrader.connect">
-<tt class="descname">connect</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.connect" title="永久链接至目标">¶</a></dt>
-<dd><p>连接。</p>
+<dt id="quantdigger.kernel.engine.api.SimulateTrader.cancel_order">
+<tt class="descname">cancel_order</tt><big>(</big><em>orderid</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.cancel_order" title="永久链接至目标">¶</a></dt>
+<dd><p>撤单操作请求</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="quantdigger.kernel.engine.api.SimulateTrader.register_handlers">
-<tt class="descname">register_handlers</tt><big>(</big><em>handlers</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.register_handlers" title="永久链接至目标">¶</a></dt>
-<dd><p>注册回调函数。</p>
+<dt id="quantdigger.kernel.engine.api.SimulateTrader.connect">
+<tt class="descname">connect</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.connect" title="永久链接至目标">¶</a></dt>
+<dd><p>连接</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.api.SimulateTrader.order">
+<tt class="descname">order</tt><big>(</big><em>order</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.order" title="永久链接至目标">¶</a></dt>
+<dd><p>下单请求</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.api.SimulateTrader.query_captital">
+<tt class="descname">query_captital</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.query_captital" title="永久链接至目标">¶</a></dt>
+<dd><p>查询资金账户</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.api.SimulateTrader.query_contract">
+<tt class="descname">query_contract</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.query_contract" title="永久链接至目标">¶</a></dt>
+<dd><p>合约查询</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.api.SimulateTrader.query_position">
+<tt class="descname">query_position</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.query_position" title="永久链接至目标">¶</a></dt>
+<dd><p>查询投资者持仓</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.engine.api.SimulateTrader.query_tick">
+<tt class="descname">query_tick</tt><big>(</big><em>contract</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.SimulateTrader.query_tick" title="永久链接至目标">¶</a></dt>
+<dd><p>深度行情数据</p>
 </dd></dl>
 
 </dd></dl>
@@ -860,7 +878,7 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
 <dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <dl class="method">
 <dt id="quantdigger.kernel.engine.api.Trader.cancel_order">
-<tt class="descname">cancel_order</tt><big>(</big><em>contract_id</em>, <em>cbk=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.cancel_order" title="永久链接至目标">¶</a></dt>
+<tt class="descname">cancel_order</tt><big>(</big><em>orderid</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.cancel_order" title="永久链接至目标">¶</a></dt>
 <dd><p>撤单操作请求</p>
 </dd></dl>
 
@@ -872,36 +890,40 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
 
 <dl class="method">
 <dt id="quantdigger.kernel.engine.api.Trader.order">
-<tt class="descname">order</tt><big>(</big><em>order</em>, <em>cbk=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.order" title="永久链接至目标">¶</a></dt>
+<tt class="descname">order</tt><big>(</big><em>order</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.order" title="永久链接至目标">¶</a></dt>
 <dd><p>下单请求</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>order (Order): 订单。</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>order</strong> (<em>Order</em>) &#8211; 委托订单。</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="quantdigger.kernel.engine.api.Trader.query_captital">
-<tt class="descname">query_captital</tt><big>(</big><em>cbk=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_captital" title="永久链接至目标">¶</a></dt>
+<tt class="descname">query_captital</tt><big>(</big><em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_captital" title="永久链接至目标">¶</a></dt>
 <dd><p>查询资金账户</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="quantdigger.kernel.engine.api.Trader.query_contract">
-<tt class="descname">query_contract</tt><big>(</big><em>contract</em>, <em>cbk=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_contract" title="永久链接至目标">¶</a></dt>
+<tt class="descname">query_contract</tt><big>(</big><em>contract</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_contract" title="永久链接至目标">¶</a></dt>
 <dd><p>合约查询</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="quantdigger.kernel.engine.api.Trader.query_depth_marketdata">
-<tt class="descname">query_depth_marketdata</tt><big>(</big><em>contract</em>, <em>cbk=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_depth_marketdata" title="永久链接至目标">¶</a></dt>
-<dd><p>深度行情数据</p>
+<dt id="quantdigger.kernel.engine.api.Trader.query_position">
+<tt class="descname">query_position</tt><big>(</big><em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_position" title="永久链接至目标">¶</a></dt>
+<dd><p>查询投资者持仓</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="quantdigger.kernel.engine.api.Trader.query_position">
-<tt class="descname">query_position</tt><big>(</big><em>cbk=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_position" title="永久链接至目标">¶</a></dt>
-<dd><p>查询投资者持仓</p>
+<dt id="quantdigger.kernel.engine.api.Trader.query_tick">
+<tt class="descname">query_tick</tt><big>(</big><em>contract</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.engine.api.Trader.query_tick" title="永久链接至目标">¶</a></dt>
+<dd><p>深度行情数据</p>
 </dd></dl>
 
 <dl class="method">
@@ -926,7 +948,7 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
 <li><a class="reference internal" href="#">交易引擎</a><ul>
 <li><a class="reference internal" href="#module-quantdigger.kernel.engine.event">事件类型</a></li>
 <li><a class="reference internal" href="#module-quantdigger.kernel.engine.series">时间序列变量</a></li>
-<li><a class="reference internal" href="#module-quantdigger.kernel.engine.strategy">策略函数</a></li>
+<li><a class="reference internal" href="#module-quantdigger.kernel.engine.strategy">策略接口</a></li>
 <li><a class="reference internal" href="#module-quantdigger.kernel.engine.execute_unit">交易执行单元</a></li>
 <li><a class="reference internal" href="#module-quantdigger.kernel.engine.blotter">下单控制</a></li>
 <li><a class="reference internal" href="#module-quantdigger.kernel.engine.exchange">交易模拟器</a></li>
@@ -971,7 +993,7 @@ periods - Daily (252), Hourly (252*6.5), Minutely(252*6.5*60) etc.</p>
         <li class="right" >
           <a href="quantdigger.kernel.datasource.html" title="数据模块"
              >上一页</a> |</li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li>
           <li><a href="documents.html" >API文档</a> &raquo;</li> 
       </ul>
     </div>

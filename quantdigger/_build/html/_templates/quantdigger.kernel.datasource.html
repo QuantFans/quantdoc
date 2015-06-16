@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quantdigger.kernel.datasource package &mdash; quantdigger 0.14 文档</title>
+    <title>数据模块 &mdash; quantdigger 0.14 文档</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -41,35 +41,20 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="quantdigger-kernel-datasource-package">
-<h1>quantdigger.kernel.datasource package<a class="headerlink" href="#quantdigger-kernel-datasource-package" title="永久链接至标题">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
-</div>
+  <div class="section" id="id1">
+<h1>数据模块<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="module-quantdigger.kernel.datasource.data">
-<span id="quantdigger-kernel-datasource-data-module"></span><h2>quantdigger.kernel.datasource.data module<a class="headerlink" href="#module-quantdigger.kernel.datasource.data" title="永久链接至标题">¶</a></h2>
-<dl class="class">
-<dt id="quantdigger.kernel.datasource.data.DataManager">
-<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">DataManager</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.DataManager" title="永久链接至目标">¶</a></dt>
-<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-</dd></dl>
-
+<span id="id2"></span><h2>数据类<a class="headerlink" href="#module-quantdigger.kernel.datasource.data" title="永久链接至标题">¶</a></h2>
 <dl class="class">
 <dt id="quantdigger.kernel.datasource.data.LocalData">
 <em class="property">class </em><tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">LocalData</tt><a class="headerlink" href="#quantdigger.kernel.datasource.data.LocalData" title="永久链接至目标">¶</a></dt>
-<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>本地数据数据接口类。</p>
+<dd><p>本地数据数据接口类。</p>
 <p>包括数据，合约信息等。</p>
 <dl class="method">
 <dt id="quantdigger.kernel.datasource.data.LocalData.loadContractsInfo">
 <tt class="descname">loadContractsInfo</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.LocalData.loadContractsInfo" title="永久链接至目标">¶</a></dt>
 <dd><p>合约信息</p>
 </dd></dl>
-
-<dl class="method">
-<dt id="quantdigger.kernel.datasource.data.LocalData.loadTickData">
-<tt class="descname">loadTickData</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.LocalData.loadTickData" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="quantdigger.kernel.datasource.data.LocalData.load_data">
@@ -90,18 +75,92 @@
 <dl class="class">
 <dt id="quantdigger.kernel.datasource.data.QuoteCache">
 <em class="property">class </em><tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">QuoteCache</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.QuoteCache" title="永久链接至目标">¶</a></dt>
-<dd><p>基类：<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>docstring for QuoteCache</p>
+<dd><p>docstring for QuoteCache</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datasource.data.Record">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">Record</tt><a class="headerlink" href="#quantdigger.kernel.datasource.data.Record" title="永久链接至目标">¶</a></dt>
+<dd><p>Represents a record.</p>
+<dl class="method">
+<dt id="quantdigger.kernel.datasource.data.Record.is_long">
+<tt class="descname">is_long</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.Record.is_long" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for is_long()</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="function">
-<dt id="quantdigger.kernel.datasource.data.process_tushare_data">
-<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">process_tushare_data</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.process_tushare_data" title="永久链接至目标">¶</a></dt>
-<dd></dd></dl>
+<dt id="quantdigger.kernel.datasource.data.csv2frame">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">csv2frame</tt><big>(</big><em>fname</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.csv2frame" title="永久链接至目标">¶</a></dt>
+<dd><p>读取CSV文件到DataFrame</p>
+</dd></dl>
 
-</div>
-<div class="section" id="module-quantdigger.kernel.datasource">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-quantdigger.kernel.datasource" title="永久链接至标题">¶</a></h2>
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.deal_tradeinfo">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">deal_tradeinfo</tt><big>(</big><em>tradeinfo</em>, <em>pricefname</em>, <em>n=10</em>, <em>intraday=False</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.deal_tradeinfo" title="永久链接至目标">¶</a></dt>
+<dd><p>根据交易信号和数据文件，处理数据． 
+return data[&#8216;high_profits&#8217;, &#8216;low_profit&#8217;, &#8216;exit_profit&#8217;, &#8216;period&#8217;, &#8216;return&#8217;,</p>
+<blockquote>
+<div><blockquote>
+<div>&#8216;entry_nbar_bests&#8217;, &#8216;entry_nbar_worsts&#8217;, &#8216;exit_nbar_bests&#8217;,
+&#8216;exit_nbar_worsts&#8217;, &#8216;islong&#8217;, &#8216;entry_n&#8217;, &#8216;exit_n&#8217;</div></blockquote>
+<p>]</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.frame2records">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">frame2records</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.frame2records" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for frame2records(dat)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.load_datas">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">load_datas</tt><big>(</big><em>n</em>, <em>intraday</em>, <em>*fnames</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.load_datas" title="永久链接至目标">¶</a></dt>
+<dd><p>根据文件列表，返回结果列表．</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.load_records">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">load_records</tt><big>(</big><em>fnames</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.load_records" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for load_records</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.load_wavedata">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">load_wavedata</tt><big>(</big><em>*fnames</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.load_wavedata" title="永久链接至目标">¶</a></dt>
+<dd><p>dj1, dj2 = load_wavedata(&#8220;namea&#8221;, &#8220;nameb&#8221;)
+djx &#8212; (wave, wave_r_entry)
+return:</p>
+<blockquote>
+<div>((wave_timestamp, DataFrame(&#8216;pre&#8217;,&#8217;after&#8217;)))</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.max_return">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">max_return</tt><big>(</big><em>nbarprice</em>, <em>islong</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.max_return" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for maxreturn</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.pricefname_from_tradefname">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">pricefname_from_tradefname</tt><big>(</big><em>fname</em>, <em>prefixnum=3</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.pricefname_from_tradefname" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for pricefname_from_tradefname</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.set_dir">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">set_dir</tt><big>(</big><em>dname</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.set_dir" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for set_dir</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="quantdigger.kernel.datasource.data.symbolfromtradefname">
+<tt class="descclassname">quantdigger.kernel.datasource.data.</tt><tt class="descname">symbolfromtradefname</tt><big>(</big><em>fname</em>, <em>prefixnum=3</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datasource.data.symbolfromtradefname" title="永久链接至目标">¶</a></dt>
+<dd><p>docstring for symbolfromfname</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -113,10 +172,8 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">內容目录</a></h3>
   <ul>
-<li><a class="reference internal" href="#">quantdigger.kernel.datasource package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-quantdigger.kernel.datasource.data">quantdigger.kernel.datasource.data module</a></li>
-<li><a class="reference internal" href="#module-quantdigger.kernel.datasource">Module contents</a></li>
+<li><a class="reference internal" href="#">数据模块</a><ul>
+<li><a class="reference internal" href="#module-quantdigger.kernel.datasource.data">数据类</a></li>
 </ul>
 </li>
 </ul>

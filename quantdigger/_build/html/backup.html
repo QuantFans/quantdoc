@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>第一个策略 &mdash; quantdigger 0.15 文档</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.15',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.15 文档" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="id1">
+<h1>第一个策略<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="code py highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.execute_unit</span> <span class="kn">import</span> <span class="n">ExecuteUnit</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.indicators.common</span> <span class="kn">import</span> <span class="n">MA</span><span class="p">,</span> <span class="n">BOLL</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.strategy</span> <span class="kn">import</span> <span class="n">TradingStrategy</span>
+<span class="kn">from</span> <span class="nn">quantdigger.util</span> <span class="kn">import</span>  <span class="n">pcontract</span><span class="p">,</span> <span class="n">stock</span>
+<span class="kn">import</span> <span class="nn">plotting</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.engine.series</span> <span class="kn">import</span> <span class="n">NumberSeries</span>
+
+<span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 一个可选的平均线函数 &quot;&quot;&quot;</span>
+    <span class="c">## @todo plot element</span>
+    <span class="n">sum_</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">sum_</span> <span class="o">+=</span> <span class="n">series</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sum_</span> <span class="o">/</span> <span class="n">n</span>
+
+
+<span class="k">class</span> <span class="nc">DemoStrategy</span><span class="p">(</span><span class="n">TradingStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 策略实例 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exe</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DemoStrategy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">exe</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span><span class="s">&#39;ma20&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="s">&#39;ma10&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_upper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_middler</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_lower</span> <span class="o">=</span> <span class="n">BOLL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="s">&#39;boll10&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
+        <span class="c">#self.ma2 = NumberSeries(self)</span>
+
+    <span class="k">def</span> <span class="nf">on_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 策略函数，对每根Bar运行一次。&quot;&quot;&quot;</span>
+        <span class="c">#self.ma2.update(average(self.open, 10))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="s">&#39;long&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">contract</span> <span class="o">=</span> <span class="s">&#39;IF000.SHFE&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma20</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="s">&#39;long&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c"># 夸品种数据引用</span>
+        <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span>
+        <span class="c">#print self.position(), self.cash()</span>
+        <span class="c">#print self.datetime, self.b_upper, self.b_middler, self.b_lower</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">begin_dt</span><span class="p">,</span> <span class="n">end_dt</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="n">pcon</span> <span class="o">=</span> <span class="n">pcontract</span><span class="p">(</span><span class="s">&#39;IF000.SHFE&#39;</span><span class="p">,</span> <span class="s">&#39;10.Minute&#39;</span><span class="p">)</span>
+    <span class="c">#pcon = stock(&#39;600848&#39;)</span>
+    <span class="n">simulator</span> <span class="o">=</span> <span class="n">ExecuteUnit</span><span class="p">([</span><span class="n">pcon</span><span class="p">,</span> <span class="n">pcon</span><span class="p">],</span> <span class="n">begin_dt</span><span class="p">,</span> <span class="n">end_dt</span><span class="p">)</span>
+    <span class="n">algo</span> <span class="o">=</span> <span class="n">DemoStrategy</span><span class="p">(</span><span class="n">simulator</span><span class="p">)</span>
+    <span class="c">#algo2 = DemoStrategy(simulator)</span>
+    <span class="n">simulator</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+    <span class="c"># 显示回测结果</span>
+    <span class="n">plotting</span><span class="o">.</span><span class="n">plot_result</span><span class="p">(</span><span class="n">simulator</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">pcon</span><span class="p">],</span>
+                                <span class="n">algo</span><span class="o">.</span><span class="n">_indicators</span><span class="p">,</span>
+                                <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="o">.</span><span class="n">deal_positions</span><span class="p">,</span>
+                                <span class="n">algo</span><span class="o">.</span><span class="n">blotter</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">e</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总目录"
+             >索引</a></li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+    </div>
+  </body>
+</html>

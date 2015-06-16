@@ -17,7 +17,7 @@
     :undoc-members:
     :show-inheritance:
 
-策略函数
+策略接口
 -----------------------------------------
 
 .. automodule:: quantdigger.kernel.engine.strategy

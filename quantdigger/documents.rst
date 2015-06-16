@@ -7,3 +7,4 @@ API文档
     quantdigger.kernel.datasource
     quantdigger.kernel.engine
     quantdigger.kernel.indicators
+    quantdigger.widgets

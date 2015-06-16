@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>第一个指标函数 &mdash; quantdigger 0.14 文档</title>
+    <title>指标示例 &mdash; quantdigger 0.15 文档</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14',
+        VERSION:     '0.15',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="quantdigger 0.14 文档" href="index.html" />
+    <link rel="top" title="quantdigger 0.15 文档" href="index.html" />
     <link rel="up" title="使用指南" href="tutorial.html" />
     <link rel="next" title="API文档" href="documents.html" />
-    <link rel="prev" title="第一个策略" href="first_strategy.html" /> 
+    <link rel="prev" title="一个简单的策略" href="first_strategy.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,9 +39,9 @@
           <a href="documents.html" title="API文档"
              accesskey="N">下一页</a> |</li>
         <li class="right" >
-          <a href="first_strategy.html" title="第一个策略"
+          <a href="first_strategy.html" title="一个简单的策略"
              accesskey="P">上一页</a> |</li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li>
           <li><a href="tutorial.html" accesskey="U">使用指南</a> &raquo;</li> 
       </ul>
     </div>  
@@ -52,7 +52,88 @@
           <div class="body">
             
   <div class="section" id="id1">
-<h1>第一个指标函数<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<h1>指标示例<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>算术平均指标类<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="code py highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MA</span><span class="p">(</span><span class="n">IndicatorBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 移动平均线指标。 &quot;&quot;&quot;</span>
+    <span class="nd">@create_attributes</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;MA&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s">&quot;line&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MA</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="c"># self.value为任何支持index的数据结构。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moving_average</span><span class="p">(</span><span class="n">prices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_moving_average</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 向量化运行的均值函数。 &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">transform2ndarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">talib</span><span class="o">.</span><span class="n">SMA</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>所有的指标都继承与IndicatorBase类。IndicatorBase定义了很多转化函数，使指标对象能像时序变量一样被使用。
+此指标使用了TA-Lib库函数，向量化运行后赋值给value属性，任何指标类都必须定义这个属性。</p>
+<p>plot函数负责在参数widget上绘制指标线。plot_line函数负责画线，定义于IndicatorBase的父类。它会根据
+widget类型做相应的绘图操作，widget可以是任何绘图设备，比如matplotlib的Axes, 或者pyqt的QFrame(只实现了接口)。
+如果用户不需要绘制指标，那么无需定义plot函数。</p>
+</div>
+<div class="section" id="id3">
+<h2>算术平均线绘制<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="code py highlight-python"><div class="highlight"><pre><span class="c"># -*- coding: utf8 -*-</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s">&#39;TkAgg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.indicators.common</span> <span class="kn">import</span> <span class="n">MA</span>
+<span class="kn">from</span> <span class="nn">quantdigger.kernel.datasource.data</span> <span class="kn">import</span> <span class="n">csv2frame</span>
+
+<span class="c"># 创建画布</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="c"># 加载数据</span>
+<span class="n">price_data</span> <span class="o">=</span> <span class="n">csv2frame</span><span class="p">(</span><span class="s">&quot;IF000.SHFE-10.Minute.csv&quot;</span><span class="p">)</span>
+<span class="c"># 创建平均线指标</span>
+<span class="n">ma10</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">price_data</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;MA10&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ma20</span> <span class="o">=</span> <span class="n">MA</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">price_data</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s">&#39;MA10&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c"># 绘制指标</span>
+<span class="n">ma10</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ma20</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_static/plot_ma.png"><img alt="_static/plot_ma.png" src="_static/plot_ma.png" style="width: 500px;" /></a>
+</div>
+<div class="section" id="id4">
+<h2>非向量化运行的指标函数<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>如果你觉的这个指标类太复杂了，那么可以这样定义和使用指标函数。</p>
+<div class="code py highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ma</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 算术平均指标函数。</span>
+
+<span class="sd">    series (NumberSeries): 序列变量</span>
+<span class="sd">    n (int): 周期</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sum_</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">sum_</span> <span class="o">+=</span> <span class="n">series</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">sum_</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">class</span> <span class="nc">DemoStrategy</span><span class="p">(</span><span class="n">TradingStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 策略实例 &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exe</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DemoStrategy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">exe</span><span class="p">)</span>
+        <span class="c"># 创建时序变量，用来保存指标值。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span> <span class="o">=</span> <span class="n">NumberSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># 更新时序变量的最新值。</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ma</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma10</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -61,9 +142,19 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">指标示例</a><ul>
+<li><a class="reference internal" href="#id2">算术平均指标类</a></li>
+<li><a class="reference internal" href="#id3">算术平均线绘制</a></li>
+<li><a class="reference internal" href="#id4">非向量化运行的指标函数</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>上一个主题</h4>
   <p class="topless"><a href="first_strategy.html"
-                        title="上一章">第一个策略</a></p>
+                        title="上一章">一个简单的策略</a></p>
   <h4>下一个主题</h4>
   <p class="topless"><a href="documents.html"
                         title="下一章">API文档</a></p>
@@ -94,9 +185,9 @@
           <a href="documents.html" title="API文档"
              >下一页</a> |</li>
         <li class="right" >
-          <a href="first_strategy.html" title="第一个策略"
+          <a href="first_strategy.html" title="一个简单的策略"
              >上一页</a> |</li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li>
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li>
           <li><a href="tutorial.html" >使用指南</a> &raquo;</li> 
       </ul>
     </div>

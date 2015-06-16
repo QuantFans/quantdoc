@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>基本数据结构 &mdash; quantdigger 0.14 文档</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.14',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="quantdigger 0.14 文档" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-quantdigger.kernel.datastruct">
+<span id="id1"></span><h1>基本数据结构<a class="headerlink" href="#module-quantdigger.kernel.datastruct" title="永久链接至标题">¶</a></h1>
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.Bar">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">Bar</tt><big>(</big><em>dt</em>, <em>open</em>, <em>close</em>, <em>high</em>, <em>low</em>, <em>vol</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Bar" title="永久链接至目标">¶</a></dt>
+<dd><p>Bar数据。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>open</strong> (<em>float</em>) &#8211; 开盘价。</li>
+<li><strong>close</strong> (<em>float</em>) &#8211; 收盘价。</li>
+<li><strong>high</strong> (<em>float</em>) &#8211; 最高价。</li>
+<li><strong>low</strong> (<em>float</em>) &#8211; 最低价。</li>
+<li><strong>datetime</strong> (<em>datetime</em>) &#8211; 开盘时间。</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; 成交量。</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.Contract">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">Contract</tt><big>(</big><em>str_contract</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Contract" title="永久链接至目标">¶</a></dt>
+<dd><p>合约。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>exch_type</strong> (<em>str</em>) &#8211; 市场类型。</li>
+<li><strong>code</strong> (<em>str</em>) &#8211; 合约代码</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.Direction">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">Direction</tt><a class="headerlink" href="#quantdigger.kernel.datastruct.Direction" title="永久链接至目标">¶</a></dt>
+<dd><p>多空方向。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>LONG</strong> &#8211; 多头，值1.</li>
+<li><strong>SHORT</strong> &#8211; 空头，值2.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="quantdigger.kernel.datastruct.Direction.arg_to_type">
+<em class="property">classmethod </em><tt class="descname">arg_to_type</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Direction.arg_to_type" title="永久链接至目标">¶</a></dt>
+<dd><p>把用户输入参数转化为系统类型。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.Order">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">Order</tt><big>(</big><em>dt</em>, <em>contract</em>, <em>type_</em>, <em>side</em>, <em>direction</em>, <em>price</em>, <em>quantity</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Order" title="永久链接至目标">¶</a></dt>
+<dd><p>订单</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.OrderID" title="quantdigger.kernel.datastruct.OrderID"><tt class="xref py py-class docutils literal"><span class="pre">OrderID</span></tt></a>) &#8211; 成交编号</li>
+<li><strong>contract</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.Contract" title="quantdigger.kernel.datastruct.Contract"><tt class="xref py py-class docutils literal"><span class="pre">Contract</span></tt></a>) &#8211; 合约。</li>
+<li><strong>direction</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.Direction" title="quantdigger.kernel.datastruct.Direction"><tt class="xref py py-class docutils literal"><span class="pre">Direction</span></tt></a>) &#8211; 多空方向。</li>
+<li><strong>price</strong> (<em>float</em>) &#8211; 成交价格。</li>
+<li><strong>quantity</strong> (<em>float</em>) &#8211; 成交数量。</li>
+<li><strong>side</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.TradeSide" title="quantdigger.kernel.datastruct.TradeSide"><tt class="xref py py-class docutils literal"><span class="pre">TradeSide</span></tt></a>) &#8211; 开平仓标志。</li>
+<li><strong>datetime</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datetime</span></tt>) &#8211; 成交时间</li>
+<li><strong>price_type</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.PriceType" title="quantdigger.kernel.datastruct.PriceType"><tt class="xref py py-class docutils literal"><span class="pre">PriceType</span></tt></a>) &#8211; 下单类型。</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.OrderID">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">OrderID</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.OrderID" title="永久链接至目标">¶</a></dt>
+<dd><p>委托ID， 用来唯一的标识一个委托订单。</p>
+<dl class="classmethod">
+<dt id="quantdigger.kernel.datastruct.OrderID.next_order_id">
+<em class="property">classmethod </em><tt class="descname">next_order_id</tt><big>(</big><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.OrderID.next_order_id" title="永久链接至目标">¶</a></dt>
+<dd><p>下个有效的委托ID编号。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.PContract">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">PContract</tt><big>(</big><em>contract</em>, <em>period</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.PContract" title="永久链接至目标">¶</a></dt>
+<dd><p>特定周期的合约。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>contract</strong> &#8211; 合约对象。</li>
+<li><strong>period</strong> &#8211; 周期。</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.Period">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">Period</tt><big>(</big><em>str_period</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Period" title="永久链接至目标">¶</a></dt>
+<dd><p>周期</p>
+<dl class="attribute">
+<dt id="quantdigger.kernel.datastruct.Period.length">
+<tt class="descname">length</tt><a class="headerlink" href="#quantdigger.kernel.datastruct.Period.length" title="永久链接至目标">¶</a></dt>
+<dd><p>时间长度。</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.datastruct.Period.type">
+<tt class="descname">type</tt><a class="headerlink" href="#quantdigger.kernel.datastruct.Period.type" title="永久链接至目标">¶</a></dt>
+<dd><p>时间单位。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.Position">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">Position</tt><big>(</big><em>order</em>, <em>transaction</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Position" title="永久链接至目标">¶</a></dt>
+<dd><p>单笔仓位信息。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>order</strong> &#8211; 委托单信息。</li>
+<li><strong>transaction</strong> &#8211; 成交信息。</li>
+<li><strong>quantity</strong> &#8211; 单笔数目。</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="quantdigger.kernel.datastruct.Position.assure_ratio">
+<tt class="descname">assure_ratio</tt><a class="headerlink" href="#quantdigger.kernel.datastruct.Position.assure_ratio" title="永久链接至目标">¶</a></dt>
+<dd><p>保证金比例</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="quantdigger.kernel.datastruct.Position.price">
+<tt class="descname">price</tt><a class="headerlink" href="#quantdigger.kernel.datastruct.Position.price" title="永久链接至目标">¶</a></dt>
+<dd><p>成交价格</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.PriceType">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">PriceType</tt><a class="headerlink" href="#quantdigger.kernel.datastruct.PriceType" title="永久链接至目标">¶</a></dt>
+<dd><p>下单类型</p>
+<dl class="classmethod">
+<dt id="quantdigger.kernel.datastruct.PriceType.arg_to_type">
+<em class="property">classmethod </em><tt class="descname">arg_to_type</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.PriceType.arg_to_type" title="永久链接至目标">¶</a></dt>
+<dd><p>把用户输入参数转化为系统类型。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.TradeSide">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">TradeSide</tt><a class="headerlink" href="#quantdigger.kernel.datastruct.TradeSide" title="永久链接至目标">¶</a></dt>
+<dd><p>开平仓标志</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>BUY</strong> &#8211; 都头开仓， 1</li>
+<li><strong>SHORT</strong> &#8211; 空头开仓， 2</li>
+<li><strong>COVER</strong> &#8211; 空头平仓，3</li>
+<li><strong>SELL</strong> &#8211; 多头平仓，4</li>
+<li><strong>COVER_TODAY</strong> &#8211; 空头平今，5</li>
+<li><strong>SELL_TODAY</strong> &#8211; 多头平今，6</li>
+<li><strong>KAI</strong> &#8211; 开仓，7</li>
+<li><strong>PING</strong> &#8211; 平仓，8</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="quantdigger.kernel.datastruct.TradeSide.arg_to_type">
+<em class="property">classmethod </em><tt class="descname">arg_to_type</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.TradeSide.arg_to_type" title="永久链接至目标">¶</a></dt>
+<dd><p>把用户输入参数转化为系统类型。</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="quantdigger.kernel.datastruct.Transaction">
+<em class="property">class </em><tt class="descclassname">quantdigger.kernel.datastruct.</tt><tt class="descname">Transaction</tt><big>(</big><em>order=None</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Transaction" title="永久链接至目标">¶</a></dt>
+<dd><p>成交记录。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">变量:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.OrderID" title="quantdigger.kernel.datastruct.OrderID"><tt class="xref py py-class docutils literal"><span class="pre">OrderID</span></tt></a>) &#8211; 成交编号</li>
+<li><strong>contract</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.Contract" title="quantdigger.kernel.datastruct.Contract"><tt class="xref py py-class docutils literal"><span class="pre">Contract</span></tt></a>) &#8211; 合约。</li>
+<li><strong>direction</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.Direction" title="quantdigger.kernel.datastruct.Direction"><tt class="xref py py-class docutils literal"><span class="pre">Direction</span></tt></a>) &#8211; 多空方向。</li>
+<li><strong>price</strong> (<em>float</em>) &#8211; 成交价格。</li>
+<li><strong>quantity</strong> (<em>float</em>) &#8211; 成交数量。</li>
+<li><strong>side</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.TradeSide" title="quantdigger.kernel.datastruct.TradeSide"><tt class="xref py py-class docutils literal"><span class="pre">TradeSide</span></tt></a>) &#8211; 开平仓标志。</li>
+<li><strong>datetime</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datetime</span></tt>) &#8211; 成交时间</li>
+<li><strong>price_type</strong> (<a class="reference internal" href="quantdigger.kernel.html#quantdigger.kernel.datastruct.PriceType" title="quantdigger.kernel.datastruct.PriceType"><tt class="xref py py-class docutils literal"><span class="pre">PriceType</span></tt></a>) &#8211; 下单类型。</li>
+<li><strong>commission</strong> (<em>float</em>) &#8211; 佣金百分比</li>
+<li><strong>assure_ratio</strong> (<em>float</em>) &#8211; 保证金比例。</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="quantdigger.kernel.datastruct.Transaction.deposit">
+<tt class="descname">deposit</tt><big>(</big><em>new_price</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Transaction.deposit" title="永久链接至目标">¶</a></dt>
+<dd><p>根据当前价格计算这笔交易的保证金。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>new_price</strong> (<em>float</em>) &#8211; 当前价格。</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">保证金。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quantdigger.kernel.datastruct.Transaction.profit">
+<tt class="descname">profit</tt><big>(</big><em>new_price</em><big>)</big><a class="headerlink" href="#quantdigger.kernel.datastruct.Transaction.profit" title="永久链接至目标">¶</a></dt>
+<dd><p>根据当前的价格计算盈亏。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>new_price</strong> (<em>float</em>) &#8211; 当前价格。</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">盈亏数额。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的术语，模块，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="总目录"
+             >索引</a></li>
+        <li><a href="../index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2015, QuantFans.
+    </div>
+  </body>
+</html>

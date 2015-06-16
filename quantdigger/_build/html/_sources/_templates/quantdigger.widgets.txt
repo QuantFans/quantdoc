@@ -1,0 +1,38 @@
+quantdigger.widgets package
+===========================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    quantdigger.widgets.mplotwidgets
+    quantdigger.widgets.qtwidgets
+
+Submodules
+----------
+
+quantdigger.widgets.plotting module
+-----------------------------------
+
+.. automodule:: quantdigger.widgets.plotting
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+quantdigger.widgets.plugin_interface module
+-------------------------------------------
+
+.. automodule:: quantdigger.widgets.plugin_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: quantdigger.widgets
+    :members:
+    :undoc-members:
+    :show-inheritance:

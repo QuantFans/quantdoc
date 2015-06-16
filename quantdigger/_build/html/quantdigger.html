@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quantdigger package &mdash; quantdigger 0.14 文档</title>
+    <title>quantdigger package &mdash; quantdigger 0.15 文档</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14',
+        VERSION:     '0.15',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="quantdigger 0.14 文档" href="index.html" /> 
+    <link rel="top" title="quantdigger 0.15 文档" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -32,7 +32,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="总目录"
              accesskey="I">索引</a></li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -57,7 +57,7 @@
 <li class="toctree-l3"><a class="reference internal" href="quantdigger.kernel.engine.html">交易引擎</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.event">事件类型</a></li>
 <li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.series">时间序列变量</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.strategy">策略函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.strategy">策略接口</a></li>
 <li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.execute_unit">交易执行单元</a></li>
 <li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.blotter">下单控制</a></li>
 <li class="toctree-l4"><a class="reference internal" href="quantdigger.kernel.engine.html#module-quantdigger.kernel.engine.exchange">交易模拟器</a></li>
@@ -72,31 +72,6 @@
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="quantdigger.plugin.html">quantdigger.plugin package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html">quantdigger.plugin.mplotwidgets package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#quantdigger-plugin-mplotwidgets-indicator-module">quantdigger.plugin.mplotwidgets.indicator module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#quantdigger-plugin-mplotwidgets-main-module">quantdigger.plugin.mplotwidgets.main module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets.stock_plot">quantdigger.plugin.mplotwidgets.stock_plot module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets.techmplot">quantdigger.plugin.mplotwidgets.techmplot module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets.widgets">quantdigger.plugin.mplotwidgets.widgets module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.mplotwidgets.html#module-quantdigger.plugin.mplotwidgets">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html">quantdigger.plugin.qtwidgets package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html#quantdigger-plugin-qtwidgets-techwidget-module">quantdigger.plugin.qtwidgets.techwidget module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="quantdigger.plugin.qtwidgets.html#module-quantdigger.plugin.qtwidgets">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#quantdigger-plugin-plugin-interface-module">quantdigger.plugin.plugin_interface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantdigger.plugin.html#module-quantdigger.plugin">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -479,7 +454,7 @@ does not have the necessary properties.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="总目录"
              >索引</a></li>
-        <li><a href="index.html">quantdigger 0.14 文档</a> &raquo;</li> 
+        <li><a href="index.html">quantdigger 0.15 文档</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

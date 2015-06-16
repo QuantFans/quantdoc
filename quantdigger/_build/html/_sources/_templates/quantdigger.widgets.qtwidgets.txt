@@ -1,0 +1,22 @@
+quantdigger.widgets.qtwidgets package
+=====================================
+
+Submodules
+----------
+
+quantdigger.widgets.qtwidgets.techwidget module
+-----------------------------------------------
+
+.. automodule:: quantdigger.widgets.qtwidgets.techwidget
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: quantdigger.widgets.qtwidgets
+    :members:
+    :undoc-members:
+    :show-inheritance:
